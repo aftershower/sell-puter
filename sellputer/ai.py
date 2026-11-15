@@ -29,8 +29,7 @@ MEMORY_FILE = Path("memory/MEMORY.md")
 PRICE_IN, PRICE_OUT, PRICE_SEARCH = 2.0 / 1e6, 10.0 / 1e6, 0.01
 PRICE_CACHE_WRITE, PRICE_CACHE_READ = 2.5 / 1e6, 0.2 / 1e6
 LIGHT_CHUNK = 8  # batched notes per request, so one failure doesn't drop them all
-DEEP_ESTIMATE = 0.20  # reserved per deep dive before it starts
-LIGHT_RESERVE = 0.15  # kept back for the batched notes
+DEEP_ESTIMATE = 0.18  # reserved per deep dive before it starts (observed $0.13-0.5 at high effort)
 
 BASE = """你是一个期权卖方的研究助手。用户用规则筛出了准备卖出现金担保看跌期权（cash-secured put）的股票。卖 put 意味着可能以行权价接盘，所以他关心两件事：这家公司质地如何（接了货拿得住吗），以及到期前有没有大跌风险。你的工作是帮他看清这些，而不是替他做决定。
 
@@ -210,6 +209,10 @@ def _final_json(content) -> dict:
     return json.loads("".join(b.text for b in content[last_tool + 1 :] if b.type == "text"))
 
 
+def _norm_url(url: str) -> str:
+    return url.split("#")[0].removeprefix("https://").removeprefix("http://").removeprefix("www.").rstrip("/")
+
+
 def _result_urls(content) -> set[str]:
     """URLs that actually came back from web_search / web_fetch in this response."""
     urls = set()
@@ -219,7 +222,7 @@ def _result_urls(content) -> set[str]:
         items = b.content if isinstance(b.content, list) else [b.content]
         for item in items:
             if url := getattr(item, "url", None):
-                urls.add(url)
+                urls.add(_norm_url(url))
     return urls
 
 
@@ -254,33 +257,34 @@ def ask(
     return _final_json(resp.content), urls
 
 
-def _deep(client, cand: dict, cfg: dict, pg: dict, budget: Budget) -> dict | None:
-    if not budget.reserve(DEEP_ESTIMATE, keep=LIGHT_RESERVE):
-        log.info("deep %s skipped: budget", cand["ticker"])
+def _deep(client, ticker: str, brief: dict, cfg: dict, budget: Budget) -> dict | None:
+    if not budget.reserve(DEEP_ESTIMATE):
+        log.info("deep %s skipped: budget", ticker)
         return None
     try:
-        return _deep_call(client, cand, cfg, pg, budget)
+        return _deep_call(client, ticker, brief, cfg, budget)
     finally:
         budget.release(DEEP_ESTIMATE)
 
 
-def _deep_call(client, cand: dict, cfg: dict, pg: dict, budget: Budget) -> dict | None:
+def _deep_call(client, ticker: str, brief: dict, cfg: dict, budget: Budget) -> dict | None:
     tools = [
         {"type": "web_search_20260209", "name": "web_search", "max_uses": cfg["deep_searches"]},
-        {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": cfg["deep_fetches"], "max_content_tokens": 8000},
+        {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": cfg["deep_fetches"], "max_content_tokens": 4000},
     ]
-    brief = _brief(cand, cfg["news_per_ticker"], pg)
     try:
         note, urls = ask(client, cfg["model"], budget, _with_memory(DEEP_SYSTEM), DEEP_SCHEMA,
                     "请深入分析这只股票（JSON）：\n\n" + json.dumps(brief, ensure_ascii=False, default=str),
                     cfg["deep_effort"], tools)
     except Exception as e:
-        log.warning("deep %s failed: %s", cand["ticker"], e)
+        log.warning("deep %s failed: %s", ticker, e)
         return None
     note["deep"] = True
     # keep only links the searches really returned; the model sometimes cites site homepages
-    note["sources"] = list({s["url"]: s for s in note.get("sources", []) if s["url"] in urls}.values())
-    log.info("deep %s done: %d sources (spent so far $%.2f)", cand["ticker"], len(note["sources"]), budget.spent)
+    cited = note.get("sources", [])
+    note["sources"] = list({_norm_url(s["url"]): s for s in cited if _norm_url(s["url"]) in urls}.values())
+    log.info("deep %s done: %d/%d sources grounded, %d urls seen (spent so far $%.2f)",
+             ticker, len(note["sources"]), len(cited), len(urls), budget.spent)
     return note
 
 
@@ -289,26 +293,29 @@ def notes(cands: list[dict], cfg: dict, pg: dict) -> tuple[dict[str, dict], dict
     budget = Budget(cfg["daily_budget_usd"])
     out: dict[str, dict] = {}
 
-    deep = cands[: cfg["deep_n"]]
-    with ThreadPoolExecutor(cfg["deep_workers"]) as pool:
-        for cand, note in zip(deep, pool.map(lambda c: _deep(client, c, cfg, pg, budget), deep)):
-            if note:
-                out[cand["ticker"]] = note
+    briefs = {c["ticker"]: _brief(c, cfg["news_per_ticker"], pg) for c in cands}
 
-    rest = [c for c in cands if c["ticker"] not in out]
-    for i in range(0, len(rest), LIGHT_CHUNK):
-        chunk = rest[i : i + LIGHT_CHUNK]
+    # cheap notes for everyone first, so coverage never depends on how long the deep dives ran
+    for i in range(0, len(cands), LIGHT_CHUNK):
+        chunk = [briefs[c["ticker"]] for c in cands[i : i + LIGHT_CHUNK]]
         if budget.left() < 0.05:
             log.info("light notes stopped: budget")
             break
-        briefs = [_brief(c, cfg["news_per_ticker"], pg) for c in chunk]
         try:
             light, _ = ask(client, cfg["model"], budget, _with_memory(LIGHT_SYSTEM), LIGHT_SCHEMA,
-                           "以下是今天的候选股票（JSON），请为每只写笔记：\n\n" + json.dumps(briefs, ensure_ascii=False, default=str),
+                           "以下是今天的候选股票（JSON），请为每只写笔记：\n\n" + json.dumps(chunk, ensure_ascii=False, default=str),
                            cfg["effort"], [])
-            out.update({n["ticker"]: n for n in light["notes"] if n["ticker"] in {c["ticker"] for c in chunk}})
+            out.update({n["ticker"]: n for n in light["notes"] if n["ticker"] in {b["ticker"] for b in chunk}})
         except Exception as e:
             log.warning("light notes failed: %s", e)
+    log.info("light notes: %d (spent so far $%.2f)", len(out), budget.spent)
+
+    # then deep dives, best candidates first, with whatever budget is left; they replace the light note
+    deep = [c["ticker"] for c in cands[: cfg["deep_n"]]]
+    with ThreadPoolExecutor(cfg["deep_workers"]) as pool:
+        for t, note in zip(deep, pool.map(lambda t: _deep(client, t, briefs[t], cfg, budget), deep)):
+            if note:
+                out[t] = note
 
     spend = {
         "usd": round(budget.spent, 2),
