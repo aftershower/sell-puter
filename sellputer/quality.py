@@ -93,6 +93,10 @@ def price_stats(tickers: list[str]) -> dict[str, dict]:
             "hv252": float(rets.std() * math.sqrt(252)),
             "drawdown_52w": float(1 - price / s.max()),
             "above_sma200": bool(len(s) >= 200 and price > s.tail(200).mean()),
+            "sma50": float(s.tail(50).mean()),
+            "sma200": float(s.tail(200).mean()) if len(s) >= 200 else None,
+            "low_52w": float(s.min()),
+            "high_52w": float(s.max()),
         }
     return stats
 
@@ -110,26 +114,34 @@ def latest_prices(tickers: list[str]) -> dict[str, float]:
     return out
 
 
-def quality_check(f: dict, p: dict, q: dict) -> str | None:
-    """Return the reason a ticker fails the quality gate, or None if it passes."""
+def quality_check(f: dict, p: dict, q: dict, core: bool) -> str | None:
+    """Return the reason a ticker fails the quality gate, or None if it passes.
+
+    `core` tickers (S&P 500 + the user's own list) skip the fundamentals checks; every
+    threshold is optional so config can switch it off by leaving it out.
+    """
     def below(value, floor):
         return value is not None and not pd.isna(value) and value < floor
 
-    if below(f.get("market_cap"), q["min_market_cap"]):
-        return "market_cap"
-    if below(f.get("roe"), q["min_roe"]):
-        return "roe"
-    if below(f.get("profit_margin"), q["min_profit_margin"]):
-        return "profit_margin"
-    if q["require_positive_fcf"] and below(f.get("fcf"), 0):
-        return "fcf"
-    dte = f.get("debt_to_equity")
-    if dte is not None and not pd.isna(dte) and dte > q["max_debt_to_equity"]:
-        return "debt"
-    if p["price"] < q["min_price"]:
+    if not core:
+        if below(f.get("market_cap"), q.get("min_market_cap", 0)):
+            return "market_cap"
+        if "min_roe" in q and below(f.get("roe"), q["min_roe"]):
+            return "roe"
+        margin = f.get("profit_margin")
+        if q.get("require_profitable") and margin is not None and not pd.isna(margin) and margin <= 0:
+            return "unprofitable"
+        if "min_profit_margin" in q and below(margin, q["min_profit_margin"]):
+            return "profit_margin"
+        if q.get("require_positive_fcf") and below(f.get("fcf"), 0):
+            return "fcf"
+        dte = f.get("debt_to_equity")
+        if "max_debt_to_equity" in q and dte is not None and not pd.isna(dte) and dte > q["max_debt_to_equity"]:
+            return "debt"
+        if "max_drawdown_52w" in q and p["drawdown_52w"] > q["max_drawdown_52w"]:
+            return "drawdown"
+    if p["price"] < q.get("min_price", 0):
         return "price"
-    if "max_drawdown_52w" in q and p["drawdown_52w"] > q["max_drawdown_52w"]:
-        return "drawdown"
-    if q["require_above_sma200"] and not p["above_sma200"]:
+    if q.get("require_above_sma200") and not p["above_sma200"]:
         return "sma200"
     return None

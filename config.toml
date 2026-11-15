@@ -7,6 +7,9 @@ extra_tickers = ["ASML", "TSM", "ARM", "MELI", "SHOP", "NVO", "SAP", "SONY", "TM
 exclude_tickers = []
 # 每天把 Reddit 股票版块过去 24 小时提及最多的前 N 只加进股票池（同样要过质地门槛）；0 = 不加
 reddit_top_n = 50
+# 每天再加上 Yahoo 的榜单：most_actives = 成交最活跃，day_losers = 当日跌幅榜（同样要过质地门槛）
+yahoo_screens = ["most_actives", "day_losers"]
+yahoo_count = 50
 # 这些"代码"在 Reddit 上多半是普通单词或缩写，不算热门
 reddit_ignore = [
   "DTE", "IT", "ALL", "ET", "IP", "HR", "PR", "DC", "EU", "VC", "CIA", "YOU", "RR", "TP", "CC", "API", "LINK",
@@ -17,40 +20,59 @@ reddit_ignore = [
 ]
 
 [quality]
-# "质地好" 的硬门槛（数据来自 yfinance，缺失的字段视为通过）
-min_market_cap = 20_000_000_000     # 市值 >= 200 亿美元
-min_roe = 0.10                      # ROE >= 10%
-min_profit_margin = 0.05            # 净利率 >= 5%
-require_positive_fcf = true         # 自由现金流 > 0
-max_debt_to_equity = 200            # 负债/权益 <= 200%（yfinance 以百分比给出；银行通常缺失）
-min_price = 20                      # 股价 >= $20
-# max_drawdown_52w = 0.40           # 可选：距 52 周高点回撤上限，不设则不过滤
-require_above_sma200 = false        # 是否要求股价在 200 日均线上方
+# S&P 500 成分股和 extra_tickers 直接视为质地合格（进标普本身就要求持续盈利、市值和流动性）。
+# 下面的门槛只用于其他来源（Reddit 热门、Yahoo 成交最活跃）。缺失的数据视为通过。
+min_market_cap = 10_000_000_000     # 市值 >= 100 亿美元
+require_profitable = true           # 净利率 > 0（在盈利）
+# 可选的更严格门槛，取消注释即可启用：
+# min_roe = 0.10
+# min_profit_margin = 0.05
+# require_positive_fcf = true
+# max_debt_to_equity = 200
+# max_drawdown_52w = 0.40
+min_price = 20                      # 所有股票：股价 >= $20
+require_above_sma200 = false        # 所有股票：是否要求股价在 200 日均线上方
 fundamentals_cache_days = 7         # 基本面数据缓存天数
 
 [options]
+# 后端抓取范围：只有这个范围内的合约会存下来。页面上的筛选只能在这个范围内收紧，
+# 所以这里放得宽一些，日常调整用页面上的输入框（默认值见下面的 [page]）。
 min_dte = 7
-max_dte = 35
-max_expiries_per_ticker = 3
-delta_min = 0.20                    # |delta| 下限
-delta_max = 0.30                    # |delta| 上限
-min_iv = 0.80                       # 隐含波动率下限（0.80 = 80%）
-min_annualized = 0.30               # 年化收益 = 权利金 / 行权价 * 365 / DTE
+max_dte = 42
+max_expiries_per_ticker = 5
+delta_min = 0.15                    # |delta| 下限
+delta_max = 0.35                    # |delta| 上限
+min_iv = 0.40                       # 隐含波动率下限（0.40 = 40%）
+min_annualized = 0.15               # 年化收益 = 权利金 / 行权价 * 365 / DTE
 min_premium = 0.30                  # 每股权利金至少 $0.30
 min_open_interest = 100
 max_spread_pct = 0.20               # (ask - bid) / mid
-contracts_per_ticker = 4            # 每只股票最多保留几个合约
+contracts_per_ticker = 8            # 每只股票最多保留几个合约
 max_collateral = 40_000             # 一手担保金上限：行权价 × 100
 gap_warn = 0.03                     # 盘前涨跌超过 3% 时标红
+
+[page]
+# 页面筛选的默认值（页面上可以随时改，改过的值会记在你的浏览器里）。AI 笔记优先分析符合这些条件的股票。
+min_iv = 0.60
+min_annualized = 0.30
+delta_min = 0.20
+delta_max = 0.30
+max_dte = 42
+max_collateral = 40_000
+hide_earnings = true
 
 [ai]
 enabled = true                      # 没有 ANTHROPIC_API_KEY 时自动跳过
 model = "claude-sonnet-5-5"
-effort = "medium"
-top_n = 20                          # 只给年化最高的前 N 只写风险笔记
-news_per_ticker = 8
-web_searches = 15                   # 每天最多联网搜索次数（约 $0.01/次 + 结果的 token）；0 = 不搜
-web_fetches = 10                    # 每天最多读取网页原文次数（如 Reddit 帖子）；0 = 不读
+daily_budget_usd = 1.8              # 早上扫描的 AI 花费上限（按官方单价估算），到了就停；晚上复盘另算
+top_n = 30                          # 最多给 N 只写笔记（先挑符合 [page] 默认条件的，再按年化）
+deep_n = 8                          # 其中前 N 只做单独深度分析（联网搜索 + 读原文），预算不够时自动减少
+deep_effort = "medium"
+deep_searches = 3                   # 每只深度分析最多搜索次数（$0.01/次）
+deep_fetches = 2                    # 每只深度分析最多读几篇原文（新闻、Reddit 帖子）
+deep_workers = 2                    # 同时做几只深度分析
+effort = "low"                      # 其余股票的批量简要笔记
+news_per_ticker = 8                 # Yahoo 和 Google News 各取几条标题
 
 [run]
 workers = 4                         # 并发请求数，太大会被 Yahoo 限流

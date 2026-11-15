@@ -21,13 +21,16 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     logging.getLogger("yfinance").setLevel(logging.CRITICAL)
     cfg = tomllib.loads(Path("config.toml").read_text())
-    q, o, a, workers = cfg["quality"], cfg["options"], cfg["ai"], cfg["run"]["workers"]
+    q, o, pg, a, workers = cfg["quality"], cfg["options"], cfg["page"], cfg["ai"], cfg["run"]["workers"]
     now = datetime.now(ZoneInfo("America/New_York"))
 
     u = cfg["universe"]
     trending = universe.reddit_trending(u["reddit_top_n"], u["reddit_ignore"]) if u["reddit_top_n"] else []
     reddit = {r["ticker"]: r for r in trending}
-    tickers = universe.load_universe(u["extra_tickers"] + list(reddit), u["exclude_tickers"])
+    screens = universe.yahoo_screens(u["yahoo_screens"], u["yahoo_count"])
+    core = universe.load_universe(u["extra_tickers"], u["exclude_tickers"])  # S&P 500 + the user's list
+    tickers = sorted((set(core) | set(reddit) | set(screens)) - set(u["exclude_tickers"]))
+    core = set(core)
     if limit := os.environ.get("SELLPUTER_LIMIT"):  # quick local test runs
         tickers = tickers[: int(limit)]
     log.info("universe: %d tickers", len(tickers))
@@ -38,7 +41,7 @@ def main() -> None:
     passed = []
     status = {}  # per-ticker outcome, reported for the Reddit list
     for t, f in fundamentals.items():
-        reason = quality.quality_check(f, prices[t], q)
+        reason = quality.quality_check(f, prices[t], q, core=t in core)
         status[t] = reason or "passed"
         if reason:
             rejected[reason] += 1
@@ -74,7 +77,10 @@ def main() -> None:
         # Yahoo is throttling us; keep yesterday's page rather than publish a gutted list
         raise SystemExit(f"{len(failed)}/{len(passed)} option chains failed; not writing a report")
     candidates = [
-        {"ticker": t, **fundamentals[t], **prices[t], "reddit": reddit.get(t), "contracts": c}
+        {
+            "ticker": t, **fundamentals[t], **prices[t],
+            "core": t in core, "reddit": reddit.get(t), "screens": screens.get(t, []), "contracts": c,
+        }
         for t, c in chains.items()
         if c
     ]
@@ -83,11 +89,13 @@ def main() -> None:
     candidates.sort(key=lambda c: c["contracts"][0]["annualized"], reverse=True)
     log.info("candidates with matching puts: %d", len(candidates))
 
-    ai_status = {"enabled": False, "model": a["model"], "top_n": a["top_n"], "error": None}
+    ai_status = {"enabled": False, "model": a["model"], "top_n": a["top_n"], "error": None, "spend": None}
     if a["enabled"] and os.environ.get("ANTHROPIC_API_KEY") and candidates:
         ai_status["enabled"] = True
         try:
-            notes = ai.risk_notes(candidates[: a["top_n"]], a)
+            # page defaults first, so what the user sees on open has notes
+            ranked = sorted(candidates, key=lambda c: not any(matches_page(k, pg) for k in c["contracts"]))
+            notes, ai_status["spend"] = ai.notes(ranked[: a["top_n"]], a)
             for c in candidates:
                 c["ai"] = notes.get(c["ticker"])
         except Exception as e:
@@ -108,14 +116,27 @@ def main() -> None:
             "rejected": dict(rejected),
             "chain_failed": failed,
             "reddit_trending": len(trending),
+            "yahoo_screened": len(screens),
+            "added_outside_core": len(set(tickers) - core),
         },
         # not fetchable / not an equity (ETFs etc.) shows up as "not_equity"
         "reddit": [{**r, "status": status.get(r["ticker"], "not_equity")} for r in trending],
-        "params": {"quality": q, "options": o},
+        "params": {"quality": q, "options": o, "page": pg},
         "ai": ai_status,
         "candidates": candidates,
     }
     write_report(report)
+
+
+def matches_page(k: dict, pg: dict) -> bool:
+    return (
+        k["iv"] >= pg["min_iv"]
+        and k["annualized"] >= pg["min_annualized"]
+        and pg["delta_min"] <= -k["delta"] <= pg["delta_max"]
+        and k["dte"] <= pg["max_dte"]
+        and k["collateral"] <= pg["max_collateral"]
+        and not (pg["hide_earnings"] and k["crosses_earnings"])
+    )
 
 
 def write_report(report: dict) -> None:

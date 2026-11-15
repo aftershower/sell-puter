@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 import requests
+import yfinance as yf
 
 SP500_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 # ApeWisdom counts ticker mentions across stock subreddits over a rolling 24h window
@@ -65,3 +66,16 @@ def reddit_trending(n: int, ignore: list[str]) -> list[dict]:
         }
         for r in out[:n]
     ]
+
+
+def yahoo_screens(names: list[str], count: int) -> dict[str, list[str]]:
+    """Tickers from Yahoo's predefined screeners (e.g. most_actives, day_losers) -> screener names."""
+    out: dict[str, list[str]] = {}
+    for name in names:
+        try:
+            for q in yf.screen(name, count=count)["quotes"]:
+                if q.get("quoteType") == "EQUITY":
+                    out.setdefault(q["symbol"], []).append(name)
+        except Exception as e:
+            log.warning("Yahoo screen %s failed: %s", name, e)
+    return out

@@ -28,6 +28,9 @@ h1 { font-size: 22px; margin: 0 0 4px; }
 .stat span { color: var(--muted); font-size: 12px; }
 .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; }
 .controls label { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 13px; }
+input.num { width: 58px; background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; font: inherit; }
+input.num.wide { width: 84px; }
+button { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font: inherit; cursor: pointer; }
 select { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; font: inherit; }
 .notice { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 13px; }
 table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
@@ -64,6 +67,8 @@ tr.detail td { white-space: normal; text-align: left; background: var(--surface-
 #reddit { margin-top: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
 #reddit h3 { margin: 0 0 4px; font-size: 14px; }
 #reddit .chips { margin: 8px 0 0; }
+.src { padding-left: 18px; font-size: 13px; }
+.src a { color: var(--accent); }
 .chip.in { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .chip .why { color: var(--muted); }
 footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.7; }
@@ -92,11 +97,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.
   <div class="controls">
     <label>日期 <select id="date"></select></label>
     <label><input type="checkbox" id="hideEarn" checked> 隐藏跨财报合约</label>
-    <label>最低年化 <select id="minAnn">
-      <option value="0.20">20%</option><option value="0.25">25%</option><option value="0.30">30%</option><option value="0.40">40%</option>
-    </select></label>
+    <label>IV ≥ <input type="number" id="minIv" class="num" step="5" min="0">%</label>
+    <label>年化 ≥ <input type="number" id="minAnn" class="num" step="5" min="0">%</label>
+    <label>|Delta| <input type="number" id="dMin" class="num" step="0.01" min="0" max="1">–<input type="number" id="dMax" class="num" step="0.01" min="0" max="1"></label>
+    <label>DTE ≤ <input type="number" id="maxDte" class="num" step="1" min="0"></label>
+    <label>一手担保 ≤ $<input type="number" id="maxCol" class="num wide" step="1000" min="0"></label>
+    <button id="reset" type="button">恢复默认</button>
     <label>行业 <select id="sector"><option value="">全部</option></select></label>
-    <label>来源 <select id="source"><option value="">全部</option><option value="reddit">Reddit 热门</option></select></label>
+    <label>来源 <select id="source"><option value="">全部</option><option value="reddit">Reddit 热门</option><option value="screens">Yahoo 榜单</option><option value="core">S&amp;P 500 / 自选</option></select></label>
     <label>AI 风险 <select id="risk"><option value="">全部</option><option>低</option><option>中</option><option>高</option></select></label>
   </div>
   <div id="notice"></div>
@@ -140,16 +148,53 @@ async function load(date) {
   render();
 }
 
+const FILTER_IDS = ["minIv", "minAnn", "dMin", "dMax", "maxDte", "maxCol"];
+const STORE_KEY = "sellputer.filters";
+
+function pageDefaults() {
+  const p = report.params.page || {}, o = report.params.options;
+  return {
+    minIv: Math.round((p.min_iv ?? o.min_iv ?? 0) * 100), minAnn: Math.round((p.min_annualized ?? o.min_annualized) * 100),
+    dMin: p.delta_min ?? o.delta_min, dMax: p.delta_max ?? o.delta_max, maxDte: p.max_dte ?? o.max_dte,
+    maxCol: p.max_collateral ?? o.max_collateral ?? 1e9, hideEarn: p.hide_earnings ?? true,
+  };
+}
+
+function readFilters() {
+  const f = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).value === "" ? NaN : +$(id).value]));
+  const d = pageDefaults();
+  for (const id of FILTER_IDS) if (Number.isNaN(f[id])) f[id] = d[id];
+  f.hideEarn = $("hideEarn").checked;
+  return f;
+}
+
+function setFilters(f) {
+  for (const id of FILTER_IDS) $(id).value = f[id];
+  $("hideEarn").checked = f.hideEarn;
+}
+
+function saveFilters() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(readFilters())); } catch {}
+}
+
+function savedFilters() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch { return null; }
+}
+
 function visibleRows() {
-  const hideEarn = $("hideEarn").checked, minAnn = +$("minAnn").value, sector = $("sector").value, risk = $("risk").value;
-  const source = $("source").value;
+  const f = readFilters(), sector = $("sector").value, risk = $("risk").value, source = $("source").value;
   const rows = [];
   for (const c of report.candidates) {
-    const contracts = c.contracts.filter((k) => k.annualized >= minAnn && !(hideEarn && k.crosses_earnings));
+    const contracts = c.contracts
+      .filter((k) => k.annualized >= f.minAnn / 100 && k.iv >= f.minIv / 100 && -k.delta >= f.dMin && -k.delta <= f.dMax &&
+        k.dte <= f.maxDte && k.collateral <= f.maxCol && !(f.hideEarn && k.crosses_earnings))
+      .sort((a, b) => b.annualized - a.annualized);
     if (!contracts.length) continue;
     if (sector && c.sector !== sector) continue;
     if (risk && c.ai?.risk_level !== risk) continue;
     if (source === "reddit" && !c.reddit) continue;
+    if (source === "screens" && !c.screens?.length) continue;
+    if (source === "core" && !c.core) continue;
     rows.push({ c, k: contracts[0], others: contracts.slice(1) });
   }
   const val = ({ c, k }) => ({
@@ -173,6 +218,7 @@ function render() {
   const notes = [];
   if (!r.ai.enabled) notes.push("AI 风险笔记未启用（未配置 ANTHROPIC_API_KEY）。");
   if (r.ai.error) notes.push("AI 风险笔记今天生成失败：" + esc(r.ai.error));
+  const sp = r.ai.spend;
   $("notice").innerHTML = notes.map((n) => `<div class="notice">${n}</div>`).join("");
 
   $("head").innerHTML = COLS.map((c) => `<th data-k="${c.key}" class="${c.key === sortKey ? "sorted" : ""}">${c.label}</th>`).join("");
@@ -185,8 +231,9 @@ function render() {
   $("reddit").innerHTML = redditHtml(r.reddit || []);
   const o = r.params.options, q = r.params.quality;
   $("foot").innerHTML = `
-    规则：|Delta| ${o.delta_min}–${o.delta_max} · IV ≥ ${pct(o.min_iv ?? 0, 0)} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
-    质地：市值 ≥ ${big(q.min_market_cap)} · ROE ≥ ${pct(q.min_roe, 0)} · 净利率 ≥ ${pct(q.min_profit_margin, 0)} · 自由现金流 &gt; 0 · 负债/权益 ≤ ${q.max_debt_to_equity}%${q.max_drawdown_52w != null ? ` · 距52周高点回撤 ≤ ${pct(q.max_drawdown_52w, 0)}` : ""}<br>
+    后端抓取范围（页面筛选只能在此范围内收紧）：|Delta| ${o.delta_min}–${o.delta_max} · IV ≥ ${pct(o.min_iv ?? 0, 0)} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
+    质地：S&amp;P 500 成分股和自选名单直接通过；其他来源（Reddit 热门、Yahoo 榜单）要求市值 ≥ ${big(q.min_market_cap)}${q.require_profitable ? " 且在盈利" : ""}；所有股票股价 ≥ $${q.min_price}<br>
+    ${sp ? `AI：深度分析 ${sp.deep} 只、简要笔记 ${sp.light} 只、联网搜索 ${sp.searches} 次，今日花费约 $${sp.usd.toFixed(2)}（上限 $${sp.budget_usd}）<br>` : ""}
     年化 = 权利金 ÷ 行权价 × 365 ÷ DTE（按现金担保计）。IV 由昨收中间价按 Black-Scholes 反推（未计股息）；盘前股价有变动时，Delta 和权利金（标"估"）按盘前价和同一 IV 重新估算，开盘后实际报价会不同。行权价是固定的，盘前大跌意味着合约离被行权更近。数据来自 Yahoo Finance，可能延迟或有误，下单前请以券商实时报价为准。<br>
     本页面是按上述规则自动筛选的数据和 AI 生成的风险摘要，不构成投资建议。卖出看跌期权在股价大跌时可能被行权并产生较大亏损。`;
 }
@@ -198,10 +245,12 @@ function priceCell(c) {
   return `${usd(c.price_now)} <span class="${cls}">${g > 0 ? "+" : ""}${pct(g)}</span>`;
 }
 
+const SCREEN_LABEL = { most_actives: "成交最活跃", day_losers: "跌幅榜", day_gainers: "涨幅榜" };
+
 const WHY = {
   candidate: "入选", no_contract: "无合格合约", chain_failed: "数据失败", not_equity: "ETF/非个股",
   market_cap: "市值不够", roe: "ROE 低", profit_margin: "净利率低", fcf: "现金流为负", debt: "负债高",
-  price: "股价低", sma200: "在200日线下", drawdown: "回撤大",
+  price: "股价低", sma200: "在200日线下", drawdown: "回撤大", unprofitable: "未盈利",
 };
 
 function redditHtml(list) {
@@ -214,7 +263,7 @@ function redditHtml(list) {
 function rowHtml({ c, k, others }) {
   const ai = c.ai;
   const cells = [
-    `<span class="tk">${esc(c.ticker)}</span>${c.reddit ? `<span class="tag rd">Reddit #${c.reddit.rank}</span>` : ""}<span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
+    `<span class="tk">${esc(c.ticker)}</span>${c.reddit ? `<span class="tag rd">Reddit #${c.reddit.rank}</span>` : ""}${(c.screens || []).map((x) => `<span class="tag rd">${SCREEN_LABEL[x] || esc(x)}</span>`).join("")}<span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
     priceCell(c),
     `${k.expiry.slice(5)} <span class="small">${k.dte}天</span>`,
     `${usd(k.strike, k.strike % 1 ? 1 : 0)} <span class="small">${pct(k.otm_pct)}</span>`,
@@ -240,14 +289,19 @@ function detailHtml(c, contracts) {
     ["52周回撤", pct(c.drawdown_52w)], ["200日线", c.above_sma200 ? "上方" : "下方"], ["HV1年", pct(c.hv252, 0)],
   ].map(([l, v]) => `<span class="chip">${l} ${v}</span>`).join("");
   const aiHtml = ai ? `
-      <h4>AI 小结</h4>
+      <h4>AI 小结 ${ai.deep ? '<span class="tag rd">深度分析</span>' : '<span class="small">简要</span>'}</h4>
       <p>${esc(ai.summary)}</p>
       <h4>质地 <span class="tag g-${ai.quality_grade}">${ai.quality_grade}</span></h4>
       <p>${esc(ai.quality_view)}</p>
       <h4>到期前风险 <span class="tag r-${ai.risk_level}">${ai.risk_level}</span></h4>
       <ul>${ai.risks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
-      <h4>新闻要点</h4><p>${esc(ai.news_digest)}</p>`
-    : `<p class="small">${report.ai.enabled ? `AI 只分析年化最高的前 ${report.ai.top_n} 只，这只不在其中。` : "AI 风险笔记未启用。"}</p>`;
+      ${ai.option_view ? `<h4>期权视角</h4><p>${esc(ai.option_view)}</p>` : ""}
+      ${ai.assignment_view ? `<h4>如果被行权</h4><p>${esc(ai.assignment_view)}</p>` : ""}
+      ${ai.catalysts?.length ? `<h4>催化剂 / 日程</h4><ul>${ai.catalysts.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      <h4>新闻要点</h4><p>${esc(ai.news_digest)}</p>
+      ${ai.sentiment ? `<h4>市场情绪</h4><p>${esc(ai.sentiment)}</p>` : ""}
+      ${ai.sources?.length ? `<h4>来源</h4><ul class="src">${ai.sources.map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)}</a></li>`).join("")}</ul>` : ""}`
+    : `<p class="small">${report.ai.enabled ? `AI 每天最多分析 ${report.ai.top_n} 只（优先符合默认条件的），这只不在其中。` : "AI 风险笔记未启用。"}</p>`;
   const mini = `<table class="mini"><thead><tr><th>到期</th><th>行权价</th><th>Delta</th><th>权利金</th><th>年化</th><th>OI</th></tr></thead><tbody>
     ${contracts.map((k) => `<tr><td>${k.expiry.slice(5)} · ${k.dte}天${k.crosses_earnings ? ' <span class="tag earn">跨财报</span>' : ""}</td><td>${usd(k.strike, k.strike % 1 ? 1 : 0)}</td><td>${k.delta.toFixed(2)}</td><td>${usd(k.premium)}</td><td>${pct(k.annualized)}</td><td>${k.open_interest}</td></tr>`).join("")}
     </tbody></table>`;
@@ -262,7 +316,9 @@ $("body").addEventListener("click", (e) => {
   const tr = e.target.closest("tr.row"); if (!tr) return;
   const t = tr.dataset.t; open.has(t) ? open.delete(t) : open.add(t); render();
 });
-["hideEarn", "minAnn", "sector", "risk", "source"].forEach((id) => $(id).addEventListener("change", render));
+["sector", "risk", "source"].forEach((id) => $(id).addEventListener("change", render));
+["hideEarn", ...FILTER_IDS].forEach((id) => $(id).addEventListener("input", () => { saveFilters(); render(); }));
+$("reset").addEventListener("click", () => { setFilters(pageDefaults()); saveFilters(); render(); });
 $("date").addEventListener("change", (e) => load(e.target.value || null));
 
 (async () => {
@@ -270,7 +326,11 @@ $("date").addEventListener("change", (e) => load(e.target.value || null));
     const dates = await (await fetch("data/history/index.json", { cache: "no-store" })).json();
     $("date").innerHTML = dates.map((d, i) => `<option value="${i ? d : ""}">${d}${i ? "" : "（最新）"}</option>`).join("");
   } catch { $("date").innerHTML = '<option value="">最新</option>'; }
-  try { await load(null); } catch (e) { $("sub").textContent = "数据加载失败：" + e; }
+  try {
+    await load(null);
+    setFilters({ ...pageDefaults(), ...(savedFilters() || {}) });
+    render();
+  } catch (e) { $("sub").textContent = "数据加载失败：" + e; }
 })();
 </script>
 </body>
