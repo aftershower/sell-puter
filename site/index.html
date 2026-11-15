@@ -60,6 +60,12 @@ tr.detail td { white-space: normal; text-align: left; background: var(--surface-
 .mini { width: 100%; border: none; background: transparent; }
 .mini th, .mini td { padding: 4px 6px; font-size: 12px; background: transparent; cursor: default; white-space: nowrap; }
 .empty { text-align: center; color: var(--muted); padding: 40px; }
+.rd { background: var(--accent-soft); color: var(--accent); margin-left: 6px; font-weight: 600; }
+#reddit { margin-top: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+#reddit h3 { margin: 0 0 4px; font-size: 14px; }
+#reddit .chips { margin: 8px 0 0; }
+.chip.in { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.chip .why { color: var(--muted); }
 footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.7; }
 @media (max-width: 760px) {
   thead { display: none; }
@@ -90,6 +96,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.
       <option value="0.20">20%</option><option value="0.25">25%</option><option value="0.30">30%</option><option value="0.40">40%</option>
     </select></label>
     <label>行业 <select id="sector"><option value="">全部</option></select></label>
+    <label>来源 <select id="source"><option value="">全部</option><option value="reddit">Reddit 热门</option></select></label>
     <label>AI 风险 <select id="risk"><option value="">全部</option><option>低</option><option>中</option><option>高</option></select></label>
   </div>
   <div id="notice"></div>
@@ -97,6 +104,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.
     <thead><tr id="head"></tr></thead>
     <tbody id="body"></tbody>
   </table>
+  <section id="reddit"></section>
   <footer id="foot"></footer>
 </main>
 <script>
@@ -134,12 +142,14 @@ async function load(date) {
 
 function visibleRows() {
   const hideEarn = $("hideEarn").checked, minAnn = +$("minAnn").value, sector = $("sector").value, risk = $("risk").value;
+  const source = $("source").value;
   const rows = [];
   for (const c of report.candidates) {
     const contracts = c.contracts.filter((k) => k.annualized >= minAnn && !(hideEarn && k.crosses_earnings));
     if (!contracts.length) continue;
     if (sector && c.sector !== sector) continue;
     if (risk && c.ai?.risk_level !== risk) continue;
+    if (source === "reddit" && !c.reddit) continue;
     rows.push({ c, k: contracts[0], others: contracts.slice(1) });
   }
   const val = ({ c, k }) => ({
@@ -158,6 +168,7 @@ function render() {
     (r.market_open ? " · 盘中实时（约 15 分钟延迟）" : " · 期权报价为上一收盘价（盘前期权不交易），Delta、OTM、权利金已按最新盘前价重新估算");
   $("stats").innerHTML = [
     [r.stats.universe, "扫描股票"], [r.stats.quality_passed, "通过质地筛选"], [r.stats.candidates, "有合格合约"],
+    ...(r.stats.reddit_trending ? [[r.stats.reddit_trending, "Reddit 热门"]] : []),
   ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
   const notes = [];
   if (!r.ai.enabled) notes.push("AI 风险笔记未启用（未配置 ANTHROPIC_API_KEY）。");
@@ -171,6 +182,7 @@ function render() {
   } else {
     $("body").innerHTML = rows.map(rowHtml).join("");
   }
+  $("reddit").innerHTML = redditHtml(r.reddit || []);
   const o = r.params.options, q = r.params.quality;
   $("foot").innerHTML = `
     规则：|Delta| ${o.delta_min}–${o.delta_max} · IV ≥ ${pct(o.min_iv ?? 0, 0)} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
@@ -186,10 +198,23 @@ function priceCell(c) {
   return `${usd(c.price_now)} <span class="${cls}">${g > 0 ? "+" : ""}${pct(g)}</span>`;
 }
 
+const WHY = {
+  candidate: "入选", no_contract: "无合格合约", chain_failed: "数据失败", not_equity: "ETF/非个股",
+  market_cap: "市值不够", roe: "ROE 低", profit_margin: "净利率低", fcf: "现金流为负", debt: "负债高",
+  price: "股价低", sma200: "在200日线下", drawdown: "回撤大",
+};
+
+function redditHtml(list) {
+  if (!list.length) return "";
+  return `<h3>今日 Reddit 热门</h3>
+    <div class="small">过去 24 小时 Reddit 股票版块提及最多的股票（数据来自 ApeWisdom），已并入今天的股票池，同样要过质地和期权规则。</div>
+    <div class="chips">${list.map((x) => `<span class="chip${x.status === "candidate" ? " in" : ""}">#${x.rank} ${esc(x.ticker)} · ${x.mentions} <span class="why">${WHY[x.status] || esc(x.status)}</span></span>`).join("")}</div>`;
+}
+
 function rowHtml({ c, k, others }) {
   const ai = c.ai;
   const cells = [
-    `<span class="tk">${esc(c.ticker)}</span><span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
+    `<span class="tk">${esc(c.ticker)}</span>${c.reddit ? `<span class="tag rd">Reddit #${c.reddit.rank}</span>` : ""}<span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
     priceCell(c),
     `${k.expiry.slice(5)} <span class="small">${k.dte}天</span>`,
     `${usd(k.strike, k.strike % 1 ? 1 : 0)} <span class="small">${pct(k.otm_pct)}</span>`,
@@ -211,6 +236,7 @@ function detailHtml(c, contracts) {
   const chips = [
     ["市值", big(c.market_cap)], ["ROE", pct(c.roe)], ["净利率", pct(c.profit_margin)], ["自由现金流", big(c.fcf)],
     ["负债/权益", c.debt_to_equity == null ? "–" : c.debt_to_equity.toFixed(0) + "%"], ["前瞻PE", c.forward_pe == null ? "–" : c.forward_pe.toFixed(1)],
+    ...(c.reddit ? [["Reddit 24h 提及", `${c.reddit.mentions}（前一天 ${c.reddit.mentions_24h_ago ?? "–"}）`]] : []),
     ["52周回撤", pct(c.drawdown_52w)], ["200日线", c.above_sma200 ? "上方" : "下方"], ["HV1年", pct(c.hv252, 0)],
   ].map(([l, v]) => `<span class="chip">${l} ${v}</span>`).join("");
   const aiHtml = ai ? `
@@ -236,7 +262,7 @@ $("body").addEventListener("click", (e) => {
   const tr = e.target.closest("tr.row"); if (!tr) return;
   const t = tr.dataset.t; open.has(t) ? open.delete(t) : open.add(t); render();
 });
-["hideEarn", "minAnn", "sector", "risk"].forEach((id) => $(id).addEventListener("change", render));
+["hideEarn", "minAnn", "sector", "risk", "source"].forEach((id) => $(id).addEventListener("change", render));
 $("date").addEventListener("change", (e) => load(e.target.value || null));
 
 (async () => {

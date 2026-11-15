@@ -24,7 +24,10 @@ def main() -> None:
     q, o, a, workers = cfg["quality"], cfg["options"], cfg["ai"], cfg["run"]["workers"]
     now = datetime.now(ZoneInfo("America/New_York"))
 
-    tickers = universe.load_universe(cfg["universe"]["extra_tickers"], cfg["universe"]["exclude_tickers"])
+    u = cfg["universe"]
+    trending = universe.reddit_trending(u["reddit_top_n"], u["reddit_ignore"]) if u["reddit_top_n"] else []
+    reddit = {r["ticker"]: r for r in trending}
+    tickers = universe.load_universe(u["extra_tickers"] + list(reddit), u["exclude_tickers"])
     if limit := os.environ.get("SELLPUTER_LIMIT"):  # quick local test runs
         tickers = tickers[: int(limit)]
     log.info("universe: %d tickers", len(tickers))
@@ -33,8 +36,10 @@ def main() -> None:
     fundamentals = quality.fetch_fundamentals(list(prices), q["fundamentals_cache_days"], workers)
     rejected = Counter()
     passed = []
+    status = {}  # per-ticker outcome, reported for the Reddit list
     for t, f in fundamentals.items():
         reason = quality.quality_check(f, prices[t], q)
+        status[t] = reason or "passed"
         if reason:
             rejected[reason] += 1
         else:
@@ -68,7 +73,13 @@ def main() -> None:
     if len(failed) > 0.3 * len(passed):
         # Yahoo is throttling us; keep yesterday's page rather than publish a gutted list
         raise SystemExit(f"{len(failed)}/{len(passed)} option chains failed; not writing a report")
-    candidates = [{"ticker": t, **fundamentals[t], **prices[t], "contracts": c} for t, c in chains.items() if c]
+    candidates = [
+        {"ticker": t, **fundamentals[t], **prices[t], "reddit": reddit.get(t), "contracts": c}
+        for t, c in chains.items()
+        if c
+    ]
+    for t, c in chains.items():
+        status[t] = "candidate" if c else "no_contract" if c is not None else "chain_failed"
     candidates.sort(key=lambda c: c["contracts"][0]["annualized"], reverse=True)
     log.info("candidates with matching puts: %d", len(candidates))
 
@@ -96,7 +107,10 @@ def main() -> None:
             "candidates": len(candidates),
             "rejected": dict(rejected),
             "chain_failed": failed,
+            "reddit_trending": len(trending),
         },
+        # not fetchable / not an equity (ETFs etc.) shows up as "not_equity"
+        "reddit": [{**r, "status": status.get(r["ticker"], "not_equity")} for r in trending],
         "params": {"quality": q, "options": o},
         "ai": ai_status,
         "candidates": candidates,

@@ -5,6 +5,16 @@
 extra_tickers = ["ASML", "TSM", "ARM", "MELI", "SHOP", "NVO", "SAP", "SONY", "TM", "SPOT"]
 # 永远不看的股票
 exclude_tickers = []
+# 每天把 Reddit 股票版块过去 24 小时提及最多的前 N 只加进股票池（同样要过质地门槛）；0 = 不加
+reddit_top_n = 50
+# 这些"代码"在 Reddit 上多半是普通单词或缩写，不算热门
+reddit_ignore = [
+  "DTE", "IT", "ALL", "ET", "IP", "HR", "PR", "DC", "EU", "VC", "CIA", "YOU", "RR", "TP", "CC", "API", "LINK",
+  "AGI", "MAGA", "NYT", "AI", "CEO", "DD", "ATH", "EV", "OP", "ON", "ONE", "NOW", "OPEN", "GO", "SO", "CAN",
+  "BE", "AM", "PM", "TV", "UK", "US", "USA", "IRS", "SEC", "FDA", "FOR", "ARE", "BIG", "NEW", "ANY", "IPO",
+  "GDP", "CPI", "FED", "ETF", "IMO", "YOLO", "FOMO", "LOVE", "REAL", "BEST", "RUN", "WELL", "HUGE", "FUN",
+  "LOT", "OR", "OG", "ZN",
+]
 
 [quality]
 # "质地好" 的硬门槛（数据来自 yfinance，缺失的字段视为通过）
