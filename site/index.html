@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sell Put 每日筛选</title>
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --surface-2: #f0f0ec; --text: #1b1b1a; --muted: #6b6b66;
+  --border: #e2e2dc; --accent: #2f6f4f; --accent-soft: #e3efe8;
+  --warn: #9a5b00; --warn-soft: #fbefd9; --bad: #a33a2b; --bad-soft: #f8e1dd; --good: #2f6f4f; --good-soft: #e3efe8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141413; --surface: #1d1d1b; --surface-2: #262624; --text: #ecece8; --muted: #9a9a93;
+    --border: #33332f; --accent: #7cc49b; --accent-soft: #1f3328;
+    --warn: #f0b45c; --warn-soft: #3a2c14; --bad: #ef8a7a; --bad-soft: #3d1f1a; --good: #7cc49b; --good-soft: #1f3328;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif; }
+main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--muted); font-size: 13px; }
+.stats { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+.stat b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--muted); font-size: 12px; }
+.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; }
+.controls label { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 13px; }
+select { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; font: inherit; }
+.notice { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 13px; }
+table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+th, td { padding: 9px 10px; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; font-variant-numeric: tabular-nums; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; background: var(--surface-2); cursor: pointer; user-select: none; }
+th:first-child, td:first-child { text-align: left; }
+th.sorted::after { content: " ▾"; }
+tr.row { cursor: pointer; }
+tr.row:hover { background: var(--surface-2); }
+.tk { font-weight: 700; }
+.nm { color: var(--muted); font-size: 12px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; display: block; }
+.small { color: var(--muted); font-size: 12px; }
+.ann { font-weight: 700; color: var(--accent); }
+.tag { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 12px; font-weight: 600; }
+.r-低 { background: var(--good-soft); color: var(--good); }
+.r-中 { background: var(--warn-soft); color: var(--warn); }
+.r-高 { background: var(--bad-soft); color: var(--bad); }
+.g-A { background: var(--good-soft); color: var(--good); }
+.g-B { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+.g-C { background: var(--bad-soft); color: var(--bad); }
+.earn { background: var(--warn-soft); color: var(--warn); }
+.gap-down { background: var(--bad-soft); color: var(--bad); }
+.gap-up { background: var(--good-soft); color: var(--good); }
+tr.detail td { white-space: normal; text-align: left; background: var(--surface-2); padding: 14px 16px; }
+.detail-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+.detail h4 { margin: 0 0 6px; font-size: 13px; }
+.detail ul { margin: 4px 0 10px; padding-left: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 12px; }
+.mini { width: 100%; border: none; background: transparent; }
+.mini th, .mini td { padding: 4px 6px; font-size: 12px; background: transparent; cursor: default; white-space: nowrap; }
+.empty { text-align: center; color: var(--muted); padding: 40px; }
+footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.7; }
+@media (max-width: 760px) {
+  thead { display: none; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  table { border: none; background: transparent; }
+  tr.row { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-top: 10px; padding: 6px 0; }
+  tr.row td { display: flex; justify-content: space-between; border: none; padding: 3px 12px; white-space: normal; }
+  tr.row td::before { content: attr(data-label); color: var(--muted); font-size: 12px; }
+  tr.row td > span { text-align: right; }
+  tr.row td:first-child { display: block; padding-bottom: 6px; }
+  tr.row td:first-child > span { text-align: left; }
+  tr.row td:first-child::before { content: none; }
+  tr.detail td { border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; margin-top: -4px; }
+  .detail-grid { grid-template-columns: 1fr; }
+  .nm { max-width: none; }
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Sell Put 每日筛选</h1>
+  <div class="sub" id="sub">加载中…</div>
+  <div class="stats" id="stats"></div>
+  <div class="controls">
+    <label>日期 <select id="date"></select></label>
+    <label><input type="checkbox" id="hideEarn" checked> 隐藏跨财报合约</label>
+    <label>最低年化 <select id="minAnn">
+      <option value="0.20">20%</option><option value="0.25">25%</option><option value="0.30">30%</option><option value="0.40">40%</option>
+    </select></label>
+    <label>行业 <select id="sector"><option value="">全部</option></select></label>
+    <label>AI 风险 <select id="risk"><option value="">全部</option><option>低</option><option>中</option><option>高</option></select></label>
+  </div>
+  <div id="notice"></div>
+  <table>
+    <thead><tr id="head"></tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+  <footer id="foot"></footer>
+</main>
+<script>
+const COLS = [
+  { key: "ticker", label: "股票" },
+  { key: "price", label: "现价 / 盘前" },
+  { key: "expiry", label: "到期 / DTE" },
+  { key: "strike", label: "行权价 / OTM" },
+  { key: "delta", label: "Delta" },
+  { key: "mid", label: "权利金 (昨收 bid–ask)" },
+  { key: "collateral", label: "一手担保" },
+  { key: "annualized", label: "年化" },
+  { key: "breakeven", label: "盈亏平衡" },
+  { key: "iv", label: "IV / HV20" },
+  { key: "earnings", label: "下次财报" },
+  { key: "risk", label: "AI 质地 / 风险" },
+];
+const RISK_ORDER = { "低": 0, "中": 1, "高": 2 };
+let report = null, sortKey = "annualized", open = new Set();
+
+const $ = (id) => document.getElementById(id);
+const pct = (x, d = 1) => x == null ? "–" : (x * 100).toFixed(d) + "%";
+const usd = (x, d = 2) => x == null ? "–" : "$" + Number(x).toFixed(d);
+const big = (x) => x == null ? "–" : Math.abs(x) >= 1e12 ? "$" + (x / 1e12).toFixed(2) + "T" : "$" + (x / 1e9).toFixed(1) + "B";
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+async function load(date) {
+  const url = date ? `data/history/${date}.json` : "data/latest.json";
+  report = await (await fetch(url, { cache: "no-store" })).json();
+  open.clear();
+  const sectors = [...new Set(report.candidates.map((c) => c.sector).filter(Boolean))].sort();
+  $("sector").innerHTML = '<option value="">全部</option>' + sectors.map((s) => `<option>${esc(s)}</option>`).join("");
+  render();
+}
+
+function visibleRows() {
+  const hideEarn = $("hideEarn").checked, minAnn = +$("minAnn").value, sector = $("sector").value, risk = $("risk").value;
+  const rows = [];
+  for (const c of report.candidates) {
+    const contracts = c.contracts.filter((k) => k.annualized >= minAnn && !(hideEarn && k.crosses_earnings));
+    if (!contracts.length) continue;
+    if (sector && c.sector !== sector) continue;
+    if (risk && c.ai?.risk_level !== risk) continue;
+    rows.push({ c, k: contracts[0], others: contracts.slice(1) });
+  }
+  const val = ({ c, k }) => ({
+    ticker: c.ticker, price: c.gap, expiry: k.dte, strike: k.otm_pct, delta: k.delta, mid: k.premium, collateral: -k.collateral,
+    annualized: k.annualized, breakeven: 1 - k.breakeven / c.price, iv: k.iv / c.hv20,
+    earnings: c.next_earnings || "9999", risk: RISK_ORDER[c.ai?.risk_level] ?? 9,
+  }[sortKey]);
+  const asc = ["ticker", "expiry", "earnings", "risk", "delta"].includes(sortKey) ? 1 : -1;
+  rows.sort((a, b) => (val(a) > val(b) ? asc : val(a) < val(b) ? -asc : 0));
+  return rows;
+}
+
+function render() {
+  const r = report;
+  $("sub").textContent = `数据时间 ${r.generated_at.replace("T", " ")}（美东） · 无风险利率 ${pct(r.risk_free_rate, 2)}` +
+    (r.market_open ? " · 盘中实时（约 15 分钟延迟）" : " · 期权报价为上一收盘价（盘前期权不交易），Delta、OTM、权利金已按最新盘前价重新估算");
+  $("stats").innerHTML = [
+    [r.stats.universe, "扫描股票"], [r.stats.quality_passed, "通过质地筛选"], [r.stats.candidates, "有合格合约"],
+  ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+  const notes = [];
+  if (!r.ai.enabled) notes.push("AI 风险笔记未启用（未配置 ANTHROPIC_API_KEY）。");
+  if (r.ai.error) notes.push("AI 风险笔记今天生成失败：" + esc(r.ai.error));
+  $("notice").innerHTML = notes.map((n) => `<div class="notice">${n}</div>`).join("");
+
+  $("head").innerHTML = COLS.map((c) => `<th data-k="${c.key}" class="${c.key === sortKey ? "sorted" : ""}">${c.label}</th>`).join("");
+  const rows = visibleRows();
+  if (!rows.length) {
+    $("body").innerHTML = `<tr><td colspan="${COLS.length}" class="empty">当前条件下没有合约</td></tr>`;
+  } else {
+    $("body").innerHTML = rows.map(rowHtml).join("");
+  }
+  const o = r.params.options, q = r.params.quality;
+  $("foot").innerHTML = `
+    规则：|Delta| ${o.delta_min}–${o.delta_max} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
+    质地：市值 ≥ ${big(q.min_market_cap)} · ROE ≥ ${pct(q.min_roe, 0)} · 净利率 ≥ ${pct(q.min_profit_margin, 0)} · 自由现金流 &gt; 0 · 负债/权益 ≤ ${q.max_debt_to_equity}% · 距52周高点回撤 ≤ ${pct(q.max_drawdown_52w, 0)}<br>
+    年化 = 权利金 ÷ 行权价 × 365 ÷ DTE（按现金担保计）。IV 由昨收中间价按 Black-Scholes 反推（未计股息）；盘前股价有变动时，Delta 和权利金（标"估"）按盘前价和同一 IV 重新估算，开盘后实际报价会不同。行权价是固定的，盘前大跌意味着合约离被行权更近。数据来自 Yahoo Finance，可能延迟或有误，下单前请以券商实时报价为准。<br>
+    本页面是按上述规则自动筛选的数据和 AI 生成的风险摘要，不构成投资建议。卖出看跌期权在股价大跌时可能被行权并产生较大亏损。`;
+}
+
+function priceCell(c) {
+  const g = c.gap ?? 0, warn = report.params.options.gap_warn ?? 0.03;
+  if (Math.abs(g) < 0.0005) return usd(c.price_now ?? c.price);
+  const cls = g <= -warn ? "tag gap-down" : g >= warn ? "tag gap-up" : "small";
+  return `${usd(c.price_now)} <span class="${cls}">${g > 0 ? "+" : ""}${pct(g)}</span>`;
+}
+
+function rowHtml({ c, k, others }) {
+  const ai = c.ai;
+  const cells = [
+    `<span class="tk">${esc(c.ticker)}</span><span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
+    priceCell(c),
+    `${k.expiry.slice(5)} <span class="small">${k.dte}天</span>`,
+    `${usd(k.strike, k.strike % 1 ? 1 : 0)} <span class="small">${pct(k.otm_pct)}</span>`,
+    k.delta.toFixed(2),
+    `${k.premium !== k.mid ? '<span class="small">估</span> ' : ""}${usd(k.premium)} <span class="small">${k.bid.toFixed(2)}–${k.ask.toFixed(2)}</span>`,
+    "$" + k.collateral.toLocaleString(),
+    `<span class="ann">${pct(k.annualized)}</span>`,
+    usd(k.breakeven),
+    `${pct(k.iv, 0)} <span class="small">/ ${pct(c.hv20, 0)}</span>`,
+    c.next_earnings ? (k.crosses_earnings ? `<span class="tag earn">${c.next_earnings.slice(5)} 跨期</span>` : c.next_earnings.slice(5)) : "–",
+    ai ? `<span class="tag g-${ai.quality_grade}">${ai.quality_grade}</span> <span class="tag r-${ai.risk_level}">${ai.risk_level}</span>` : '<span class="small">–</span>',
+  ];
+  const tr = `<tr class="row" data-t="${esc(c.ticker)}">${cells.map((v, i) => `<td data-label="${COLS[i].label}"><span>${v}</span></td>`).join("")}</tr>`;
+  return open.has(c.ticker) ? tr + detailHtml(c, [k, ...others]) : tr;
+}
+
+function detailHtml(c, contracts) {
+  const ai = c.ai;
+  const chips = [
+    ["市值", big(c.market_cap)], ["ROE", pct(c.roe)], ["净利率", pct(c.profit_margin)], ["自由现金流", big(c.fcf)],
+    ["负债/权益", c.debt_to_equity == null ? "–" : c.debt_to_equity.toFixed(0) + "%"], ["前瞻PE", c.forward_pe == null ? "–" : c.forward_pe.toFixed(1)],
+    ["52周回撤", pct(c.drawdown_52w)], ["200日线", c.above_sma200 ? "上方" : "下方"], ["HV1年", pct(c.hv252, 0)],
+  ].map(([l, v]) => `<span class="chip">${l} ${v}</span>`).join("");
+  const aiHtml = ai ? `
+      <h4>AI 小结</h4>
+      <p>${esc(ai.summary)}</p>
+      <h4>质地 <span class="tag g-${ai.quality_grade}">${ai.quality_grade}</span></h4>
+      <p>${esc(ai.quality_view)}</p>
+      <h4>到期前风险 <span class="tag r-${ai.risk_level}">${ai.risk_level}</span></h4>
+      <ul>${ai.risks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+      <h4>新闻要点</h4><p>${esc(ai.news_digest)}</p>`
+    : `<p class="small">${report.ai.enabled ? `AI 只分析年化最高的前 ${report.ai.top_n} 只，这只不在其中。` : "AI 风险笔记未启用。"}</p>`;
+  const mini = `<table class="mini"><thead><tr><th>到期</th><th>行权价</th><th>Delta</th><th>权利金</th><th>年化</th><th>OI</th></tr></thead><tbody>
+    ${contracts.map((k) => `<tr><td>${k.expiry.slice(5)} · ${k.dte}天${k.crosses_earnings ? ' <span class="tag earn">跨财报</span>' : ""}</td><td>${usd(k.strike, k.strike % 1 ? 1 : 0)}</td><td>${k.delta.toFixed(2)}</td><td>${usd(k.premium)}</td><td>${pct(k.annualized)}</td><td>${k.open_interest}</td></tr>`).join("")}
+    </tbody></table>`;
+  return `<tr class="detail"><td colspan="${COLS.length}"><div class="detail-grid">
+    <div>${aiHtml}</div>
+    <div><h4>基本面</h4><div class="chips">${chips}</div><h4>可选合约</h4>${mini}</div>
+  </div></td></tr>`;
+}
+
+$("head").addEventListener("click", (e) => { const k = e.target.dataset.k; if (k) { sortKey = k; render(); } });
+$("body").addEventListener("click", (e) => {
+  const tr = e.target.closest("tr.row"); if (!tr) return;
+  const t = tr.dataset.t; open.has(t) ? open.delete(t) : open.add(t); render();
+});
+["hideEarn", "minAnn", "sector", "risk"].forEach((id) => $(id).addEventListener("change", render));
+$("date").addEventListener("change", (e) => load(e.target.value || null));
+
+(async () => {
+  try {
+    const dates = await (await fetch("data/history/index.json", { cache: "no-store" })).json();
+    $("date").innerHTML = dates.map((d, i) => `<option value="${i ? d : ""}">${d}${i ? "" : "（最新）"}</option>`).join("");
+  } catch { $("date").innerHTML = '<option value="">最新</option>'; }
+  try { await load(null); } catch (e) { $("sub").textContent = "数据加载失败：" + e; }
+})();
+</script>
+</body>
+</html>

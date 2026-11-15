@@ -1,0 +1,45 @@
+# sell-puter 筛选参数。改完 push 即可，第二天的扫描会用新参数。
+
+[universe]
+# S&P 500 自动抓取；这里加上不在 S&P 500 里、你也认可的公司
+extra_tickers = ["ASML", "TSM", "ARM", "MELI", "SHOP", "NVO", "SAP", "SONY", "TM", "SPOT"]
+# 永远不看的股票
+exclude_tickers = []
+
+[quality]
+# "质地好" 的硬门槛（数据来自 yfinance，缺失的字段视为通过）
+min_market_cap = 20_000_000_000     # 市值 >= 200 亿美元
+min_roe = 0.10                      # ROE >= 10%
+min_profit_margin = 0.05            # 净利率 >= 5%
+require_positive_fcf = true         # 自由现金流 > 0
+max_debt_to_equity = 200            # 负债/权益 <= 200%（yfinance 以百分比给出；银行通常缺失）
+min_price = 20                      # 股价 >= $20
+max_drawdown_52w = 0.40             # 距 52 周高点回撤不超过 40%（避开正在崩的）
+require_above_sma200 = false        # 是否要求股价在 200 日均线上方
+fundamentals_cache_days = 7         # 基本面数据缓存天数
+
+[options]
+min_dte = 7
+max_dte = 35
+max_expiries_per_ticker = 3
+delta_min = 0.20                    # |delta| 下限
+delta_max = 0.30                    # |delta| 上限
+min_annualized = 0.20               # 年化收益 = 权利金 / 行权价 * 365 / DTE
+min_premium = 0.30                  # 每股权利金至少 $0.30
+min_open_interest = 100
+max_spread_pct = 0.20               # (ask - bid) / mid
+contracts_per_ticker = 4            # 每只股票最多保留几个合约
+max_collateral = 40_000             # 一手担保金上限：行权价 × 100
+gap_warn = 0.03                     # 盘前涨跌超过 3% 时标红
+
+[ai]
+enabled = true                      # 没有 ANTHROPIC_API_KEY 时自动跳过
+model = "claude-sonnet-5-5"
+effort = "medium"
+top_n = 20                          # 只给年化最高的前 N 只写风险笔记
+news_per_ticker = 8
+web_searches = 15                   # 每天最多联网搜索次数（约 $0.01/次 + 结果的 token）；0 = 不搜
+web_fetches = 10                    # 每天最多读取网页原文次数（如 Reddit 帖子）；0 = 不读
+
+[run]
+workers = 4                         # 并发请求数，太大会被 Yahoo 限流
