@@ -97,7 +97,7 @@ def _scan(ticker: str, s_ref: float, s_now: float, r: float, today: date, next_e
                 continue
             K = float(row.strike)
             iv = implied_vol(mid, s_ref, K, T, r)
-            if iv is None:
+            if iv is None or iv < o["min_iv"]:
                 continue
             est, delta = bs_put(s_now, K, T, r, iv)
             premium = mid if s_now == s_ref else est

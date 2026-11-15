@@ -14,7 +14,7 @@ min_profit_margin = 0.05            # 净利率 >= 5%
 require_positive_fcf = true         # 自由现金流 > 0
 max_debt_to_equity = 200            # 负债/权益 <= 200%（yfinance 以百分比给出；银行通常缺失）
 min_price = 20                      # 股价 >= $20
-max_drawdown_52w = 0.40             # 距 52 周高点回撤不超过 40%（避开正在崩的）
+# max_drawdown_52w = 0.40           # 可选：距 52 周高点回撤上限，不设则不过滤
 require_above_sma200 = false        # 是否要求股价在 200 日均线上方
 fundamentals_cache_days = 7         # 基本面数据缓存天数
 
@@ -24,7 +24,8 @@ max_dte = 35
 max_expiries_per_ticker = 3
 delta_min = 0.20                    # |delta| 下限
 delta_max = 0.30                    # |delta| 上限
-min_annualized = 0.20               # 年化收益 = 权利金 / 行权价 * 365 / DTE
+min_iv = 0.80                       # 隐含波动率下限（0.80 = 80%）
+min_annualized = 0.30               # 年化收益 = 权利金 / 行权价 * 365 / DTE
 min_premium = 0.30                  # 每股权利金至少 $0.30
 min_open_interest = 100
 max_spread_pct = 0.20               # (ask - bid) / mid

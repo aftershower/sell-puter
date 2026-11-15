@@ -128,7 +128,7 @@ def quality_check(f: dict, p: dict, q: dict) -> str | None:
         return "debt"
     if p["price"] < q["min_price"]:
         return "price"
-    if p["drawdown_52w"] > q["max_drawdown_52w"]:
+    if "max_drawdown_52w" in q and p["drawdown_52w"] > q["max_drawdown_52w"]:
         return "drawdown"
     if q["require_above_sma200"] and not p["above_sma200"]:
         return "sma200"
