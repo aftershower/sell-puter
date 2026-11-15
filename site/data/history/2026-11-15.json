@@ -1,21 +1,424 @@
 {
- "generated_at": "2026-11-15T11:31-05:00",
+ "generated_at": "2026-11-15T11:36-05:00",
  "date": "2026-11-15",
  "risk_free_rate": 0.0412,
  "market_open": false,
  "stats": {
-  "universe": 513,
-  "quality_passed": 239,
+  "universe": 536,
+  "quality_passed": 241,
   "candidates": 7,
   "rejected": {
-   "roe": 84,
-   "profit_margin": 31,
+   "roe": 88,
+   "profit_margin": 32,
    "fcf": 29,
-   "market_cap": 95,
+   "market_cap": 101,
    "debt": 33
   },
-  "chain_failed": []
+  "chain_failed": [],
+  "reddit_trending": 50
  },
+ "reddit": [
+  {
+   "ticker": "NVDA",
+   "rank": 1,
+   "mentions": 362,
+   "mentions_24h_ago": 634,
+   "upvotes": 21728,
+   "status": "candidate"
+  },
+  {
+   "ticker": "AMD",
+   "rank": 2,
+   "mentions": 83,
+   "mentions_24h_ago": 178,
+   "upvotes": 408,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SPY",
+   "rank": 3,
+   "mentions": 66,
+   "mentions_24h_ago": 149,
+   "upvotes": 136,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "SPCX",
+   "rank": 4,
+   "mentions": 49,
+   "mentions_24h_ago": 56,
+   "upvotes": 345,
+   "status": "profit_margin"
+  },
+  {
+   "ticker": "QQQ",
+   "rank": 5,
+   "mentions": 38,
+   "mentions_24h_ago": 93,
+   "upvotes": 65,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "MSTR",
+   "rank": 6,
+   "mentions": 25,
+   "mentions_24h_ago": 8,
+   "upvotes": 234,
+   "status": "roe"
+  },
+  {
+   "ticker": "MU",
+   "rank": 8,
+   "mentions": 21,
+   "mentions_24h_ago": 42,
+   "upvotes": 113,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ASML",
+   "rank": 12,
+   "mentions": 20,
+   "mentions_24h_ago": 1,
+   "upvotes": 85,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "VOO",
+   "rank": 13,
+   "mentions": 20,
+   "mentions_24h_ago": 17,
+   "upvotes": 59,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "TSLA",
+   "rank": 14,
+   "mentions": 17,
+   "mentions_24h_ago": 25,
+   "upvotes": 73,
+   "status": "roe"
+  },
+  {
+   "ticker": "SNDK",
+   "rank": 17,
+   "mentions": 16,
+   "mentions_24h_ago": 19,
+   "upvotes": 47,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "TSM",
+   "rank": 19,
+   "mentions": 14,
+   "mentions_24h_ago": 1,
+   "upvotes": 103,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "NBIS",
+   "rank": 21,
+   "mentions": 14,
+   "mentions_24h_ago": 78,
+   "upvotes": 36,
+   "status": "roe"
+  },
+  {
+   "ticker": "MSFT",
+   "rank": 22,
+   "mentions": 13,
+   "mentions_24h_ago": 87,
+   "upvotes": 18,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "GME",
+   "rank": 24,
+   "mentions": 13,
+   "mentions_24h_ago": 11,
+   "upvotes": 35,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "GOOG",
+   "rank": 25,
+   "mentions": 12,
+   "mentions_24h_ago": 20,
+   "upvotes": 38,
+   "status": "fcf"
+  },
+  {
+   "ticker": "ASTS",
+   "rank": 27,
+   "mentions": 12,
+   "mentions_24h_ago": 22,
+   "upvotes": 32,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "SMCI",
+   "rank": 28,
+   "mentions": 11,
+   "mentions_24h_ago": 16,
+   "upvotes": 10,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "RKLB",
+   "rank": 31,
+   "mentions": 10,
+   "mentions_24h_ago": 2,
+   "upvotes": 59,
+   "status": "roe"
+  },
+  {
+   "ticker": "CRWV",
+   "rank": 32,
+   "mentions": 10,
+   "mentions_24h_ago": 25,
+   "upvotes": 26,
+   "status": "roe"
+  },
+  {
+   "ticker": "RTX",
+   "rank": 33,
+   "mentions": 9,
+   "mentions_24h_ago": 12,
+   "upvotes": 10,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "GM",
+   "rank": 37,
+   "mentions": 8,
+   "mentions_24h_ago": 1,
+   "upvotes": 102,
+   "status": "roe"
+  },
+  {
+   "ticker": "IBKR",
+   "rank": 39,
+   "mentions": 8,
+   "mentions_24h_ago": 1,
+   "upvotes": 1825,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "META",
+   "rank": 40,
+   "mentions": 8,
+   "mentions_24h_ago": 11,
+   "upvotes": 42,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "AAPL",
+   "rank": 43,
+   "mentions": 7,
+   "mentions_24h_ago": 31,
+   "upvotes": 13,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "AMZN",
+   "rank": 44,
+   "mentions": 7,
+   "mentions_24h_ago": 16,
+   "upvotes": 19,
+   "status": "fcf"
+  },
+  {
+   "ticker": "AVGO",
+   "rank": 45,
+   "mentions": 7,
+   "mentions_24h_ago": 6,
+   "upvotes": 13,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "GE",
+   "rank": 48,
+   "mentions": 6,
+   "mentions_24h_ago": 3,
+   "upvotes": 26,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SOXL",
+   "rank": 49,
+   "mentions": 6,
+   "mentions_24h_ago": 19,
+   "upvotes": 12,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "MSOS",
+   "rank": 50,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 194,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "HOOD",
+   "rank": 51,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 36,
+   "status": "debt"
+  },
+  {
+   "ticker": "NFLX",
+   "rank": 53,
+   "mentions": 5,
+   "mentions_24h_ago": 15,
+   "upvotes": 13,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "IBM",
+   "rank": 54,
+   "mentions": 5,
+   "mentions_24h_ago": 4,
+   "upvotes": 21,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "IQ",
+   "rank": 56,
+   "mentions": 5,
+   "mentions_24h_ago": 12,
+   "upvotes": 14,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "SMH",
+   "rank": 58,
+   "mentions": 5,
+   "mentions_24h_ago": 5,
+   "upvotes": 14,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "SOXX",
+   "rank": 59,
+   "mentions": 5,
+   "mentions_24h_ago": 4,
+   "upvotes": 27,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "RSP",
+   "rank": 60,
+   "mentions": 5,
+   "mentions_24h_ago": 9,
+   "upvotes": 8,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "SQQQ",
+   "rank": 61,
+   "mentions": 5,
+   "mentions_24h_ago": 2,
+   "upvotes": 7,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "HTZ",
+   "rank": 64,
+   "mentions": 5,
+   "mentions_24h_ago": 11,
+   "upvotes": 12,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "ARM",
+   "rank": 65,
+   "mentions": 5,
+   "mentions_24h_ago": 14,
+   "upvotes": 14,
+   "status": "candidate"
+  },
+  {
+   "ticker": "COST",
+   "rank": 66,
+   "mentions": 4,
+   "mentions_24h_ago": 7,
+   "upvotes": 12,
+   "status": "profit_margin"
+  },
+  {
+   "ticker": "GPS",
+   "rank": 67,
+   "mentions": 4,
+   "mentions_24h_ago": 2,
+   "upvotes": 5,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "LHX",
+   "rank": 68,
+   "mentions": 4,
+   "mentions_24h_ago": 11,
+   "upvotes": 12,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "VTI",
+   "rank": 71,
+   "mentions": 4,
+   "mentions_24h_ago": 11,
+   "upvotes": 12,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "WMT",
+   "rank": 74,
+   "mentions": 3,
+   "mentions_24h_ago": 8,
+   "upvotes": 26,
+   "status": "profit_margin"
+  },
+  {
+   "ticker": "KO",
+   "rank": 75,
+   "mentions": 3,
+   "mentions_24h_ago": 2,
+   "upvotes": 15,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ICE",
+   "rank": 76,
+   "mentions": 3,
+   "mentions_24h_ago": 14,
+   "upvotes": -27,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ZM",
+   "rank": 77,
+   "mentions": 3,
+   "mentions_24h_ago": 1,
+   "upvotes": 17,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SD",
+   "rank": 78,
+   "mentions": 3,
+   "mentions_24h_ago": null,
+   "upvotes": 26,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "FLY",
+   "rank": 79,
+   "mentions": 3,
+   "mentions_24h_ago": 1,
+   "upvotes": 9,
+   "status": "market_cap"
+  }
+ ],
  "params": {
   "quality": {
    "min_market_cap": 20000000000,
@@ -65,11 +468,12 @@
    "price": 344.5299987792969,
    "price_date": "2026-11-13",
    "hv20": 1.092101852926708,
-   "hv252": 0.7863767039137044,
+   "hv252": 0.7863766755905562,
    "drawdown_52w": 0.4136518503668325,
    "above_sma200": true,
    "price_now": 339.13,
    "gap": -0.01567352276559253,
+   "reddit": null,
    "contracts": [
     {
      "contract": "DELL261127P00310000",
@@ -155,17 +559,18 @@
    "ai": {
     "ticker": "DELL",
     "quality_grade": "B",
-    "quality_view": "护城河中等：企业级服务器和供应链规模大，AI 服务器积压订单约 950 亿美元，但硬件毛利低，对 NVIDIA 依赖高。净利率约 7.5%，自由现金流约 60 亿美元，预期市盈率约 11 倍。资产负债表杠杆偏高，数据里没有负债权益比。增长靠 AI 订单，但利润率偏薄。",
+    "quality_view": "护城河主要来自企业渠道、供应链规模和 AI 服务器交付能力,但硬件业务容易被同行替代,议价能力一般。净利率约 7.5%,自由现金流约 60 亿美元,远期 PE 约 11 倍。资产负债表杠杆较高(数据中 D/E 缺失,无法核实)。增长主要来自 AI 服务器,新闻称积压订单约 950 亿美元,但客户和供应商集中,依赖 NVIDIA。",
     "risk_level": "高",
-    "summary": "Dell 的 AI 订单强劲，但硬件利润薄，对 NVIDIA 依赖重。近一个月股价跌超三分之一，11 月 13 日单日跌约 8%，原因是 AI 硬件板块抛售，以及关联公司 Super Micro 被报道涉及 DOJ 走私调查。IV 约 116%，盈亏平衡点 295 比现价低约 13%，合约跨 11/24 财报，高 IV 来自暴跌后的恐慌和财报事件。",
+    "summary": "Dell 是 AI 服务器的主要受益者,订单和积压订单强劲,但盈利率偏低、依赖 NVIDIA 生态。近期受 AI 硬件板块抛售拖累,新闻称一个月内跌去三分之一以上,11/13 单日跌约 8%。IV 约 116% 且合约跨 11/24 财报,同时有 Super Micro 被报道涉 DOJ 走私调查的行业情绪冲击。盘前 -1.6%,新闻中没有找到针对性的新原因,多半是延续板块抛售。",
     "risks": [
-     "11 月 24 日财报在到期前，AI 毛利率或指引不及预期可能引发大跌",
-     "Super Micro 的 DOJ 走私调查若波及 Dell 或扩大到整个 AI 服务器链条，会加重抛售",
-     "NVIDIA 动荡（CEO 离职、出口管制收紧）会传导到 Dell 的 AI 服务器业务",
-     "美债收益率升至约 5%、市场对数据中心融资和建设的担忧",
-     "HV20 约 109%，股价短期波动极大，跳空风险高"
+     "11/24 财报落在到期前,对 AI 毛利率和指引的反应可能很大",
+     "Super Micro 被报道涉 DOJ 对华出货调查,若波及 Dell 或整个 AI 服务器链,可能引发监管风险(新闻未显示 Dell 本身被调查)",
+     "NVIDIA 领导层动荡与供应链不确定性",
+     "AI 板块资金流出、利率上行(新闻提到美债收益率触及 5%)",
+     "20 日历史波动率约 109%,杠杆 ETF 单日大幅回撤,说明短期波动剧烈",
+     "盈亏平衡点 295.05 较现价约低 13%,在近期单日跌幅范围内"
     ],
-    "news_digest": "11/13 Dell 跌约 8%，因为 AI 服务器抛售加深，同时有报道称 Super Micro 涉及 DOJ 中国出货调查。杠杆 ETF DLLL 单日跌 16%。Dell 的 AI 积压订单约 950 亿美元，AI 收入目标上调到 740 亿美元。11/14 Dell 宣布与阿拉巴马大学合作建设研究计算中心，影响有限。盘前约 -1.6%，新闻里没有找到专门的原因，推测是延续前日的板块弱势。"
+    "news_digest": "11/13 Dell 随 AI 硬件抛售跌约 8%,其 2 倍杠杆 ETF 跌 16%。报道称 Super Micro 因被指涉 DOJ 对华走私调查而承压,波及 Dell、NVIDIA、HPE。Dell 有约 950 亿美元 AI 积压订单,并上调 AI 收入目标。11/14 宣布与阿拉巴马大学合作建设高性能计算中心,影响较小。"
    }
   },
   {
@@ -183,11 +588,18 @@
    "price": 162.85000610351562,
    "price_date": "2026-11-13",
    "hv20": 0.5401082180558892,
-   "hv252": 0.38758186834208674,
+   "hv252": 0.3875817265968266,
    "drawdown_52w": 0.31930278229253417,
    "above_sma200": false,
    "price_now": 161.01,
    "gap": -0.011298778228758799,
+   "reddit": {
+    "ticker": "NVDA",
+    "rank": 1,
+    "mentions": 362,
+    "mentions_24h_ago": 634,
+    "upvotes": 21728
+   },
    "contracts": [
     {
      "contract": "NVDA261123P00150000",
@@ -213,18 +625,19 @@
    "ai": {
     "ticker": "NVDA",
     "quality_grade": "A",
-    "quality_view": "护城河很深：AI 加速器、CUDA 生态和网络产品。净利率约 64%，ROE 约 117%，自由现金流约 418 亿美元。预期市盈率约 10 倍，估值不高。负债权益比约 17%，资产负债表稳健。增长仍强，但治理和中国业务的不确定性上升。",
+    "quality_view": "拥有 CUDA 软件生态和 AI 加速器领先地位,护城河极强。净利率约 64%,ROE 约 117%,自由现金流约 418 亿美元(数据口径可能偏低或非最新)。资产负债表整体稳健,但数据中 D/E 为 17 左右,请核实口径。增长仍由数据中心驱动,远期 PE 约 10 倍。主要不确定性是治理和领导层。",
     "risk_level": "高",
-    "summary": "NVDA 基本面是这批里最好的，但眼下有治理冲击：新闻称黄仁勋离任，至少 10 位分析师把评级下调到持有。Reuters 报道称其中国业务有约 32 亿美元采购记录，与公司此前说法不符。IV 约 87%，合约跨 11/17 财报（首次没有黄仁勋），高 IV 来自领导层不确定性、出口管制和财报事件。",
+    "summary": "质地仍属最佳之列,但新闻称 CEO 黄仁勋离任、至少 10 位分析师下调评级,并有对华销售的质疑,治理风险突然上升。11/17 财报是首次没有黄仁勋的财报,IV 约 87%。Reddit 排名第一,但 24 小时提及数从 634 降到 362。",
     "risks": [
-     "11 月 17 日财报是黄仁勋离任后的第一次，指引和管理层表态不确定",
-     "CEO 继任人选未定，据报道高管有离职风险",
-     "Reuters 对中国业务的报道可能引发监管调查，美国议员也在推动收紧 AI 芯片出口规则",
-     "分析师集中下调评级",
-     "黄仁勋持股的减持规则放松，可能带来抛压担忧",
-     "AI 板块整体抛售，国债收益率升高"
+     "11/17 财报在到期前,首次后黄仁勋时代的指引和管理层说明可能引发大幅波动",
+     "领导层过渡:继任人选、高管流失(新闻称有高管威胁离职)",
+     "监管:路透报道称中国采购记录与公司口径不符,可能带来出口管制收紧和调查",
+     "美财长公开呼吁领导层大换血,政治风险上升",
+     "多位分析师下调评级,可能压制估值",
+     "AI 板块资金流出与利率上行",
+     "盈亏平衡点 146.36 较现价约低 9%,距离较近"
     ],
-    "news_digest": "11/15 多篇报道称黄仁勋离开 NVIDIA，至少 10 位分析师把评级从买入降到持有。FT 称董事会曾接触 Arm 的 Rene Haas。Reuters 称发现约 32 亿美元中国采购记录，与公司说法有出入。本周还有 Anthropic IPO 和 NVIDIA 财报。盘前约 -1.1%，原因大概是上述消息的持续发酵，新闻中没有单独的盘前催化剂。部分内容来自转述，细节需要核实。"
+    "news_digest": "新闻称黄仁勋被免去 CEO 职务(各来源措辞为离任/被罢免),至少 10 位分析师将评级由买入降至持有。路透报道称中国有约 32 亿美元采购与公司说法有出入。财长 Bessent 呼吁大幅调整领导层。本周关注财报和 Anthropic IPO。Reddit 讨论为散户情绪,不是事实,请以公司公告为准。"
    }
   },
   {
@@ -242,11 +655,12 @@
    "price": 156.75999450683594,
    "price_date": "2026-11-13",
    "hv20": 1.2452639441161777,
-   "hv252": 0.8475541562976516,
+   "hv252": 0.847554209923606,
    "drawdown_52w": 0.5043676854668236,
    "above_sma200": false,
    "price_now": 152.5883,
    "gap": -0.026611984262694066,
+   "reddit": null,
    "contracts": [
     {
      "contract": "MRVL261127P00140000",
@@ -332,18 +746,18 @@
    "ai": {
     "ticker": "MRVL",
     "quality_grade": "B",
-    "quality_view": "护城河中等：定制 AI 芯片（ASIC）和光互连，客户集中在大型云厂商。净利率约 28%，ROE 约 17%，自由现金流约 24 亿美元。负债权益比约 29%，不算高。增长靠 AI 数据中心，但正在做一笔大型全股票收购，整合风险大。",
+    "quality_view": "在定制 AI 芯片(ASIC)和数据中心光互连方面有实力,客户集中于大型云厂商。净利率约 28%,ROE 约 17%,自由现金流约 24 亿美元。D/E 约 29,整合 Lumentum 后杠杆和整合风险可能上升。增长强劲但依赖 AI 资本开支周期。",
     "risk_level": "高",
-    "summary": "MRVL 的 AI 定制芯片业务质地不错，但股价已较高点下跌约 50%。拟以全股票方式收购 Lumentum，新闻称交易规模在 821 亿到 1150 亿美元之间，管理层承认风险较高。IV 约 88%，高 IV 来自收购带来的稀释和整合担忧、AI 基础设施板块抛售以及利率上升。",
+    "summary": "Marvell 的 AI 业务增长强,但股价较高点回撤约 50%。新闻称其以全股票方式收购 Lumentum,金额报道不一(821 亿或 1150 亿美元),市场对其规模和整合风险有担忧。IV 约 88%,叠加 AI 板块抛售和利率上行。盘前 -2.7%,未找到单独原因,可能是板块情绪。",
     "risks": [
-     "Lumentum 收购被市场质疑，包括股权稀释、整合和监管审批",
-     "AI 基础设施板块抛售，融资成本升高，市场担心数据中心扩张放缓",
-     "NVIDIA 动荡可能带来 AI 芯片链条的连带波动",
-     "客户集中，大客户订单变化会影响业绩",
-     "财报 12/1 在到期日 11/27 之后，不跨财报，但到期前仍有板块消息风险",
-     "HV20 约 125%，波动很大"
+     "收购 Lumentum 的整合、股权稀释和审批风险(新闻称 Lumentum 股东将持有合并后公司约三分之一)",
+     "AI 数据中心资本开支和借贷成本担忧",
+     "NVIDIA 动荡与芯片板块资金轮动",
+     "利率上行对高估值科技股的压力",
+     "本合约不跨 12/1 财报,但财报前预期变化可能影响股价",
+     "盈亏平衡点 135.70 较现价约低 11%"
     ],
-    "news_digest": "11/15 报道称 Marvell 与 Lumentum 达成全股票并购协议，各来源给出的交易价值不一致（821 亿和 1150 亿美元）。CEO 为交易辩护，称其风险较高。11/13 芯片板块在国债收益率达 5% 时回落，MRVL 约跌 5%。盘前约 -2.7%，新闻中没有明确的单独原因，可能是板块情绪延续。"
+    "news_digest": "Marvell 同意全股票收购 Lumentum,CEO 在电视采访中承认该交易风险较大。新闻称新任三位董事的背景偏向某一类经验,被认为与整合风险有关。11/13 随芯片股回落下跌约 5%。多篇文章讨论 AI 基础设施股承压。"
    }
   },
   {
@@ -361,11 +775,12 @@
    "price": 48.290000915527344,
    "price_date": "2026-11-13",
    "hv20": 0.7682479104327962,
-   "hv252": 0.6077550791079458,
+   "hv252": 0.6077550822132152,
    "drawdown_52w": 0.34263542720715234,
    "above_sma200": true,
    "price_now": 47.42,
    "gap": -0.018016171029882844,
+   "reddit": null,
    "contracts": [
     {
      "contract": "HPE261127P00042000",
@@ -451,17 +866,17 @@
    "ai": {
     "ticker": "HPE",
     "quality_grade": "B",
-    "quality_view": "护城河中等偏弱：服务器、网络和存储，客户黏性尚可，但竞争激烈。净利率约 6.7%，ROE 约 11%，自由现金流约 47 亿美元，预期市盈率约 10 倍。负债权益比约 76%，杠杆偏高。增长依赖 AI 服务器和网络业务，利润率偏薄。",
-    "risk_level": "中",
-    "summary": "HPE 估值低、现金流还可以，但盈利薄、杠杆偏高。11/13 受 AI 硬件抛售和 Cisco 下跌拖累，当日跌约 4%～5%。IV 约 101%，合约跨 11/23 财报，高 IV 来自财报事件和 AI 硬件板块的恐慌。",
+    "quality_view": "护城河较窄,主要靠企业客户关系、Cray 超算和网络业务,竞争激烈。净利率约 6.7%,ROE 约 11%,自由现金流约 47 亿美元。D/E 约 76,杠杆中等偏高。增长靠 AI 服务器和网络,但盈利能力一般。远期 PE 约 10 倍。",
+    "risk_level": "高",
+    "summary": "HPE 属于中等质地的企业硬件股,近期受 AI 硬件抛售和 Cisco 财报后网络股回落影响。IV 约 101%,合约跨 11/23 财报。盘前 -1.8%,未发现针对性新闻,多半是延续板块下行。",
     "risks": [
-     "11 月 23 日财报在到期前，AI 服务器利润率和指引是关键",
-     "Cisco 的新闻显示市场担心网络业务增长见顶，这会拖累同类公司",
-     "Dell、Super Micro 相关的调查和抛售可能蔓延",
-     "负债权益比约 76%，利率上升带来压力",
-     "盘前约 -1.8%，新闻中没有单独原因，大概率是板块弱势"
+     "11/23 财报在到期前,AI 服务器和网络指引可能引发大幅波动",
+     "Cisco 财报后市场担忧网络增长见顶(Citi 观点),HPE 当天跌约 5%",
+     "Super Micro 被报道涉 DOJ 调查带来的行业情绪冲击",
+     "杠杆较高,利率上行不利",
+     "盈亏平衡点 40.78 较现价约低 14%"
     ],
-    "news_digest": "11/13 HPE 跟随 Dell 和 Cisco 下跌，分析称 Cisco 虽然上调了 AI 展望，但 Citi 认为增长可能见顶。11/14 HPE 发布混合超算存储和液冷技术，对股价影响有限。"
+    "news_digest": "11/13 HPE 随 Dell、Cisco 等下跌约 4-5%。公司发布新的混合超算存储、液冷和机架管理方案及 2027 路线图,对股价影响有限。Cisco 上调 AI 展望仍下跌,反映网络板块对增长见顶的担忧。"
    }
   },
   {
@@ -484,6 +899,13 @@
    "above_sma200": false,
    "price_now": 186.99,
    "gap": -0.01857974493243697,
+   "reddit": {
+    "ticker": "ARM",
+    "rank": 65,
+    "mentions": 5,
+    "mentions_24h_ago": 14,
+    "upvotes": 14
+   },
    "contracts": [
     {
      "contract": "ARM261127P00170000",
@@ -509,18 +931,17 @@
    "ai": {
     "ticker": "ARM",
     "quality_grade": "B",
-    "quality_view": "护城河强：CPU 架构授权和版税，几乎覆盖所有手机芯片，轻资产。净利率约 17%，ROE 约 11%，自由现金流约 11 亿美元。负债权益比约 5.5%，资产负债表很稳。预期市盈率约 62 倍，估值依赖高增长，容错空间小。",
+    "quality_view": "授权和版税模式护城河深,几乎覆盖所有手机芯片,资产负债表很轻(D/E 约 5.5)。但净利率约 17%,ROE 约 11%,自由现金流仅约 11 亿美元,相对约 2000 亿美元市值偏低。远期 PE 约 62 倍,估值极高,增长预期已被充分定价。",
     "risk_level": "高",
-    "summary": "ARM 商业模式好、财务稳健，但估值很高，股价已较高点回落约 57%。11/13 下跌与 FT 报道有关：NVIDIA 董事会据称接触过 CEO Rene Haas，市场担心管理层变动。IV 约 85%，高 IV 来自高估值、AI 板块抛售和 CEO 的不确定性。下次财报在 2027 年 2 月，不在本合约期内。",
+    "summary": "Arm 商业模式优质但估值极高,较高点回撤约 57%。近期受芯片板块回落影响,另有报道称 Arm CEO Rene Haas 被 NVIDIA 董事会接触作为 CEO 候选,引发管理层变动猜测。IV 约 85%。盘前 -1.9%,未找到更具体原因,可能延续 11/13 的回落。",
     "risks": [
-     "CEO Rene Haas 若被 NVIDIA 挖走，Arm 会面临管理层变动",
-     "估值高（预期市盈率约 62 倍），板块继续去估值会放大跌幅",
-     "AI 芯片板块和利率（国债收益率约 5%）的风险",
-     "NVIDIA 事件发展带来的连带波动",
-     "HV20 约 97%，波动大",
-     "合约不跨财报，主要风险是消息和板块情绪"
+     "若 Haas 离开 Arm,会带来管理层和战略不确定性(仅为 FT 报道,未证实)",
+     "高估值对利率上行和风险偏好下降非常敏感",
+     "AI 芯片板块抛售",
+     "下次财报在 2027-02-03,不在到期前",
+     "盈亏平衡点 165.56 较现价约低 11%"
     ],
-    "news_digest": "11/13 Arm 回落，原因是 FT 报道称 NVIDIA 董事会曾接触 Rene Haas，作为黄仁勋继任人选之一。当天 AMD 跌 9%，Marvell 跌 5%，芯片板块上周的反弹回吐。盘前约 -1.9%，没有找到新的独立原因。"
+    "news_digest": "11/13 新闻称 NVIDIA 董事会据报道接触 Arm CEO Rene Haas 接任黄仁勋,Arm 当天回落。AMD 单日跌 9%,美债收益率触及 5%。Reddit 排名 65,提及数下降,热度不高(散户讨论,仅供参考)。"
    }
   },
   {
@@ -543,6 +964,7 @@
    "above_sma200": false,
    "price_now": 274.0,
    "gap": -0.0233122133945991,
+   "reddit": null,
    "contracts": [
     {
      "contract": "CIEN261218P00240000",
@@ -568,18 +990,18 @@
    "ai": {
     "ticker": "CIEN",
     "quality_grade": "B",
-    "quality_view": "护城河中等：光传输和相干光学技术，客户集中在运营商和云厂商。净利率约 11%，ROE 约 22%，自由现金流约 6.3 亿美元。负债权益比约 107%，杠杆偏高。增长受 AI 数据中心互连需求推动，但估值已从高位回落。",
+    "quality_view": "在光传输和高速网络设备领域有技术地位,受益于 AI 数据中心互连。净利率约 11%,ROE 约 22%,自由现金流约 6.3 亿美元。D/E 约 107,杠杆偏高。增长强但估值大幅波动,三年涨约 7 倍。",
     "risk_level": "高",
-    "summary": "CIEN 受益于 AI 光互连需求，但杠杆偏高，股价较高点下跌约 55%，近 30 天跌约 22%。IV 约 98%，合约跨 12/10 财报，高 IV 来自大幅回调、AI 基础设施板块抛售以及财报事件。盘前约 -2.3%，没有找到具体原因。",
+    "summary": "Ciena 受益于 AI 网络需求,但近 30 天跌约 22%,较高点回撤约 55%。IV 约 98%,合约跨 12/10 财报,叠加 AI 板块抛售。盘前 -2.3%,未找到具体原因,多半是板块下行。",
     "risks": [
-     "12 月 10 日财报在到期前，指引不及预期会引发大跌",
-     "AI 基础设施板块抛售、数据中心融资和建设担忧",
-     "有基金在三季度清仓 CIEN（BIT Capital），说明机构有减仓",
-     "负债权益比约 107%，利率上升的压力",
-     "此前涨幅大（三年约 7 倍），估值回调空间仍在",
-     "HV20 约 119%，波动很大"
+     "12/10 财报在到期前,指引不及预期可能导致大幅下跌",
+     "杠杆较高,利率上行不利",
+     "AI 资本开支和数据中心担忧",
+     "有基金(BIT Capital)在三季度清仓,体现机构情绪转弱",
+     "20 日历史波动率约 119%",
+     "盈亏平衡点 224.21 较现价约低 18%"
     ],
-    "news_digest": "11/14 报道称 CIEN 30 天跌约 22%，90 天跌约 35%，财报在 12/10。BIT Capital 在三季度清仓了 Ciena。同业 Nokia 因 AI 增长与现金流压力并存而走弱。VIAV 财报向好，但股价一个月仍下跌。盘前没有找到单独催化剂，推测是板块情绪。"
+    "news_digest": "新闻称股价 30 天下跌 22%、90 天下跌 35%,但年初至今仍涨约 14%。BIT Capital 在 9/30 季度清仓 Ciena。多篇文章讨论估值与光网络同行(Nokia、VIAV)的表现。"
    }
   },
   {
@@ -597,11 +1019,12 @@
    "price": 295.6499938964844,
    "price_date": "2026-11-13",
    "hv20": 1.0938016128187003,
-   "hv252": 0.8353695437962637,
+   "hv252": 0.8353694975661895,
    "drawdown_52w": 0.6036812768914022,
    "above_sma200": false,
    "price_now": 289.01,
    "gap": -0.02245896848829032,
+   "reddit": null,
    "contracts": [
     {
      "contract": "WDC261218P00250000",
@@ -627,17 +1050,18 @@
    "ai": {
     "ticker": "WDC",
     "quality_grade": "B",
-    "quality_view": "护城河中等：硬盘行业寡头，AI 数据中心存储需求强，但产品周期性强。净利率约 69%（数据可能受一次性项目影响，需要核实），ROE 约 130%，自由现金流约 27 亿美元。负债权益比约 10%，资产负债表较稳。预期市盈率约 7 倍，反映市场对周期见顶的担忧。",
+    "quality_view": "硬盘行业寡头格局提供一定护城河,但属周期性存储行业。净利率约 69%(可能含一次性项目,需谨慎),ROE 约 130%,自由现金流约 27 亿美元,D/E 约 10,杠杆很低。远期 PE 约 7 倍,AI 数据中心存储需求强。",
     "risk_level": "高",
-    "summary": "WDC 近期财报超预期，AI 存储需求强，但股价较高点下跌约 60%。新闻称对冲基金在清仓，板块受到 AI 抛售和存储价格担忧影响。IV 约 80%，高 IV 来自 AI 基础设施板块的剧烈波动和周期性担忧。财报 2027 年 1 月，不在本合约期内。",
+    "summary": "Western Digital 基本面强,近期财报超预期、AI 存储需求旺盛,但股价较高点回撤约 60%,受 AI 板块抛售和存储股下跌拖累。IV 约 80%。盘前 -2.3%,未找到具体原因。",
     "risks": [
-     "存储价格周期见顶的担忧（Micron、SanDisk 同步大跌）",
-     "AI 基础设施抛售，数据中心建设可能受到更严格的监管（新闻称民主党在中期选举后可能加强审查）",
-     "对冲基金减仓，例如 Whale Rock 清仓了 WDC",
-     "HV20 约 109%，波动很大",
-     "合约不跨财报，主要风险是板块和宏观消息"
+     "AI 数据中心资本开支和融资环境担忧",
+     "存储价格周期可能转向,Micron、Sandisk 近期同样大跌",
+     "对冲基金减持(如 Whale Rock 清仓)",
+     "利率和政策监管担忧(新闻称民主党赢得中期选举后市场担心对 AI 和数据中心的限制)",
+     "20 日历史波动率约 109%",
+     "盈亏平衡点 239.39 较现价约低 17%;下次财报 2027-01-28 不在到期前"
     ],
-    "news_digest": "11/13 新闻称 WDC 近期财报超预期，AI 数据中心存储需求强。同时 Micron 一个月下跌 20%，SanDisk 和 WDC 跌得更多。有报道称 Nasdaq 出现自 2025 年 4 月以来最大的单日跌幅，市场担心对 AI 的监管和数据中心建设限制。盘前约 -2.3%，没有找到独立原因，可能是板块下跌延续。"
+    "news_digest": "公司近期财报超预期,AI 数据中心存储需求强。但 Nasdaq 前一周录得自 2025 年 4 月以来最大单日跌幅,AI 板块承压。Whale Rock 在三季度清仓 WDC,称自 6/30 起下跌约 54%。Micron、Sandisk 近期也大幅回落。"
    }
   }
  ]
