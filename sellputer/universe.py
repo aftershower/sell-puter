@@ -58,11 +58,12 @@ def reddit_trending(n: int, ignore: list[str]) -> list[dict]:
         log.warning("Reddit trending fetch failed: %s", e)
     return [
         {
-            "ticker": r["ticker"].replace(".", "-"),
-            "rank": r["rank"],
-            "mentions": r["mentions"],
-            "mentions_24h_ago": r.get("mentions_24h_ago"),
-            "upvotes": r.get("upvotes"),
+            "ticker": str(r["ticker"]).replace(".", "-"),
+            # third-party data rendered into the page: force plain ints
+            "rank": int(r["rank"]),
+            "mentions": int(r["mentions"]),
+            "mentions_24h_ago": int(r["mentions_24h_ago"]) if r.get("mentions_24h_ago") is not None else None,
+            "upvotes": int(r["upvotes"]) if r.get("upvotes") is not None else None,
         }
         for r in out[:n]
     ]

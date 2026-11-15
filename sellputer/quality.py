@@ -5,7 +5,7 @@ import logging
 import math
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
@@ -24,32 +24,44 @@ INFO_FIELDS = {
     "debt_to_equity": "debtToEquity",
     "forward_pe": "forwardPE",
 }
+# shortest usual gap between two quarterly reports; estimates err early so crossing checks stay cautious
+EARNINGS_GAP_DAYS = 75
 
 log = logging.getLogger(__name__)
 
 
-def _next_earnings(info: dict) -> str | None:
-    now = time.time()
-    for key in ("earningsTimestamp", "earningsTimestampStart", "earningsTimestampEnd"):
-        ts = info.get(key)
-        if ts and ts > now:
-            return datetime.fromtimestamp(ts, timezone.utc).date().isoformat()
-    return None
+def _next_earnings(info: dict) -> tuple[str | None, bool]:
+    """(next report date, whether it is an estimate).
+
+    Yahoo keeps the last report's timestamp until the next date is announced, so right after
+    earnings season most names have no future date. Then estimate from the last report.
+    """
+    stamps = [ts for k in ("earningsTimestamp", "earningsTimestampStart", "earningsTimestampEnd") if (ts := info.get(k))]
+    if future := [ts for ts in stamps if ts > time.time()]:
+        return datetime.fromtimestamp(min(future), timezone.utc).date().isoformat(), False
+    if stamps:
+        last = datetime.fromtimestamp(max(stamps), timezone.utc).date()
+        if (datetime.now(timezone.utc).date() - last).days <= 100:
+            return (last + timedelta(days=EARNINGS_GAP_DAYS)).isoformat(), True
+    return None, False
 
 
 def _fetch_one(ticker: str) -> dict | None:
     for attempt in range(3):
         try:
             info = yf.Ticker(ticker).info
-            if not info or info.get("quoteType") not in (None, "EQUITY"):
-                return None
-            rec = {k: info.get(src) for k, src in INFO_FIELDS.items()}
-            rec["next_earnings"] = _next_earnings(info)
+            kind = (info or {}).get("quoteType")
+            if kind is None:
+                # throttled responses come back partial; never cache those
+                raise RuntimeError("incomplete info")
+            rec = {"not_equity": True} if kind != "EQUITY" else {k: info.get(src) for k, src in INFO_FIELDS.items()}
+            rec["next_earnings"], rec["earnings_estimated"] = _next_earnings(info)
             rec["fetched"] = datetime.now(timezone.utc).isoformat()
             return rec
         except Exception as e:
             log.debug("info %s attempt %d failed: %s", ticker, attempt, e)
-            time.sleep(2 * (attempt + 1))
+            if attempt < 2:
+                time.sleep(2 * (attempt + 1))
     log.warning("info %s failed after retries", ticker)
     return None
 
@@ -58,7 +70,10 @@ def _stale(rec: dict, max_age_days: int, today: str) -> bool:
     age = datetime.now(timezone.utc) - datetime.fromisoformat(rec["fetched"])
     # earnings date already passed -> refetch to get the next one
     passed = rec.get("next_earnings") is not None and rec["next_earnings"] < today
-    return age > timedelta(days=max_age_days) or passed
+    # older versions cached throttled, all-empty records
+    empty = not rec.get("not_equity") and rec.get("name") is None and rec.get("market_cap") is None
+    no_estimate = not rec.get("not_equity") and "earnings_estimated" not in rec
+    return age > timedelta(days=max_age_days) or passed or empty or no_estimate
 
 
 def fetch_fundamentals(tickers: list[str], max_age_days: int, workers: int) -> dict[str, dict]:
@@ -101,14 +116,16 @@ def price_stats(tickers: list[str]) -> dict[str, dict]:
     return stats
 
 
-def latest_prices(tickers: list[str]) -> dict[str, float]:
-    """Most recent trade including pre/post-market, from today's 5-minute bars."""
+def latest_prices(tickers: list[str], today: date) -> dict[str, float]:
+    """Most recent pre-market trade today, from 5-minute bars. Older prints (e.g. Friday's
+    after-hours on a weekend) are thin and are ignored."""
     bars = yf.download(tickers, period="1d", interval="5m", prepost=True, auto_adjust=True, progress=False, threads=True)
     closes = bars["Close"] if not bars.empty else pd.DataFrame()
     out = {}
     for t in tickers:
         if t in closes:
             s = closes[t].dropna()
+            s = s[[ts.tz_convert("America/New_York").date() == today for ts in s.index]] if len(s) else s
             if len(s):
                 out[t] = float(s.iloc[-1])
     return out
@@ -123,6 +140,8 @@ def quality_check(f: dict, p: dict, q: dict, core: bool) -> str | None:
     def below(value, floor):
         return value is not None and not pd.isna(value) and value < floor
 
+    if f.get("not_equity"):
+        return "not_equity"
     if not core:
         if below(f.get("market_cap"), q.get("min_market_cap", 0)):
             return "market_cap"

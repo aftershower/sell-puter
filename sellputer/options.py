@@ -3,9 +3,13 @@
 import logging
 import math
 import time
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 
+import pandas as pd
 import yfinance as yf
+
+NY = ZoneInfo("America/New_York")
 
 log = logging.getLogger(__name__)
 
@@ -48,42 +52,60 @@ def risk_free_rate() -> float:
         return 0.04
 
 
+def market_open_now() -> bool:
+    now = datetime.now(NY)
+    return now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
+
+
 def _pick_expiries(expiries: list[str], today: date, o: dict) -> list[tuple[str, int]]:
     inside = [(e, (date.fromisoformat(e) - today).days) for e in expiries]
     inside = [(e, d) for e, d in inside if o["min_dte"] <= d <= o["max_dte"]]
     n = o["max_expiries_per_ticker"]
     if len(inside) <= n:
         return inside
+    if n == 1:
+        return inside[:1]
     # spread the picks evenly across the DTE window
     step = (len(inside) - 1) / (n - 1)
     return [inside[round(i * step)] for i in range(n)]
 
 
-def scan_ticker(ticker: str, s_ref: float, s_now: float, r: float, today: date, next_earnings: str | None, o: dict) -> list[dict] | None:
+def scan_ticker(
+    ticker: str, s_ref: float, ref_date: date, s_now: float, r: float, today: date, next_earnings: str | None, o: dict
+) -> list[dict] | None:
     """Matching contracts, or None if Yahoo kept failing (usually rate limiting).
 
-    Option quotes are priced off s_ref (the last close when the market is shut, since options
-    don't trade pre-market). IV is solved at s_ref, then delta and premium are re-estimated at
-    s_now so a pre-market gap shows up before the open.
+    Before the open, option quotes are stale: they were struck against s_ref (the close on
+    ref_date). IV is solved there, then delta and premium are re-estimated at s_now (the latest
+    pre-market trade) so a gap shows up before the open. Once the market is open, quotes are live
+    and both prices are the live one.
     """
     for attempt in range(3):
         try:
-            return _scan(ticker, s_ref, s_now, r, today, next_earnings, o)
+            return _scan(ticker, s_ref, ref_date, s_now, r, today, next_earnings, o)
         except Exception as e:
             log.debug("chain %s attempt %d failed: %s", ticker, attempt, e)
-            time.sleep(5 * 2**attempt)
+            if attempt < 2:
+                time.sleep(5 * 2**attempt)
     log.warning("chain %s failed after retries", ticker)
     return None
 
 
-def _scan(ticker: str, s_ref: float, s_now: float, r: float, today: date, next_earnings: str | None, o: dict) -> list[dict]:
+def _scan(
+    ticker: str, s_ref: float, ref_date: date, s_now: float, r: float, today: date, next_earnings: str | None, o: dict
+) -> list[dict]:
     tk = yf.Ticker(ticker)
     expiries = list(tk.options)
     if not expiries:
         raise RuntimeError("no expiries (rate limited?)")
+    if market_open_now():  # the job can start late; decide per ticker, at fetch time
+        s_ref = s_now = float(tk.fast_info["last_price"])
+        ref_date = today
     found = []
     for expiry, dte in _pick_expiries(expiries, today, o):
         T = dte / 365
+        # stale quotes carry the time value as of their own close, not as of today
+        T_ref = max((date.fromisoformat(expiry) - ref_date).days, 1) / 365
         puts = tk.option_chain(expiry).puts
         puts = puts[(puts.strike < s_now) & (puts.strike * 100 <= o["max_collateral"])]
         for row in puts.itertuples():
@@ -95,12 +117,17 @@ def _scan(ticker: str, s_ref: float, s_now: float, r: float, today: date, next_e
             spread = (ask - bid) / mid
             if mid < o["min_premium"] or oi < o["min_open_interest"] or spread > o["max_spread_pct"]:
                 continue
+            last_trade = pd.Timestamp(row.lastTradeDate).date() if not pd.isna(row.lastTradeDate) else None
+            if last_trade is None or (ref_date - last_trade).days > o["max_quote_age_days"]:
+                continue
             K = float(row.strike)
-            iv = implied_vol(mid, s_ref, K, T, r)
+            iv = implied_vol(mid, s_ref, K, T_ref, r)
             if iv is None or iv < o["min_iv"]:
                 continue
             est, delta = bs_put(s_now, K, T, r, iv)
-            premium = mid if s_now == s_ref else est
+            repriced = s_now != s_ref
+            # a realistic fill for a seller is below the mid; take a quarter of the spread off
+            premium = (est if repriced else mid) - 0.25 * (ask - bid)
             annualized = premium / K * 365 / dte
             if not (o["delta_min"] <= -delta <= o["delta_max"]) or annualized < o["min_annualized"]:
                 continue
@@ -114,19 +141,37 @@ def _scan(ticker: str, s_ref: float, s_now: float, r: float, today: date, next_e
                 "ask": ask,
                 "mid": round(mid, 3),
                 "premium": round(premium, 3),
+                "repriced": repriced,
                 "spread_pct": round(spread, 4),
                 "open_interest": oi,
                 "volume": int(_num(row.volume)),
+                "last_trade": last_trade.isoformat(),
                 "iv": round(iv, 4),
                 "delta": round(delta, 4),
                 "otm_pct": round(1 - K / s_now, 4),
+                # strike distance in 1-sd moves to expiry: more = more cushion
+                "buffer_sd": round((s_now - K) / (s_now * iv * math.sqrt(T)), 2),
                 "breakeven": round(K - premium, 2),
                 "annualized": round(annualized, 4),
                 "crosses_earnings": bool(next_earnings and next_earnings <= expiry),
+                "earnings_unknown": next_earnings is None,
             })
-    found.sort(key=lambda c: c["annualized"], reverse=True)
-    # best contract of each expiry first, then fill with the next-best overall
-    firsts = list({c["expiry"]: c for c in reversed(found)}.values())
-    firsts.sort(key=lambda c: c["annualized"], reverse=True)
-    picked = firsts + [c for c in found if c not in firsts]
+    # keep the best contract per (expiry, 0.05-wide delta band) so safer strikes survive the cut
+    best: dict[tuple, dict] = {}
+    for c in found:
+        key = (c["expiry"], int(-c["delta"] / 0.05))
+        if key not in best or c["annualized"] > best[key]["annualized"]:
+            best[key] = c
+    picked = sorted(best.values(), key=lambda c: c["annualized"], reverse=True)
     return picked[: o["contracts_per_ticker"]]
+
+
+def matches_page(k: dict, pg: dict) -> bool:
+    return (
+        k["iv"] >= pg["min_iv"]
+        and k["annualized"] >= pg["min_annualized"]
+        and pg["delta_min"] <= -k["delta"] <= pg["delta_max"]
+        and k["dte"] <= pg["max_dte"]
+        and k["collateral"] <= pg["max_collateral"]
+        and not (pg["hide_earnings"] and k["crosses_earnings"])
+    )

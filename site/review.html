@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sell Put 复盘</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <nav class="nav"><a href="./">每日筛选</a><a href="review.html" class="on">复盘</a></nav>
+  <h1>复盘</h1>
+  <div class="sub" id="sub">加载中…</div>
+  <div class="stats" id="stats"></div>
+  <div class="card" id="summary"></div>
+  <div class="grid2">
+    <div class="card" id="lessons"></div>
+    <div class="card" id="suggestions"></div>
+  </div>
+  <div class="card"><h3>按维度看结果</h3><div class="small">胜率 = 已到期合约中盈利的比例；收益 = 每笔盈亏 ÷ 担保金；触及行权价 = 持有期间收盘价曾低于行权价。</div><div id="buckets"></div></div>
+  <h3>历史推荐</h3>
+  <table class="cards">
+    <thead><tr><th>推荐日</th><th>股票</th><th>合约</th><th>权利金</th><th>AI</th><th>状态</th><th>最新 / 最低收盘</th><th>盈亏（每手）</th></tr></thead>
+    <tbody id="recs"></tbody>
+  </table>
+  <footer>
+    "推荐"指当天页面默认条件下每只股票年化最高的那张合约；同一合约多天出现只算第一天。权利金是当天早上的估算成交价（中间价减 ¼ 价差，盘前有变动时按盘前价重估），实际成交会不同。
+    未到期合约的盈亏按内在价值估算（忽略剩余时间价值），会偏乐观。经验库由每晚的 AI 复盘自动维护，只影响第二天的 AI 分析；建议不会自动生效。本页不构成投资建议。
+  </footer>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const pct = (x, d = 1) => x == null ? "–" : (x * 100).toFixed(d) + "%";
+const usd = (x) => x == null ? "–" : (x < 0 ? "-$" : "$") + Math.abs(x).toFixed(0);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const STATUS = {
+  expired_worthless: ["到期作废（赚满）", "pos"], assigned: ["被行权", "neg"],
+  otm: ["进行中 · 在行权价上方", ""], below_strike: ["进行中 · 跌破行权价", "neg"], below_breakeven: ["进行中 · 跌破盈亏平衡", "neg"],
+};
+
+async function getJson(url) {
+  const r = await fetch(url, { cache: "no-store" });
+  if (!r.ok) throw new Error(url + " " + r.status);
+  return r.json();
+}
+
+function render(rv, dr) {
+  const o = rv?.overall;
+  $("sub").textContent = `结果截至 ${rv?.as_of ?? "–"} 收盘` + (dr?.generated_at ? ` · AI 复盘于 ${dr.generated_at.replace("T", " ")}（美东）` : "");
+  $("stats").innerHTML = o ? [
+    [o.n, "推荐合约"], [o.closed, "已到期"], [pct(o.win_rate, 0), "胜率"], [pct(o.assigned_rate, 0), "被行权率"],
+    [pct(o.avg_return, 2), "平均收益 / 笔"], [pct(o.touched_rate, 0), "曾触及行权价"], [o.open_below_strike, "未到期且在行权价下"],
+  ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("") : "";
+
+  const spend = dr?.spend ? `<span class="small">（AI 花费约 $${dr.spend.usd.toFixed(2)}，搜索 ${dr.spend.searches} 次）</span>` : "";
+  $("summary").innerHTML = `<h3>今晚的复盘 ${spend}</h3>` +
+    (dr?.review_summary ? `<p>${esc(dr.review_summary)}</p>` : `<p class="small">${esc(dr?.error || "还没有复盘。第一批推荐到期或经过几个交易日后，这里才会有内容。")}</p>`);
+
+  const lessons = dr?.lessons || [];
+  $("lessons").innerHTML = `<h3>经验库（明早的 AI 会读到）</h3>` + (lessons.length
+    ? lessons.map((l) => `<div class="lesson"><span class="tag st-${esc(l.status)}">${esc(l.status)}</span> <span class="small">置信度 ${esc(l.confidence)}</span><div>${esc(l.lesson)}</div><div class="small">依据：${esc(l.evidence)}</div></div>`).join("")
+    : `<p class="small">还是空的。复盘积累到足够的案例后，AI 会在这里写下可复用的经验。</p>`);
+
+  const sug = dr?.suggestions || [];
+  $("suggestions").innerHTML = `<h3>给你的建议（不会自动生效）</h3>` + (sug.length
+    ? `<ul>${sug.map((s) => `<li><span class="tag rd">${esc(s.kind)}</span> ${esc(s.change)}<div class="small">${esc(s.reason)}</div></li>`).join("")}</ul>`
+    : `<p class="small">暂无。</p>`);
+
+  const b = rv?.buckets || {};
+  $("buckets").innerHTML = Object.entries(b).filter(([, rows]) => rows.length).map(([name, rows]) => `
+    <div class="scroll"><table class="mini" style="margin-top:10px"><thead><tr><th>${esc(name)}</th><th>笔数</th><th>已到期</th><th>胜率</th><th>被行权率</th><th>平均收益</th><th>触及行权价</th></tr></thead><tbody>
+    ${rows.map((r) => `<tr><td>${esc(r.key)}</td><td>${r.n}</td><td>${r.closed}</td><td>${pct(r.win_rate, 0)}</td><td>${pct(r.assigned_rate, 0)}</td><td>${pct(r.avg_return, 2)}</td><td>${pct(r.touched_rate, 0)}</td></tr>`).join("")}
+    </tbody></table></div>`).join("") || `<p class="small">暂无数据。</p>`;
+
+  const recs = rv?.recs || [];
+  const cols = ["推荐日", "股票", "合约", "权利金", "AI", "状态", "最新 / 最低收盘", "盈亏（每手）"];
+  $("recs").innerHTML = recs.length ? recs.map((r) => {
+    const [label, cls] = STATUS[r.status] || [r.status, ""];
+    const pnl = r.pnl ?? r.pnl_est;
+    const cells = [
+      r.date.slice(5), `<span class="tk">${esc(r.ticker)}</span> <span class="small">${esc(r.source)}</span>`,
+      `${r.expiry.slice(5)} 到期 · $${r.strike}`, `$${r.premium.toFixed(2)} <span class="small">年化 ${pct(r.annualized, 0)}</span>`,
+      r.ai_risk ? `<span class="tag g-${esc(r.ai_grade)}">${esc(r.ai_grade)}</span> <span class="tag r-${esc(r.ai_risk)}">${esc(r.ai_risk)}</span>` : "–",
+      `<span class="${cls}">${label}</span>${r.touched_strike && r.status !== "assigned" ? ' <span class="tag earn">曾触及</span>' : ""}`,
+      `$${r.last_close} <span class="small">/ $${r.min_close}</span>`,
+      `<span class="${pnl > 0 ? "pos" : pnl < 0 ? "neg" : ""}">${usd(pnl)}</span>${r.pnl == null ? ' <span class="small">估</span>' : ""}`,
+    ];
+    return `<tr class="row">${cells.map((v, i) => `<td data-label="${cols[i]}"><span>${v}</span></td>`).join("")}</tr>`;
+  }).join("") : `<tr><td colspan="8" class="empty">还没有可以打分的推荐</td></tr>`;
+}
+
+(async () => {
+  const [rv, dr] = await Promise.all([getJson("data/review.json").catch(() => null), getJson("data/dream.json").catch(() => null)]);
+  render(rv, dr);
+})();
+</script>
+</body>
+</html>

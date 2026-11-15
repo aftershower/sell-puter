@@ -43,11 +43,12 @@ max_expiries_per_ticker = 5
 delta_min = 0.15                    # |delta| 下限
 delta_max = 0.35                    # |delta| 上限
 min_iv = 0.40                       # 隐含波动率下限（0.40 = 40%）
-min_annualized = 0.15               # 年化收益 = 权利金 / 行权价 * 365 / DTE
+min_annualized = 0.15               # 年化收益 = 估成交价 / 行权价 * 365 / DTE（估成交价 = 中间价 - 1/4 价差）
 min_premium = 0.30                  # 每股权利金至少 $0.30
 min_open_interest = 100
+max_quote_age_days = 5              # 合约最后成交超过 5 天的报价视为过时，不用
 max_spread_pct = 0.20               # (ask - bid) / mid
-contracts_per_ticker = 8            # 每只股票最多保留几个合约
+contracts_per_ticker = 12           # 每只股票最多保留几个合约（每个到期日、每 0.05 Delta 区间各留最好的一个）
 max_collateral = 40_000             # 一手担保金上限：行权价 × 100
 gap_warn = 0.03                     # 盘前涨跌超过 3% 时标红
 
@@ -66,13 +67,20 @@ enabled = true                      # 没有 ANTHROPIC_API_KEY 时自动跳过
 model = "claude-sonnet-5-5"
 daily_budget_usd = 1.8              # 早上扫描的 AI 花费上限（按官方单价估算），到了就停；晚上复盘另算
 top_n = 30                          # 最多给 N 只写笔记（先挑符合 [page] 默认条件的，再按年化）
-deep_n = 8                          # 其中前 N 只做单独深度分析（联网搜索 + 读原文），预算不够时自动减少
-deep_effort = "medium"
+deep_n = 15                         # 其中前 N 只做单独深度分析（联网搜索 + 读原文），预算不够时自动减少
+deep_effort = "high"
 deep_searches = 3                   # 每只深度分析最多搜索次数（$0.01/次）
 deep_fetches = 2                    # 每只深度分析最多读几篇原文（新闻、Reddit 帖子）
 deep_workers = 2                    # 同时做几只深度分析
 effort = "low"                      # 其余股票的批量简要笔记
 news_per_ticker = 8                 # Yahoo 和 Google News 各取几条标题
+
+[dream]
+# 每个交易日晚上 8 点（美东）复盘：给过往推荐打分，AI 更新自己的经验库（memory/），明早的分析会读到
+enabled = true
+budget_usd = 0.7                    # 复盘的 AI 花费上限；加上早上的 1.8，每个交易日约 $2.5
+effort = "high"
+searches = 3                        # 复盘时最多联网搜索几次（查跌破行权价的股票发生了什么）
 
 [run]
 workers = 4                         # 并发请求数，太大会被 Yahoo 限流

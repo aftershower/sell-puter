@@ -12,16 +12,23 @@ import threading
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from email.utils import parsedate_to_datetime
+from pathlib import Path
 from urllib.parse import quote
 
 import anthropic
 import requests
 import yfinance as yf
 
+from .options import matches_page
+
 log = logging.getLogger(__name__)
 
+MEMORY_FILE = Path("memory/MEMORY.md")
+
 # claude-sonnet-5-5 list prices (USD); web search is billed per request
-PRICE_IN, PRICE_OUT, PRICE_CACHE_READ, PRICE_SEARCH = 2.0 / 1e6, 10.0 / 1e6, 0.2 / 1e6, 0.01
+PRICE_IN, PRICE_OUT, PRICE_SEARCH = 2.0 / 1e6, 10.0 / 1e6, 0.01
+PRICE_CACHE_WRITE, PRICE_CACHE_READ = 2.5 / 1e6, 0.2 / 1e6
+LIGHT_CHUNK = 8  # batched notes per request, so one failure doesn't drop them all
 DEEP_ESTIMATE = 0.20  # reserved per deep dive before it starts
 LIGHT_RESERVE = 0.15  # kept back for the batched notes
 
@@ -38,11 +45,11 @@ BASE = """你是一个期权卖方的研究助手。用户用规则筛出了准�
 
 DEEP_SYSTEM = BASE + """
 
-这次只分析一只股票，要深入。输入里有 Yahoo 和 Google News 的近期标题；先用 web_search 查清最新消息和 IV 偏高的原因，必要时用 web_fetch 读原文或 Reddit 讨论。另外：
+这次只分析一只股票，要深入。输入里有 Yahoo 和 Google News 的近期标题，但标题不够：动笔之前至少用 web_search 搜一次这只股票最近几天的消息；IV 偏高的原因不清楚、盘前有异动、或者有临近事件时再多搜一两次，必要时用 web_fetch 读原文或 Reddit 讨论。另外：
 - 期权视角：对比 expected_move_1sd（到期前一个标准差的预期波动）和行权价离现价的距离（strike_buffer_sd），说明这张合约的缓冲够不够，IV 是事件驱动还是持续偏高。
 - 接盘视角：如果被行权，成本价是 breakeven；结合 forward_pe、sma50/sma200、52 周高低点，说明那个价位接货的估值和技术位置。
 - 催化剂：列出到期前及之后不久的已知事件和日期。
-- sources 只能填你实际搜索或读取到的链接，不要编造。"""
+- sources 只能填你实际搜索或读取到的具体文章链接（不要填网站首页），没有就留空。"""
 
 LIGHT_SYSTEM = BASE + "\n\n这次是一批股票的简要笔记，只用输入里的新闻标题和数据，每只写简洁。"
 
@@ -100,11 +107,14 @@ class Budget:
     def add(self, usage) -> None:
         stu = usage.server_tool_use
         searches = (getattr(stu, "web_search_requests", 0) or 0) if stu else 0
-        cost = (
-            (usage.input_tokens + (usage.cache_creation_input_tokens or 0)) * PRICE_IN
-            + (usage.cache_read_input_tokens or 0) * PRICE_CACHE_READ
-            + usage.output_tokens * PRICE_OUT
-            + searches * PRICE_SEARCH
+        # a refusal fallback bills every attempt; usage.iterations lists them all
+        parts = getattr(usage, "iterations", None) or [usage]
+        cost = searches * PRICE_SEARCH + sum(
+            (p.input_tokens or 0) * PRICE_IN
+            + (p.cache_creation_input_tokens or 0) * PRICE_CACHE_WRITE
+            + (p.cache_read_input_tokens or 0) * PRICE_CACHE_READ
+            + (p.output_tokens or 0) * PRICE_OUT
+            for p in parts
         )
         with self._lock:
             self.spent += cost
@@ -113,6 +123,19 @@ class Budget:
     def left(self) -> float:
         with self._lock:
             return self.limit - self.spent - self.reserved
+
+
+def _with_memory(system: str) -> str:
+    """Append the lessons the nightly review distilled (memory/MEMORY.md), if any."""
+    memory = MEMORY_FILE.read_text().strip() if MEMORY_FILE.exists() else ""
+    if not memory:
+        return system
+    return (
+        system
+        + "\n\n以下是你自己在过往收盘后复盘中总结的经验。样本可能还少，仅供参考；和今天的事实冲突时以事实为准，"
+        + "如果某条经验影响了你的判断，在相应字段里简单提一句。\n"
+        + memory
+    )
 
 
 def _yahoo_news(ticker: str, n: int) -> list[dict]:
@@ -148,8 +171,10 @@ def _google_news(ticker: str, n: int) -> list[dict]:
     return [{k: v for k, v in x.items() if k != "_t"} for x in out[:n]]
 
 
-def _brief(cand: dict, news_n: int) -> dict:
-    best = cand["contracts"][0]
+def _brief(cand: dict, news_n: int, pg: dict) -> dict:
+    # the contract the page shows by default, so the notes talk about what the user sees
+    shown = [k for k in cand["contracts"] if matches_page(k, pg)] or cand["contracts"]
+    best = max(shown, key=lambda k: k["annualized"])
     S = cand["price_now"]
     move = S * best["iv"] * math.sqrt(best["dte"] / 365)
     return {
@@ -167,6 +192,7 @@ def _brief(cand: dict, news_n: int) -> dict:
         "drawdown_from_52w_high": round(cand["drawdown_52w"], 3),
         "hv20": round(cand["hv20"], 3),
         "next_earnings": cand.get("next_earnings"),
+        "next_earnings_is_estimate": cand.get("earnings_estimated", False),
         "fundamentals": {k: cand.get(k) for k in ("market_cap", "roe", "profit_margin", "fcf", "debt_to_equity", "forward_pe")},
         "best_contract": {
             **{k: best[k] for k in ("expiry", "dte", "strike", "collateral", "premium", "iv", "delta", "breakeven", "annualized", "crosses_earnings")},
@@ -184,12 +210,29 @@ def _final_json(content) -> dict:
     return json.loads("".join(b.text for b in content[last_tool + 1 :] if b.type == "text"))
 
 
-def _ask(client, cfg: dict, budget: Budget, system: str, schema: dict, prompt: str, effort: str, tools: list) -> dict:
+def _result_urls(content) -> set[str]:
+    """URLs that actually came back from web_search / web_fetch in this response."""
+    urls = set()
+    for b in content:
+        if not b.type.endswith("tool_result"):
+            continue
+        items = b.content if isinstance(b.content, list) else [b.content]
+        for item in items:
+            if url := getattr(item, "url", None):
+                urls.add(url)
+    return urls
+
+
+def ask(
+    client, model: str, budget: Budget, system: str, schema: dict, prompt: str, effort: str, tools: list
+) -> tuple[dict, set[str]]:
+    """One structured-output request (resuming pause_turn), with its cost added to `budget`.
+    Returns the parsed answer and the URLs the tools returned."""
     user = {"role": "user", "content": prompt}
-    messages, assistant = [user], []
+    messages, assistant, urls = [user], [], set()
     for _ in range(5):
         with client.beta.messages.stream(
-            model=cfg["model"],
+            model=model,
             max_tokens=32000,
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",
@@ -200,6 +243,7 @@ def _ask(client, cfg: dict, budget: Budget, system: str, schema: dict, prompt: s
         ) as stream:
             resp = stream.get_final_message()
         budget.add(resp.usage)
+        urls |= _result_urls(resp.content)
         if resp.stop_reason != "pause_turn":
             break
         # server-side search loop hit its iteration cap; resend so it resumes where it left off
@@ -207,57 +251,62 @@ def _ask(client, cfg: dict, budget: Budget, system: str, schema: dict, prompt: s
         messages = [user, {"role": "assistant", "content": assistant}]
     if resp.stop_reason in ("refusal", "max_tokens", "pause_turn"):
         raise RuntimeError(f"Claude stopped with {resp.stop_reason}")
-    return _final_json(resp.content)
+    return _final_json(resp.content), urls
 
 
-def _deep(client, cand: dict, cfg: dict, budget: Budget) -> dict | None:
+def _deep(client, cand: dict, cfg: dict, pg: dict, budget: Budget) -> dict | None:
     if not budget.reserve(DEEP_ESTIMATE, keep=LIGHT_RESERVE):
         log.info("deep %s skipped: budget", cand["ticker"])
         return None
     try:
-        return _deep_call(client, cand, cfg, budget)
+        return _deep_call(client, cand, cfg, pg, budget)
     finally:
         budget.release(DEEP_ESTIMATE)
 
 
-def _deep_call(client, cand: dict, cfg: dict, budget: Budget) -> dict | None:
+def _deep_call(client, cand: dict, cfg: dict, pg: dict, budget: Budget) -> dict | None:
     tools = [
         {"type": "web_search_20260209", "name": "web_search", "max_uses": cfg["deep_searches"]},
         {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": cfg["deep_fetches"], "max_content_tokens": 8000},
     ]
-    brief = _brief(cand, cfg["news_per_ticker"])
+    brief = _brief(cand, cfg["news_per_ticker"], pg)
     try:
-        note = _ask(client, cfg, budget, DEEP_SYSTEM, DEEP_SCHEMA,
+        note, urls = ask(client, cfg["model"], budget, _with_memory(DEEP_SYSTEM), DEEP_SCHEMA,
                     "请深入分析这只股票（JSON）：\n\n" + json.dumps(brief, ensure_ascii=False, default=str),
                     cfg["deep_effort"], tools)
     except Exception as e:
         log.warning("deep %s failed: %s", cand["ticker"], e)
         return None
     note["deep"] = True
-    note["sources"] = [s for s in note.get("sources", []) if s["url"].startswith(("http://", "https://"))]
-    log.info("deep %s done (spent so far $%.2f)", cand["ticker"], budget.spent)
+    # keep only links the searches really returned; the model sometimes cites site homepages
+    note["sources"] = list({s["url"]: s for s in note.get("sources", []) if s["url"] in urls}.values())
+    log.info("deep %s done: %d sources (spent so far $%.2f)", cand["ticker"], len(note["sources"]), budget.spent)
     return note
 
 
-def notes(cands: list[dict], cfg: dict) -> tuple[dict[str, dict], dict]:
+def notes(cands: list[dict], cfg: dict, pg: dict) -> tuple[dict[str, dict], dict]:
     client = anthropic.Anthropic()
     budget = Budget(cfg["daily_budget_usd"])
     out: dict[str, dict] = {}
 
     deep = cands[: cfg["deep_n"]]
     with ThreadPoolExecutor(cfg["deep_workers"]) as pool:
-        for cand, note in zip(deep, pool.map(lambda c: _deep(client, c, cfg, budget), deep)):
+        for cand, note in zip(deep, pool.map(lambda c: _deep(client, c, cfg, pg, budget), deep)):
             if note:
                 out[cand["ticker"]] = note
 
     rest = [c for c in cands if c["ticker"] not in out]
-    if rest and budget.left() > 0.05:
-        briefs = [_brief(c, cfg["news_per_ticker"]) for c in rest]
+    for i in range(0, len(rest), LIGHT_CHUNK):
+        chunk = rest[i : i + LIGHT_CHUNK]
+        if budget.left() < 0.05:
+            log.info("light notes stopped: budget")
+            break
+        briefs = [_brief(c, cfg["news_per_ticker"], pg) for c in chunk]
         try:
-            light = _ask(client, cfg, budget, LIGHT_SYSTEM, LIGHT_SCHEMA,
-                         "以下是今天的候选股票（JSON），请为每只写笔记：\n\n" + json.dumps(briefs, ensure_ascii=False, default=str),
-                         cfg["effort"], [])
-            out.update({n["ticker"]: n for n in light["notes"] if n["ticker"] in {c["ticker"] for c in rest}})
+            light, _ = ask(client, cfg["model"], budget, _with_memory(LIGHT_SYSTEM), LIGHT_SCHEMA,
+                           "以下是今天的候选股票（JSON），请为每只写笔记：\n\n" + json.dumps(briefs, ensure_ascii=False, default=str),
+                           cfg["effort"], [])
+            out.update({n["ticker"]: n for n in light["notes"] if n["ticker"] in {c["ticker"] for c in chunk}})
         except Exception as e:
             log.warning("light notes failed: %s", e)
 

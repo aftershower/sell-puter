@@ -7,11 +7,11 @@ import time
 import tomllib
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from . import ai, options, quality, universe
+from . import ai, options, quality, tradingdays, universe
 
 DATA = Path("site/data")
 log = logging.getLogger("sellputer")
@@ -23,6 +23,13 @@ def main() -> None:
     cfg = tomllib.loads(Path("config.toml").read_text())
     q, o, pg, a, workers = cfg["quality"], cfg["options"], cfg["page"], cfg["ai"], cfg["run"]["workers"]
     now = datetime.now(ZoneInfo("America/New_York"))
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and not tradingdays.is_trading_day(now.date()):
+        log.info("%s is not a trading day; skipping", now.date())
+        return
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and (DATA / "history" / f"{now.date()}.json").exists():
+        # a late 13:00 UTC run and the 14:00 UTC run can both land at 9:xx in winter
+        log.info("already scanned today; skipping")
+        return
 
     u = cfg["universe"]
     trending = universe.reddit_trending(u["reddit_top_n"], u["reddit_ignore"]) if u["reddit_top_n"] else []
@@ -36,7 +43,11 @@ def main() -> None:
     log.info("universe: %d tickers", len(tickers))
 
     prices = quality.price_stats(tickers)
+    if len(prices) < 0.7 * len(tickers):
+        raise SystemExit(f"only {len(prices)}/{len(tickers)} price histories came back; not writing a report")
     fundamentals = quality.fetch_fundamentals(list(prices), q["fundamentals_cache_days"], workers)
+    if len(fundamentals) < 0.7 * len(prices):
+        raise SystemExit(f"only {len(fundamentals)}/{len(prices)} fundamentals came back; not writing a report")
     rejected = Counter()
     passed = []
     status = {}  # per-ticker outcome, reported for the Reddit list
@@ -51,8 +62,8 @@ def main() -> None:
 
     # Options only trade 9:30-16:00 ET. Outside that, chain quotes are from the last close while
     # the stock may already be moving pre-market, so reprice off the latest pre/post-market trade.
-    market_open = now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
-    latest = {} if market_open else quality.latest_prices(passed)
+    market_open = options.market_open_now()
+    latest = {} if market_open else quality.latest_prices(passed, now.date())
     for t in passed:
         p = prices[t]
         p["price_now"] = latest.get(t, p["price"])
@@ -62,15 +73,17 @@ def main() -> None:
 
     r = options.risk_free_rate()
     scan = lambda t: options.scan_ticker(
-        t, prices[t]["price"], prices[t]["price_now"], r, now.date(), fundamentals[t]["next_earnings"], o
+        t, prices[t]["price"], date.fromisoformat(prices[t]["price_date"]), prices[t]["price_now"],
+        r, now.date(), fundamentals[t]["next_earnings"], o,
     )
     with ThreadPoolExecutor(workers) as pool:
         chains = dict(zip(passed, pool.map(scan, passed)))
     failed = [t for t, c in chains.items() if c is None]
-    if failed:
-        log.info("retrying %d failed chains one at a time", len(failed))
+    if failed and len(failed) <= 0.3 * len(passed):
+        # a capped slow pass; each retry can take ~20s and the job has a 60-minute limit
+        log.info("retrying %d failed chains one at a time", min(len(failed), 40))
         time.sleep(30)
-        for t in failed:
+        for t in failed[:40]:
             chains[t] = scan(t)
     failed = [t for t, c in chains.items() if c is None]
     if len(failed) > 0.3 * len(passed):
@@ -94,8 +107,8 @@ def main() -> None:
         ai_status["enabled"] = True
         try:
             # page defaults first, so what the user sees on open has notes
-            ranked = sorted(candidates, key=lambda c: not any(matches_page(k, pg) for k in c["contracts"]))
-            notes, ai_status["spend"] = ai.notes(ranked[: a["top_n"]], a)
+            ranked = sorted(candidates, key=lambda c: not any(options.matches_page(k, pg) for k in c["contracts"]))
+            notes, ai_status["spend"] = ai.notes(ranked[: a["top_n"]], a, pg)
             for c in candidates:
                 c["ai"] = notes.get(c["ticker"])
         except Exception as e:
@@ -119,24 +132,12 @@ def main() -> None:
             "yahoo_screened": len(screens),
             "added_outside_core": len(set(tickers) - core),
         },
-        # not fetchable / not an equity (ETFs etc.) shows up as "not_equity"
-        "reddit": [{**r, "status": status.get(r["ticker"], "not_equity")} for r in trending],
+        "reddit": [{**r, "status": status.get(r["ticker"], "data_failed")} for r in trending],
         "params": {"quality": q, "options": o, "page": pg},
         "ai": ai_status,
         "candidates": candidates,
     }
     write_report(report)
-
-
-def matches_page(k: dict, pg: dict) -> bool:
-    return (
-        k["iv"] >= pg["min_iv"]
-        and k["annualized"] >= pg["min_annualized"]
-        and pg["delta_min"] <= -k["delta"] <= pg["delta_max"]
-        and k["dte"] <= pg["max_dte"]
-        and k["collateral"] <= pg["max_collateral"]
-        and not (pg["hide_earnings"] and k["crosses_earnings"])
-    )
 
 
 def write_report(report: dict) -> None:
