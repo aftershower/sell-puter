@@ -60,7 +60,7 @@ def market_open_now() -> bool:
 PROBE = ["AAPL", "MSFT", "NVDA", "AMZN", "AMD", "META"]
 
 
-def quotes_ready(min_quoted: float = 0.8) -> bool:
+def quotes_ready(min_quoted: float = 0.95) -> bool:
     """Whether Yahoo's put quotes are usable. They run ~15 minutes late, so for a while after the
     9:30 open Yahoo still serves the pre-open snapshot, where most contracts have no bid."""
     total = quoted = 0
