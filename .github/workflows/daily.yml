@@ -2,9 +2,10 @@ name: daily-scan
 
 on:
   schedule:
-    # GitHub cron is UTC with no DST. Fire at both 13:00 and 14:00 UTC on weekdays;
-    # the gate job only lets the one that lands at 9:xx New York time through.
-    - cron: "0 13,14 * * 1-5"
+    # GitHub cron is UTC with no DST, and scheduled runs come late or get dropped (worst at :00).
+    # Fire three times; the gate lets anything landing 9:00-11:59 New York time through, and the
+    # scan skips itself once today's results exist.
+    - cron: "7 13,14,15 * * 1-5"
   workflow_dispatch:
 
 concurrency:
@@ -19,8 +20,8 @@ jobs:
     steps:
       - id: check
         run: |
-          hour=$(TZ=America/New_York date +%H)
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$hour" != "09" ]; then
+          hour=$((10#$(TZ=America/New_York date +%H)))
+          if [ "${{ github.event_name }}" = "schedule" ] && { [ "$hour" -lt 9 ] || [ "$hour" -ge 12 ]; }; then
             echo "run=false" >> "$GITHUB_OUTPUT"; echo "NY hour is $hour, skipping"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
