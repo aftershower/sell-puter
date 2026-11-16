@@ -57,6 +57,28 @@ def market_open_now() -> bool:
     return now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
 
 
+PROBE = ["AAPL", "MSFT", "NVDA", "AMZN", "AMD", "META"]
+
+
+def quotes_ready(min_quoted: float = 0.8) -> bool:
+    """Whether Yahoo's put quotes are usable. They run ~15 minutes late, so for a while after the
+    9:30 open Yahoo still serves the pre-open snapshot, where most contracts have no bid."""
+    total = quoted = 0
+    for t in PROBE:
+        try:
+            tk = yf.Ticker(t)
+            s = float(tk.fast_info["last_price"])
+            puts = tk.option_chain(tk.options[min(3, len(tk.options) - 1)]).puts
+        except Exception as e:
+            log.debug("quote probe %s failed: %s", t, e)
+            continue
+        near = puts[(puts.strike > s * 0.92) & (puts.strike < s)]
+        total += len(near)
+        quoted += int((near.bid > 0).sum())
+    log.info("quote probe: %d/%d near-the-money puts have a bid", quoted, total)
+    return total > 0 and quoted / total >= min_quoted
+
+
 def _pick_expiries(expiries: list[str], today: date, o: dict) -> list[tuple[str, int]]:
     inside = [(e, (date.fromisoformat(e) - today).days) for e in expiries]
     inside = [(e, d) for e, d in inside if o["min_dte"] <= d <= o["max_dte"]]

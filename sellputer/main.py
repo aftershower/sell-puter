@@ -60,6 +60,16 @@ def main() -> None:
             passed.append(t)
     log.info("quality: %d passed, rejected %s", len(passed), dict(rejected))
 
+    # Yahoo's option quotes run ~15 minutes late: just after the open it still serves the pre-open
+    # snapshot, with no bids on most contracts. Wait for live quotes rather than publish a bare page.
+    for _ in range(45):
+        if options.quotes_ready():
+            break
+        log.info("option quotes not usable yet; waiting a minute")
+        time.sleep(60)
+    else:
+        raise SystemExit("option quotes never became usable; keeping the previous page")
+
     # Options only trade 9:30-16:00 ET. Outside that, chain quotes are from the last close while
     # the stock may already be moving pre-market, so reprice off the latest pre/post-market trade.
     market_open = options.market_open_now()
