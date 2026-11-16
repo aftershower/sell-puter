@@ -1,0 +1,1228 @@
+{
+ "generated_at": "2026-11-16T09:42-05:00",
+ "date": "2026-11-16",
+ "risk_free_rate": 0.0413,
+ "market_open": true,
+ "stats": {
+  "universe": 583,
+  "quality_passed": 514,
+  "candidates": 4,
+  "rejected": {
+   "price": 10,
+   "market_cap": 38,
+   "unprofitable": 11,
+   "not_equity": 8
+  },
+  "chain_failed": [
+   "NVR"
+  ],
+  "reddit_trending": 50,
+  "yahoo_screened": 66,
+  "added_outside_core": 70
+ },
+ "reddit": [
+  {
+   "ticker": "NVDA",
+   "rank": 1,
+   "mentions": 745,
+   "mentions_24h_ago": 356,
+   "upvotes": 7194,
+   "status": "candidate"
+  },
+  {
+   "ticker": "SPY",
+   "rank": 2,
+   "mentions": 119,
+   "mentions_24h_ago": 67,
+   "upvotes": 227,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "QQQ",
+   "rank": 3,
+   "mentions": 87,
+   "mentions_24h_ago": 38,
+   "upvotes": 231,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "NBIS",
+   "rank": 4,
+   "mentions": 66,
+   "mentions_24h_ago": 14,
+   "upvotes": 206,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "MU",
+   "rank": 5,
+   "mentions": 60,
+   "mentions_24h_ago": 23,
+   "upvotes": 1314,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "AMD",
+   "rank": 6,
+   "mentions": 55,
+   "mentions_24h_ago": 89,
+   "upvotes": 216,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SNDK",
+   "rank": 7,
+   "mentions": 39,
+   "mentions_24h_ago": 16,
+   "upvotes": 91,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SPCX",
+   "rank": 8,
+   "mentions": 37,
+   "mentions_24h_ago": 51,
+   "upvotes": 221,
+   "status": "unprofitable"
+  },
+  {
+   "ticker": "MSFT",
+   "rank": 9,
+   "mentions": 33,
+   "mentions_24h_ago": 16,
+   "upvotes": 89,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "VOO",
+   "rank": 11,
+   "mentions": 30,
+   "mentions_24h_ago": 17,
+   "upvotes": 57,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "GOOG",
+   "rank": 12,
+   "mentions": 28,
+   "mentions_24h_ago": 12,
+   "upvotes": 447,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ASTS",
+   "rank": 15,
+   "mentions": 27,
+   "mentions_24h_ago": 12,
+   "upvotes": 65,
+   "status": "unprofitable"
+  },
+  {
+   "ticker": "AAPL",
+   "rank": 16,
+   "mentions": 25,
+   "mentions_24h_ago": 12,
+   "upvotes": 87,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "CRWV",
+   "rank": 18,
+   "mentions": 24,
+   "mentions_24h_ago": 9,
+   "upvotes": 54,
+   "status": "unprofitable"
+  },
+  {
+   "ticker": "GOOGL",
+   "rank": 21,
+   "mentions": 20,
+   "mentions_24h_ago": 4,
+   "upvotes": 160,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "TSLA",
+   "rank": 23,
+   "mentions": 19,
+   "mentions_24h_ago": 18,
+   "upvotes": 209,
+   "status": "candidate"
+  },
+  {
+   "ticker": "TTWO",
+   "rank": 24,
+   "mentions": 19,
+   "mentions_24h_ago": 1,
+   "upvotes": 36,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "MSTR",
+   "rank": 25,
+   "mentions": 19,
+   "mentions_24h_ago": 27,
+   "upvotes": 39,
+   "status": "unprofitable"
+  },
+  {
+   "ticker": "INTC",
+   "rank": 27,
+   "mentions": 17,
+   "mentions_24h_ago": 2,
+   "upvotes": 429,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "IQ",
+   "rank": 28,
+   "mentions": 17,
+   "mentions_24h_ago": 5,
+   "upvotes": 97,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "SOXL",
+   "rank": 31,
+   "mentions": 15,
+   "mentions_24h_ago": 6,
+   "upvotes": 37,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "GME",
+   "rank": 32,
+   "mentions": 15,
+   "mentions_24h_ago": 14,
+   "upvotes": 20,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "AMZN",
+   "rank": 33,
+   "mentions": 14,
+   "mentions_24h_ago": 8,
+   "upvotes": 61,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "GM",
+   "rank": 34,
+   "mentions": 13,
+   "mentions_24h_ago": 7,
+   "upvotes": 35,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ASML",
+   "rank": 36,
+   "mentions": 12,
+   "mentions_24h_ago": 19,
+   "upvotes": 20,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "WMT",
+   "rank": 38,
+   "mentions": 11,
+   "mentions_24h_ago": 2,
+   "upvotes": 18,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "RTX",
+   "rank": 39,
+   "mentions": 11,
+   "mentions_24h_ago": 10,
+   "upvotes": 193,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "IREN",
+   "rank": 41,
+   "mentions": 11,
+   "mentions_24h_ago": 2,
+   "upvotes": 22,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "GOAT",
+   "rank": 43,
+   "mentions": 10,
+   "mentions_24h_ago": 3,
+   "upvotes": 54,
+   "status": "data_failed"
+  },
+  {
+   "ticker": "AVGO",
+   "rank": 44,
+   "mentions": 9,
+   "mentions_24h_ago": 7,
+   "upvotes": 6,
+   "status": "candidate"
+  },
+  {
+   "ticker": "WH",
+   "rank": 46,
+   "mentions": 9,
+   "mentions_24h_ago": 1,
+   "upvotes": 17,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "VTI",
+   "rank": 47,
+   "mentions": 9,
+   "mentions_24h_ago": 4,
+   "upvotes": 18,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "MS",
+   "rank": 49,
+   "mentions": 8,
+   "mentions_24h_ago": 3,
+   "upvotes": 15,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SMCI",
+   "rank": 50,
+   "mentions": 8,
+   "mentions_24h_ago": 10,
+   "upvotes": 10,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "SLS",
+   "rank": 51,
+   "mentions": 8,
+   "mentions_24h_ago": 3,
+   "upvotes": 17,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "UP",
+   "rank": 52,
+   "mentions": 8,
+   "mentions_24h_ago": 1,
+   "upvotes": 23,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "META",
+   "rank": 53,
+   "mentions": 8,
+   "mentions_24h_ago": 10,
+   "upvotes": 13,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "RDDT",
+   "rank": 55,
+   "mentions": 8,
+   "mentions_24h_ago": 2,
+   "upvotes": 34,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "KO",
+   "rank": 56,
+   "mentions": 7,
+   "mentions_24h_ago": 4,
+   "upvotes": 14,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "IBM",
+   "rank": 57,
+   "mentions": 7,
+   "mentions_24h_ago": 3,
+   "upvotes": -9,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "GE",
+   "rank": 58,
+   "mentions": 7,
+   "mentions_24h_ago": 4,
+   "upvotes": 20,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "ICE",
+   "rank": 60,
+   "mentions": 6,
+   "mentions_24h_ago": 4,
+   "upvotes": -1,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "RSG",
+   "rank": 61,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 265,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "BYD",
+   "rank": 66,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 25,
+   "status": "market_cap"
+  },
+  {
+   "ticker": "UAE",
+   "rank": 67,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 19,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "JUST",
+   "rank": 68,
+   "mentions": 6,
+   "mentions_24h_ago": 1,
+   "upvotes": 3539,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "SOXS",
+   "rank": 69,
+   "mentions": 6,
+   "mentions_24h_ago": 2,
+   "upvotes": 10,
+   "status": "not_equity"
+  },
+  {
+   "ticker": "TSM",
+   "rank": 73,
+   "mentions": 5,
+   "mentions_24h_ago": 13,
+   "upvotes": 9,
+   "status": "candidate"
+  },
+  {
+   "ticker": "WM",
+   "rank": 74,
+   "mentions": 5,
+   "mentions_24h_ago": null,
+   "upvotes": 12,
+   "status": "no_contract"
+  },
+  {
+   "ticker": "CPA",
+   "rank": 77,
+   "mentions": 5,
+   "mentions_24h_ago": 2,
+   "upvotes": -4,
+   "status": "market_cap"
+  }
+ ],
+ "params": {
+  "quality": {
+   "min_market_cap": 10000000000,
+   "require_profitable": true,
+   "min_price": 20,
+   "require_above_sma200": false,
+   "fundamentals_cache_days": 7
+  },
+  "options": {
+   "min_dte": 7,
+   "max_dte": 42,
+   "max_expiries_per_ticker": 5,
+   "delta_min": 0.15,
+   "delta_max": 0.35,
+   "min_iv": 0.4,
+   "min_annualized": 0.15,
+   "min_premium": 0.3,
+   "min_open_interest": 100,
+   "max_quote_age_days": 5,
+   "max_spread_pct": 0.2,
+   "contracts_per_ticker": 12,
+   "max_collateral": 40000,
+   "gap_warn": 0.03
+  },
+  "page": {
+   "min_iv": 0.6,
+   "min_annualized": 0.3,
+   "delta_min": 0.2,
+   "delta_max": 0.3,
+   "max_dte": 42,
+   "max_collateral": 40000,
+   "hide_earnings": true
+  }
+ },
+ "ai": {
+  "enabled": true,
+  "model": "claude-sonnet-5-5",
+  "top_n": 30,
+  "error": null,
+  "spend": {
+   "usd": 0.57,
+   "budget_usd": 1.8,
+   "deep": 4,
+   "light": 0,
+   "searches": 6
+  }
+ },
+ "candidates": [
+  {
+   "ticker": "NVDA",
+   "name": "NVIDIA Corporation",
+   "sector": "Technology",
+   "industry": "Semiconductors",
+   "market_cap": 3932339044352,
+   "roe": 1.17211,
+   "profit_margin": 0.63663,
+   "fcf": 41809874944,
+   "debt_to_equity": 16.971,
+   "forward_pe": 10.272057,
+   "next_earnings": "2026-11-17",
+   "earnings_estimated": false,
+   "price": 161.41000366210938,
+   "price_date": "2026-11-16",
+   "hv20": 0.530768167284319,
+   "hv252": 0.38723132778983743,
+   "drawdown_52w": 0.325321852716972,
+   "above_sma200": false,
+   "sma50": 213.25815490722655,
+   "sma200": 203.77383392333985,
+   "low_52w": 161.41000366210938,
+   "high_52w": 239.24000549316406,
+   "price_now": 161.41000366210938,
+   "gap": 0.0,
+   "core": true,
+   "reddit": {
+    "ticker": "NVDA",
+    "rank": 1,
+    "mentions": 745,
+    "mentions_24h_ago": 356,
+    "upvotes": 7194
+   },
+   "screens": [
+    "most_actives"
+   ],
+   "contracts": [
+    {
+     "contract": "NVDA261127P00152500",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 152.5,
+     "collateral": 15250,
+     "bid": 5.95,
+     "ask": 6.4,
+     "mid": 6.175,
+     "premium": 6.063,
+     "repriced": false,
+     "spread_pct": 0.0729,
+     "open_interest": 797,
+     "volume": 10,
+     "last_trade": "2026-11-13",
+     "iv": 0.9486,
+     "delta": -0.3236,
+     "otm_pct": 0.0588,
+     "buffer_sd": 0.36,
+     "breakeven": 146.44,
+     "annualized": 1.3191,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261127P00150000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 150.0,
+     "collateral": 15000,
+     "bid": 5.05,
+     "ask": 5.4,
+     "mid": 5.225,
+     "premium": 5.137,
+     "repriced": false,
+     "spread_pct": 0.067,
+     "open_interest": 5118,
+     "volume": 15,
+     "last_trade": "2026-11-13",
+     "iv": 0.9448,
+     "delta": -0.2879,
+     "otm_pct": 0.0742,
+     "buffer_sd": 0.45,
+     "breakeven": 144.86,
+     "annualized": 1.1365,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261204P00150000",
+     "expiry": "2026-12-04",
+     "dte": 18,
+     "strike": 150.0,
+     "collateral": 15000,
+     "bid": 5.9,
+     "ask": 6.4,
+     "mid": 6.15,
+     "premium": 6.025,
+     "repriced": false,
+     "spread_pct": 0.0813,
+     "open_interest": 3298,
+     "volume": 18,
+     "last_trade": "2026-11-13",
+     "iv": 0.8167,
+     "delta": -0.2991,
+     "otm_pct": 0.0742,
+     "buffer_sd": 0.41,
+     "breakeven": 143.97,
+     "annualized": 0.8145,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261127P00145000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 145.0,
+     "collateral": 14500,
+     "bid": 3.45,
+     "ask": 3.75,
+     "mid": 3.6,
+     "premium": 3.525,
+     "repriced": false,
+     "spread_pct": 0.0833,
+     "open_interest": 14548,
+     "volume": 6,
+     "last_trade": "2026-11-13",
+     "iv": 0.9353,
+     "delta": -0.2199,
+     "otm_pct": 0.105,
+     "buffer_sd": 0.65,
+     "breakeven": 141.47,
+     "annualized": 0.8067,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261211P00150000",
+     "expiry": "2026-12-11",
+     "dte": 25,
+     "strike": 150.0,
+     "collateral": 15000,
+     "bid": 6.85,
+     "ask": 7.15,
+     "mid": 7.0,
+     "premium": 6.925,
+     "repriced": false,
+     "spread_pct": 0.0429,
+     "open_interest": 4095,
+     "volume": 8,
+     "last_trade": "2026-11-13",
+     "iv": 0.7533,
+     "delta": -0.3072,
+     "otm_pct": 0.0742,
+     "buffer_sd": 0.38,
+     "breakeven": 143.07,
+     "annualized": 0.674,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261204P00145000",
+     "expiry": "2026-12-04",
+     "dte": 18,
+     "strike": 145.0,
+     "collateral": 14500,
+     "bid": 4.3,
+     "ask": 4.75,
+     "mid": 4.525,
+     "premium": 4.413,
+     "repriced": false,
+     "spread_pct": 0.0994,
+     "open_interest": 2370,
+     "volume": 29,
+     "last_trade": "2026-11-13",
+     "iv": 0.819,
+     "delta": -0.2381,
+     "otm_pct": 0.105,
+     "buffer_sd": 0.58,
+     "breakeven": 140.59,
+     "annualized": 0.6171,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261127P00140000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 140.0,
+     "collateral": 14000,
+     "bid": 2.29,
+     "ask": 2.51,
+     "mid": 2.4,
+     "premium": 2.345,
+     "repriced": false,
+     "spread_pct": 0.0917,
+     "open_interest": 7109,
+     "volume": 22,
+     "last_trade": "2026-11-13",
+     "iv": 0.9329,
+     "delta": -0.1609,
+     "otm_pct": 0.1359,
+     "buffer_sd": 0.84,
+     "breakeven": 137.66,
+     "annualized": 0.5558,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261211P00145000",
+     "expiry": "2026-12-11",
+     "dte": 25,
+     "strike": 145.0,
+     "collateral": 14500,
+     "bid": 4.9,
+     "ask": 5.35,
+     "mid": 5.125,
+     "premium": 5.013,
+     "repriced": false,
+     "spread_pct": 0.0878,
+     "open_interest": 2424,
+     "volume": 109,
+     "last_trade": "2026-11-13",
+     "iv": 0.7428,
+     "delta": -0.2474,
+     "otm_pct": 0.105,
+     "buffer_sd": 0.54,
+     "breakeven": 139.99,
+     "annualized": 0.5047,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261224P00150000",
+     "expiry": "2026-12-24",
+     "dte": 38,
+     "strike": 150.0,
+     "collateral": 15000,
+     "bid": 7.75,
+     "ask": 8.25,
+     "mid": 8.0,
+     "premium": 7.875,
+     "repriced": false,
+     "spread_pct": 0.0625,
+     "open_interest": 5656,
+     "volume": 67,
+     "last_trade": "2026-11-13",
+     "iv": 0.6698,
+     "delta": -0.314,
+     "otm_pct": 0.0742,
+     "buffer_sd": 0.34,
+     "breakeven": 142.12,
+     "annualized": 0.5043,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261204P00140000",
+     "expiry": "2026-12-04",
+     "dte": 18,
+     "strike": 140.0,
+     "collateral": 14000,
+     "bid": 3.1,
+     "ask": 3.35,
+     "mid": 3.225,
+     "premium": 3.163,
+     "repriced": false,
+     "spread_pct": 0.0775,
+     "open_interest": 2660,
+     "volume": 16,
+     "last_trade": "2026-11-13",
+     "iv": 0.8217,
+     "delta": -0.1833,
+     "otm_pct": 0.1359,
+     "buffer_sd": 0.74,
+     "breakeven": 136.84,
+     "annualized": 0.4581,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261224P00145000",
+     "expiry": "2026-12-24",
+     "dte": 38,
+     "strike": 145.0,
+     "collateral": 14500,
+     "bid": 5.85,
+     "ask": 6.4,
+     "mid": 6.125,
+     "premium": 5.987,
+     "repriced": false,
+     "spread_pct": 0.0898,
+     "open_interest": 2651,
+     "volume": 5,
+     "last_trade": "2026-11-13",
+     "iv": 0.6663,
+     "delta": -0.2599,
+     "otm_pct": 0.105,
+     "buffer_sd": 0.49,
+     "breakeven": 139.01,
+     "annualized": 0.3966,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "NVDA261211P00140000",
+     "expiry": "2026-12-11",
+     "dte": 25,
+     "strike": 140.0,
+     "collateral": 14000,
+     "bid": 3.55,
+     "ask": 3.95,
+     "mid": 3.75,
+     "premium": 3.65,
+     "repriced": false,
+     "spread_pct": 0.1067,
+     "open_interest": 2414,
+     "volume": 1,
+     "last_trade": "2026-11-13",
+     "iv": 0.7454,
+     "delta": -0.1947,
+     "otm_pct": 0.1359,
+     "buffer_sd": 0.7,
+     "breakeven": 136.35,
+     "annualized": 0.3806,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    }
+   ],
+   "ai": {
+    "ticker": "NVDA",
+    "quality_grade": "A",
+    "quality_view": "护城河：CUDA 软件生态加上 GPU/网络/整机柜（Vera Rubin 已量产）的系统级优势，目前没有明显的替代者。盈利：利润率 63.7%，ROE 117%，8 月季度（FY27 Q2）收入 962 亿美元，同比 +106%，毛利率 75.0%，自由现金流约 418 亿美元。资产负债表：D/E 约 17%（数据口径为百分数），回购授权还剩约 990 亿美元，季度回馈股东约 260 亿美元，财务稳健。增长：市场预期本季收入约 1091 亿美元（+91%），EPS 约 2.47 美元。主要扣分项是治理：创始人兼 CEO 黄仁勋辞任，由 CFO Colette Kress 临时兼任 CEO，新闻还提到毛利率有收窄压力。这是管理层不确定性，不是业务恶化，所以评级仍为 A，但在这个评级里不确定性最大。",
+    "risk_level": "高",
+    "summary": "NVDA 业务质地很强，但 11 月 12 日创始人 CEO 黄仁勋辞任，叠加美国收紧对华芯片出口限制，股价从 10 月高点 239 美元左右回落约 32%，当前 161.41 美元即 52 周低点，已连续六周下跌。IV 高达 94.9%，主要原因是 11 月 17 日盘后财报（首次没有黄仁勋）叠加 CEO 继任、地缘和出口管制等多重不确定性。这张合约跨越财报，11 天内预期波动 ±26.58 美元，行权价缓冲只有 0.34 个标准差，缓冲偏薄。",
+    "risks": [
+     "财报事件（11/17 盘后）：期权隐含财报后单日波动约 ±8%（媒体引述），而 breakeven 146.44 只比现价低 9.3%，行权价 152.5 只低 5.5%，一次不及预期的指引加上负面反应就可能击穿。",
+     "治理/领导层：黄仁勋 11 月 12 日辞任，当天盘中最多下跌 14%，收盘约 -4%；报道称其涉及婚外情及与疑似中国间谍关联的指控，董事会已开展独立调查；永久 CEO 人选未定，Baird 已因此下调评级。后续调查结果和人选公布都是不可预测的新闻风险。",
+     "出口管制/地缘：美国正收紧对华半导体出口规则，AMD、博通、CoreWeave 等同日下跌；特朗普本周访华，结果不确定。",
+     "供应链与客户关系：有报道称 Nvidia 与供应商、neocloud 客户的许多合作依赖黄仁勋个人关系，人事变动可能影响订单和供应。",
+     "动量与情绪：股价连续六周下跌（2012 年以来最差），仍在 52 周低点附近，跌破后可能触发技术性抛压；分析师在财报前连续下调目标价。",
+     "估值与 AI 板块风险：AI 资本开支预期若转弱，高增长预期会被压缩，板块联动下跌。另有报道称特朗普持有 Nvidia 股份，政治敏感度高。"
+    ],
+    "news_digest": "（1）11/12 黄仁勋辞任，Kress 任临时 CEO，股价当日盘中最多 -14%，市值从 10 月初约 5.8 万亿美元降至约 3.9 万亿美元。（2）11/16 美国收紧对华芯片出口规则，AMD、博通、台积电、CoreWeave、Nebius 走低；有报道称 Musk 呼吁让黄仁勋回归。（3）财报前 CNBC 报道又有两家分析师下调目标价，Baird 下调评级；市场仍无「卖出」评级的说法来自媒体转述。（4）市场预期 Q3 收入约 1091 亿美元、EPS 约 2.47 美元；公司已连续 14 个季度收入超过自身指引上限。（5）有报道称特朗普持有的 Nvidia 股票最多约 6200 万美元。（6）注意：来源之间的价格口径略有出入，Investing.com 称 11/13 收盘 162.85，11/16 盘前 157.46（-3.3%），而输入数据中盘前涨跌为 0、最新价 161.41；不同来源对 52 周低点的数字也不一致（Motley Fool 页面显示 148.80）。",
+    "catalysts": [
+     "2026-11-17 盘后：FY27 Q3 财报及电话会，首次由 Kress 主持，重点看指引、毛利率、CEO 继任说明。",
+     "2026-11-17 起 本周：特朗普访华，可能涉及贸易与芯片出口。",
+     "待定：董事会对黄仁勋事件的独立调查结果，以及永久 CEO 的任命时间（未公布日期）。",
+     "待定：美国对华半导体出口新规的细则和后续反应。",
+     "2026-11-27：本合约到期日。"
+    ],
+    "option_view": "IV 94.9% 远高于 hv20（53.1%），说明期权市场在为事件风险定价，而非历史波动。主要来源是 11/17 财报和 CEO 动荡，属事件驱动，叠加持续的高恐慌，财报后 IV 大概率回落（IV crush），但现在无法保证。1 个标准差预期波动 26.58 美元（约 16.5%），对应区间约 134.8–188.0；行权价 152.5 离现价 8.91 美元（约 5.5%），缓冲仅 0.34 个标准差，breakeven 146.44 也在 1 个标准差以内。权利金 6.06 美元（约 3.8% 的 11 天收益，年化 132%）补偿了部分风险，但 delta -0.32 说明被行权概率约三成。财报单日 ±8% 的隐含波动恰好覆盖该缓冲，缓冲不算充裕。",
+    "assignment_view": "若被行权，成本价为 breakeven 146.44 美元，需要 15,250 美元担保资金。估值：forward PE 约 10.3 倍，对于收入翻倍的公司相当低，但 forward EPS 依赖市场预期，若指引下调估值会同步变化。技术面：现价 161.41 是 52 周低点（数据口径），较 sma50（213.26）低约 24%，较 sma200（203.77）低约 21%，较 52 周高点 239.24 低 32.5%；146.44 已在无历史支撑的低位区域，下方没有明显的价格参照，趋势明显偏空。接货后的成本比 52 周高点低约 39%，但在被动接货期间仍可能继续承受 CEO 调查和出口管制带来的下行波动。",
+    "sentiment": "Reddit 24 小时热度排名第 1，提及量 745 次（24 小时前 356 次，翻倍），点赞 7194，同时位于 Yahoo 成交最活跃榜。以下是散户和媒体观点，不是事实：讨论集中在「抄底还是价值陷阱」「黄仁勋是否回归」，Motley Fool 等有「32% 回调后是否值得买」的文章。情绪高度两极，波动较大；热度翻倍说明拥挤度上升，短期情绪化交易增多。",
+    "sources": [
+     {
+      "title": "Nvidia Reports Earnings on Nov. 17. Here's What Investors Should Be Watching. (Motley Fool)",
+      "url": "https://www.fool.com/investing/2026/11/15/nvidia-reports-earnings-on-nov-17-2026-heres-what-investors-should-be-watching/"
+     },
+     {
+      "title": "Jensen Huang Might Be the Biggest Wild Card for Nvidia Stock (Motley Fool)",
+      "url": "https://www.fool.com/investing/2026/11/09/jensen-huang-might-be-the-biggest-wild-card-for-nvidia-stock-here-s-what-to-watch-during-earnings-on-nov-17/"
+     },
+     {
+      "title": "NVIDIA Announces Financial Results for Second Quarter Fiscal 2027 (SEC 8-K)",
+      "url": "https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000073/q2fy27pr.htm"
+     },
+     {
+      "title": "Jensen Huang Resigns: 3 Things to Watch From Nvidia on Nov. 17 (Motley Fool)",
+      "url": "https://www.fool.com/investing/2026/11/16/jensen-huang-resigns-3-things-to-watch-from-nvidia-on-nov-17/"
+     },
+     {
+      "title": "Nvidia Reports Earnings Without Jensen Huang Amid Stock Volatility (KuCoin News)",
+      "url": "https://www.kucoin.com/news/flash/nvidia-reports-earnings-without-jensen-huang-amid-stock-volatility"
+     },
+     {
+      "title": "Nvidia is set to report earnings for the first time since Jensen Huang resigned as CEO (Quartz)",
+      "url": "https://qz.com/nvidia-earnings-jensen-huang-resigned-ceo-kress-111626"
+     }
+    ],
+    "deep": true
+   }
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom Inc.",
+   "sector": "Technology",
+   "industry": "Semiconductors",
+   "market_cap": 1656497373184,
+   "roe": 0.44245,
+   "profit_margin": 0.42944,
+   "fcf": 30596499456,
+   "debt_to_equity": 59.604,
+   "forward_pe": 17.874178,
+   "next_earnings": "2026-12-09",
+   "earnings_estimated": false,
+   "price": 331.8999938964844,
+   "price_date": "2026-11-16",
+   "hv20": 0.7234211916704627,
+   "hv252": 0.49248728171402223,
+   "drawdown_52w": 0.30844816012297194,
+   "above_sma200": false,
+   "sma50": 344.7468469238281,
+   "sma200": 366.49016799926756,
+   "low_52w": 291.5299987792969,
+   "high_52w": 479.9350891113281,
+   "price_now": 331.8999938964844,
+   "gap": 0.0,
+   "core": true,
+   "reddit": {
+    "ticker": "AVGO",
+    "rank": 44,
+    "mentions": 9,
+    "mentions_24h_ago": 7,
+    "upvotes": 6
+   },
+   "screens": [],
+   "contracts": [
+    {
+     "contract": "AVGO261211P00315000",
+     "expiry": "2026-12-11",
+     "dte": 25,
+     "strike": 315.0,
+     "collateral": 31500,
+     "bid": 12.9,
+     "ask": 15.6,
+     "mid": 14.25,
+     "premium": 13.575,
+     "repriced": false,
+     "spread_pct": 0.1895,
+     "open_interest": 180,
+     "volume": 30,
+     "last_trade": "2026-11-13",
+     "iv": 0.6581,
+     "delta": -0.3397,
+     "otm_pct": 0.0521,
+     "buffer_sd": 0.3,
+     "breakeven": 301.43,
+     "annualized": 0.6292,
+     "crosses_earnings": true,
+     "earnings_unknown": false
+    }
+   ],
+   "ai": {
+    "ticker": "AVGO",
+    "quality_grade": "A",
+    "quality_view": "护城河：Broadcom 在定制 AI 加速器（XPU）、以太网交换/网络芯片和 VMware 基础设施软件上都有很深的壁垒，客户转换成本高。盈利：净利率 42.9%，ROE 44.2%，自由现金流约 306 亿美元，盈利能力在大型半导体公司中名列前茅。资产负债表：负债/权益 59.6，因收购 VMware 有一定杠杆，但现金流足以覆盖。增长：管理层称 AI 芯片收入 2027 年将翻倍至约 1150 亿美元（管理层口径，未经验证）。短板是客户集中，并且越来越依赖 Anthropic、OpenAI 等融资能力尚未证明的新客户。",
+    "risk_level": "高",
+    "summary": "AVGO 基本面质地很好，但股价较 52 周高点 479.94 回撤 30.8%，低于 SMA50 和 SMA200。近期压力来自：Rothschild & Co Redburn 把评级下调至中性，理由是约 430 亿美元的 AI 融资敞口；美国收紧对华芯片出口规则；以及 Nvidia CEO 辞职丑闻造成的板块动荡。IV 达 65.8%，是因为这些消息叠加，而且合约跨越 12/9 财报，HV20 也高达 72%。",
+    "risks": [
+     "AI 融资风险：Redburn 担心 Anthropic 等前沿 AI 实验室客户无法实现财务自给，Broadcom 约 430 亿美元的融资敞口可能出问题。",
+     "客户自研风险：市场担心 Google 采用客户自有工具（COT）、绕过 Broadcom，份额可能转移。Redburn 认为这更多是情绪，并非已确认的结构性变化。",
+     "监管风险：美国收紧对华芯片出口，AMD、AVGO 同日下跌。",
+     "板块情绪风险：Nvidia CEO 辞职，Nvidia 财报就在这几天，结果可能带动整个 AI 芯片板块波动。",
+     "财报风险：12/9 财报落在到期日 12/11 之前，历史上财报日波动大。",
+     "估值与技术：股价低于 SMA50（344.75）和 SMA200（366.49），趋势偏弱，HV20 达 72%，下跌容易加速。"
+    ],
+    "news_digest": "1) Redburn 把 AVGO 从买入下调至中性，理由是 AI 融资敞口约 430 亿美元，以及 Google 客户自有工具的不确定性；据 TradingView 报道，下调当天股价跌超 6%，此前五个交易日有过一轮明显上涨。2) 11/16 美国收紧对华芯片出口规则，AMD、AVGO、CoreWeave、Nebius 均下跌。3) Nvidia CEO 黄仁勋辞职，传闻他考虑回归（FT 报道），Nvidia 财报临近，板块不确定性上升。4) 管理层称 AI 芯片收入 2027 年将翻倍至 1150 亿美元，供应已锁定，这是公司自己的说法。5) 盘前价格相对昨收无变化（0.0%），没有新的盘前异动。其余 Google News 标题多为 MarketBeat 的机构持仓变动，信息量不大。",
+    "catalysts": [
+     "2026-11 下旬：Nvidia 财报（具体日期未核实，标题称数日内），会影响整个 AI 芯片板块",
+     "后续数周：美国对华芯片出口新规的细则与执行",
+     "2026-12-09：AVGO 财季财报（已确认日期，在到期前）",
+     "2026-12-11：期权到期日",
+     "到期后：Anthropic/OpenAI 融资进展，以及 Google COT 传闻的后续"
+    ],
+    "option_view": "IV 65.8% 偏高，既有事件驱动（12/9 财报、评级下调、出口管制、Nvidia 丑闻），也有持续性偏高的成分（HV20 为 72%）。25 天的 1 个标准差预期波动约 ±57.16 美元，约占股价的 17%。行权价 315 距现价 331.9 只有 16.9 美元，约 0.3 个标准差，缓冲很薄，delta -0.34 也说明被行权概率约三分之一。权利金 13.575 把盈亏平衡价降到 301.43，约比现价低 9.2%，约 0.5 个标准差。年化 62.9% 是对这些风险的补偿，不是无风险收益。财报后 IV 通常回落，但股价如果大幅跳空，损失会超过权利金。",
+    "assignment_view": "被行权的成本是 301.43（行权价 315 减去权利金）。它高于 52 周低点 291.53 约 3.4%，比 SMA200（366.49）低约 18%，比 SMA50（344.75）低约 12.6%，比 52 周高点低约 37%。按现价算 forward PE 为 17.9，对高质量 AI 半导体公司不算贵，但这个估值依赖 2027 年盈利预期，如果 AI 融资链出问题，预期可能下调。技术上，股价处于下降趋势，291.53 的前低是关键支撑，跌破的话可能继续下探。接货后需要能承受 AI 资本开支周期的波动。",
+    "sentiment": "Reddit 热度排名第 44，24 小时内提及 9 次（前一天 7 次），upvotes 仅 6，热度不高，不是散户狂热的标的。散户和市场情绪偏谨慎：分析师评级下调、板块丑闻、出口管制。同时，长线多头仍然看好 AI 定制芯片的增长（以上是观点，不是事实）。",
+    "sources": [
+     {
+      "title": "Broadcom stock falls 6% as this firm flags AI financing risks — TradingView News",
+      "url": "https://www.tradingview.com/news/invezz:afe24353c094b:0-broadcom-stock-falls-6-as-this-firm-flags-ai-financing-risks/"
+     },
+     {
+      "title": "Broadcom (AVGO) Downgraded As Wall Street Questions Its AI Financing Model",
+      "url": "https://ca.finance.yahoo.com/news/broadcom-avgo-downgraded-wall-street-130730831.html"
+     }
+    ],
+    "deep": true
+   }
+  },
+  {
+   "ticker": "TSLA",
+   "name": "Tesla, Inc.",
+   "sector": "Consumer Cyclical",
+   "industry": "Auto Manufacturers",
+   "market_cap": 1542445203456,
+   "roe": 0.03844,
+   "profit_margin": 0.031070001,
+   "fcf": 4967249920,
+   "debt_to_equity": 18.295,
+   "forward_pe": 180.72267,
+   "next_earnings": "2027-01-27",
+   "earnings_estimated": false,
+   "price": 385.0400085449219,
+   "price_date": "2026-11-16",
+   "hv20": 0.6012494946773929,
+   "hv252": 0.4594875569808486,
+   "drawdown_52w": 0.21401158506759244,
+   "above_sma200": true,
+   "sma50": 375.3597985839844,
+   "sma200": 382.5040490722656,
+   "low_52w": 298.32000732421875,
+   "high_52w": 489.8800048828125,
+   "price_now": 385.0400085449219,
+   "gap": 0.0,
+   "core": true,
+   "reddit": {
+    "ticker": "TSLA",
+    "rank": 23,
+    "mentions": 19,
+    "mentions_24h_ago": 18,
+    "upvotes": 209
+   },
+   "screens": [],
+   "contracts": [
+    {
+     "contract": "TSLA261127P00370000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 370.0,
+     "collateral": 37000,
+     "bid": 6.3,
+     "ask": 7.55,
+     "mid": 6.925,
+     "premium": 6.612,
+     "repriced": false,
+     "spread_pct": 0.1805,
+     "open_interest": 1267,
+     "volume": 267,
+     "last_trade": "2026-11-13",
+     "iv": 0.5242,
+     "delta": -0.2968,
+     "otm_pct": 0.0422,
+     "buffer_sd": 0.46,
+     "breakeven": 363.39,
+     "annualized": 0.593,
+     "crosses_earnings": false,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "TSLA261127P00365000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 365.0,
+     "collateral": 36500,
+     "bid": 4.9,
+     "ask": 5.45,
+     "mid": 5.175,
+     "premium": 5.038,
+     "repriced": false,
+     "spread_pct": 0.1063,
+     "open_interest": 950,
+     "volume": 1,
+     "last_trade": "2026-11-13",
+     "iv": 0.5129,
+     "delta": -0.2432,
+     "otm_pct": 0.0552,
+     "buffer_sd": 0.62,
+     "breakeven": 359.96,
+     "annualized": 0.458,
+     "crosses_earnings": false,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "TSLA261224P00370000",
+     "expiry": "2026-12-24",
+     "dte": 38,
+     "strike": 370.0,
+     "collateral": 37000,
+     "bid": 13.95,
+     "ask": 16.45,
+     "mid": 15.2,
+     "premium": 14.575,
+     "repriced": false,
+     "spread_pct": 0.1645,
+     "open_interest": 114,
+     "volume": 27,
+     "last_trade": "2026-11-13",
+     "iv": 0.4752,
+     "delta": -0.3497,
+     "otm_pct": 0.0422,
+     "buffer_sd": 0.28,
+     "breakeven": 355.43,
+     "annualized": 0.3784,
+     "crosses_earnings": false,
+     "earnings_unknown": false
+    },
+    {
+     "contract": "TSLA261224P00355000",
+     "expiry": "2026-12-24",
+     "dte": 38,
+     "strike": 355.0,
+     "collateral": 35500,
+     "bid": 9.55,
+     "ask": 11.6,
+     "mid": 10.575,
+     "premium": 10.062,
+     "repriced": false,
+     "spread_pct": 0.1939,
+     "open_interest": 149,
+     "volume": 52,
+     "last_trade": "2026-11-13",
+     "iv": 0.4928,
+     "delta": -0.2617,
+     "otm_pct": 0.0811,
+     "buffer_sd": 0.51,
+     "breakeven": 344.94,
+     "annualized": 0.2723,
+     "crosses_earnings": false,
+     "earnings_unknown": false
+    }
+   ],
+   "ai": {
+    "ticker": "TSLA",
+    "quality_grade": "B",
+    "quality_view": "护城河：Tesla 在美国电动车、充电网络（NACS）、软件和垂直整合上仍有规模优势，但汽车业务的成本和技术优势已被中国厂商（比亚迪、小鹏等）压缩。护城河更依赖 FSD、Robotaxi 和储能这些尚未被验证的业务。盈利：净利率只有约3.1%，ROE约3.8%，对1.54万亿美元市值来说很低。资产负债表：负债权益比18.3（数据口径偏低），自由现金流约49.7亿美元，财务稳健，短期没有偿债压力。增长：Cybertruck 销量据 Electrek 只有计划的约10%，并将在2027年年中前后停产；Model S/X 已停产；增长故事押在 Cybercab、Optimus 和储能上。前瞻市盈率约181倍，估值远高于盈利能力，所以评为 B，不是 A。",
+    "risk_level": "中",
+    "summary": "Tesla 现金流和资产负债表扎实，但盈利很薄，前瞻 PE 约181倍，股价主要靠 Robotaxi/Cybercab 的叙事支撑，所以质地评为 B。近期有三件事：Cybertruck 宣布停产、Cybercab 开始向“特定”客户销售（12月交付）、马斯克与黄仁勋事件引发的“创始人依赖”讨论。这些都没有明显推升 IV。IV 52.4% 低于 HV20 的60.1%，且合约不跨财报，属于叙事驱动的持续偏高，不是事件驱动。",
+    "risks": [
+     "估值风险：前瞻PE约181倍，成长叙事一旦受挫（Cybercab 交付延期、FSD 监管问题），估值压缩空间大",
+     "Cybertruck 销量只有计划的约10%，并将在2027年年中停产，说明新产品执行有缺口，也可能带来资产减值",
+     "关键人物风险：华盛顿邮报等报道指出标普500近五分之一权重系于三位无明确继任者的创始人；马斯克的言论、政治立场和精力分配（SpaceX、xAI、可能的 Tesla–SpaceX 合并传闻）都可能引发波动",
+     "科技股/AI 板块联动：英伟达 CEO 黄仁勋辞职引发 NVDA 跌约4%、AMD 跌6%、台积电跌5%，11月16日 TSLA 盘中从高点404.40回落到约385，英伟达财报在即，会影响大盘风险偏好",
+     "中国业务：中国占 Q3 收入18.6%，中国厂商价格竞争和地缘政治风险",
+     "缓冲不足：行权价370只比现价低3.9%，仅0.43个标准差，11天内跌破盈亏平衡点363.39（-5.6%）的概率不低（约0.6个标准差）"
+    ],
+    "news_digest": "1) 11月6日马斯克在 X 上宣布，德州工厂 Cybertruck 将在2027年年中前后停产，腾出空间生产 Cybercab；Electrek 称该车销量仅为计划年产25万辆的约10%。2) Tesla 开始向“特定”客户销售 Cybercab，12月交付；有媒体称这与 Marques Brownlee 的30,000美元以下打赌有关（未经证实）。3) 11月16日，英伟达 CEO 黄仁勋辞职后据报考虑回归，马斯克表示支持；NVDA、AMD、台积电下跌，拖累科技板块。4) 同期有 Tesla–SpaceX 合并的猜测文章、一项100亿美元太阳能投资、24/7 Robotaxi 的报道，均为媒体报道，未得到官方证实。5) 机构持仓类 MarketBeat 标题是例行13F报道，没有信息量；ETF 在11月12日净买入 TSLA 5210万美元。盘前涨跌0.0%，没有异动。",
+    "catalysts": [
+     "约2026-11-19前后：英伟达财报（据新闻“数日后”，具体日期未核实），影响 AI/科技板块情绪",
+     "2026-11-27：目标合约到期",
+     "2026-12：Cybercab 向特定客户交付",
+     "2027年1月初：Q4产销交付数据（日期为推测，未核实）",
+     "2027-01-27：Q4财报（已确认），在合约到期之后",
+     "2027年年中：Cybertruck 停产"
+    ],
+    "option_view": "IV 52.4%，11天的1个标准差预期波动为±35.04美元（约9.1%），区间约350–420。行权价370距现价15.04美元（-3.9%），只有0.43个标准差，缓冲偏薄；盈亏平衡价363.39距现价21.65美元（-5.6%），约0.62个标准差。delta -0.30对应约30%的被行权概率。该合约不跨财报，IV 偏高并不来自事件，而来自 TSLA 常态的高波动：HV20为60.1%，IV 低于实际波动，说明权利金没有给足近期的实际波动。权利金6.61美元（1.8%），年化59.3%，补偿的是尾部风险，不是安全垫。",
+    "assignment_view": "被行权成本为363.39，比现价低5.6%，比 SMA200（382.5）低5.0%，比 SMA50（375.36）低3.2%，位置已跌破两条均线，接近但仍高于近期低点。离52周高点489.88低25.8%，比52周低点298.32高21.8%。估值：前瞻PE约181倍，盈利率低，接货价格不便宜，估值依赖未来增长兑现，被行权后若叙事走弱，下行空间主要来自估值压缩，而不是业绩。技术面：当前价在 SMA50 之上、SMA200 附近（385.04 vs 382.5），属于震荡区间，跌破382–375区间后下一个参考位是约300–330区域（推测）。需要自己判断是否愿意在363附近持有1手100股（约3.6万美元）。",
+    "sentiment": "Reddit 热度排名第23，提及19次（24小时前18次），上传209，热度一般，没有过热。以下是散户观点，不是事实：讨论集中在 Cybercab、Robotaxi 和马斯克相关事件。机构13F的 MarketBeat 报道多空参半。总体情绪分歧，没有明显恐慌或狂热。",
+    "sources": [
+     {
+      "title": "Elon Musk announces Tesla will wind down Cybertruck production at Texas factory to make room for Cybercab",
+      "url": "https://finance.yahoo.com/technology/articles/elon-musk-announces-tesla-wind-220000200.html"
+     },
+     {
+      "title": "Tesla to end Cybertruck production as sales stall at ~10% of plan",
+      "url": "https://electrek.co/2026/11/06/tesla-ending-cybertruck-production-sales-10-percent-plan/"
+     },
+     {
+      "title": "The Zacks Analyst Blog Highlights Tesla, SpaceX and Ford",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/zacks-analyst-blog-highlights-tesla-064500779.html"
+     },
+     {
+      "title": "Elon Musk Is Winding Down Cybertruck Production to Build Cybercabs",
+      "url": "https://www.fool.com/investing/2026/11/07/elon-musk-is-winding-down-cybertruck-production-to-build-cybercabs-the-model-s-and-model-x-already-gave-up-their-factory-space-to-robots/"
+     }
+    ],
+    "deep": true
+   }
+  },
+  {
+   "ticker": "TSM",
+   "name": "Taiwan Semiconductor Manufactur",
+   "sector": "Technology",
+   "industry": "Semiconductors",
+   "market_cap": 2068002373632,
+   "roe": 0.41854998,
+   "profit_margin": 0.51116,
+   "fcf": 1203071877120,
+   "debt_to_equity": 11.619,
+   "forward_pe": 17.050463,
+   "next_earnings": "2027-01-14",
+   "earnings_estimated": false,
+   "price": 382.94500732421875,
+   "price_date": "2026-11-16",
+   "hv20": 0.6405188351999223,
+   "hv252": 0.4215818082849338,
+   "drawdown_52w": 0.21172289636323183,
+   "above_sma200": false,
+   "sma50": 429.05271789550784,
+   "sma200": 401.9443193054199,
+   "low_52w": 272.1793518066406,
+   "high_52w": 485.79998779296875,
+   "price_now": 382.94500732421875,
+   "gap": 0.0,
+   "core": true,
+   "reddit": {
+    "ticker": "TSM",
+    "rank": 73,
+    "mentions": 5,
+    "mentions_24h_ago": 13,
+    "upvotes": 9
+   },
+   "screens": [],
+   "contracts": [
+    {
+     "contract": "TSM261127P00360000",
+     "expiry": "2026-11-27",
+     "dte": 11,
+     "strike": 360.0,
+     "collateral": 36000,
+     "bid": 5.0,
+     "ask": 6.1,
+     "mid": 5.55,
+     "premium": 5.275,
+     "repriced": false,
+     "spread_pct": 0.1982,
+     "open_interest": 348,
+     "volume": 9,
+     "last_trade": "2026-11-13",
+     "iv": 0.5649,
+     "delta": -0.2387,
+     "otm_pct": 0.0616,
+     "buffer_sd": 0.63,
+     "breakeven": 354.73,
+     "annualized": 0.4862,
+     "crosses_earnings": false,
+     "earnings_unknown": false
+    }
+   ],
+   "ai": {
+    "ticker": "TSM",
+    "quality_grade": "A",
+    "quality_view": "护城河：先进制程（3nm/2nm）和先进封装几乎垄断，客户包括英伟达、苹果、AMD、博通，转换成本极高。盈利：净利率51.1%，ROE 41.9%，对晶圆代工来说非常强。资产负债表：debt_to_equity 11.6（按 Yahoo 口径，数值很低），自由现金流约 1.2 万亿（输入数据，币种应为新台币），财务稳健。增长：据 Benzinga，10 月营收同比增约 60%，创单月纪录，AI 需求强劲。弱点：地缘风险（台海）、客户集中在 AI 链条、资本开支很大，海外建厂压低毛利。",
+    "risk_level": "中",
+    "summary": "TSM 质地顶级，但近期受英伟达 CEO 黄仁勋 11 月 12 日突然辞职拖累，股价从 11/12 收盘 405.49 美元跌到约 382.95，11/16 单日跌约 5%，现价低于 sma50 和 sma200。IV 56.5% 偏高，主要是 AI 链条的领导层与监管不确定性、HV20 高达 64%，而不是自身财报（下次财报 2027-01-14，不在到期前）。行权价 360 只比现价低 6%，缓冲仅 0.61 个标准差，而 AI 链条情绪仍不稳。",
+    "risks": [
+     "英伟达事件还在发酵：据标题，其新 CEO 人选、华盛顿要求改组、传闻中的间谍和私人问题都未落定，英伟达财报约几天后公布（具体日期未查到），指引若偏弱会直接拖累 TSM 这个核心供应商。",
+     "缓冲不足：11 天预期 1 个标准差波动约 ±37.55（约 9.8%），行权价 360 离现价 22.95，盈亏平衡 354.73 只低 7.4%，HV20 64% 说明近期实际波动不小，跌破的概率不低（delta 约 -0.24）。",
+     "AI 资本开支叙事风险：板块已从高位回落，TSM 较 52 周高点 485.8 下跌 21.2%；若 AI 链条继续去杠杆，可能继续下探。",
+     "地缘与政策：台海局势、美国对华芯片出口管制、关税与补贴政策变化，属于低概率但冲击大的尾部风险；标题还提到'中国芯片禁令可能反噬'的讨论。",
+     "技术面偏弱：价格跌破 sma50（429）和 sma200（402），下方技术支撑不明显，下一个参考区间是 52 周低点 272 附近，距离很远。"
+    ],
+    "news_digest": "1) 11/12 英伟达宣布 CEO 黄仁勋立即辞任（总裁、CEO、董事），TSM 当日收盘 405.49 美元，跌 1.9%（heygotrade/Benzinga）。2) 11/16 Yahoo 标题称英伟达跌 4%、AMD 跌 6%、TSM 跌 5%，原因是领导层真空、华盛顿施压改组、英伟达财报临近，TSM 跌幅比英伟达还大（该标题只给了原因框架，我没有读到更细的归因）。3) 利好但被掩盖：TSMC 10 月营收创单月纪录，同比增约 60%。4) 台湾政府补贴约 NT$167.6 十亿，用于全球晶圆厂扩张（ad-hoc-news 标题）。5) 其他：文艺复兴科技大幅减持英伟达，机构持仓变动（MarketBeat）多为例行 13F 披露，无信息量。今日盘前涨跌 0.0%，没有异动。",
+    "catalysts": [
+     "约 11 月 17–21 日（未确认具体日期）：英伟达财报，是到期前最大的行业事件。",
+     "英伟达新任 CEO 的任命消息，时间不定。",
+     "2026-11-27：期权到期（感恩节次日，提前收盘）。",
+     "约 2026-12-10：TSMC 公布 11 月营收（按惯例每月 10 日前后）。",
+     "2027-01-14：TSMC 四季度财报及 2027 年资本开支和指引（非预估日期）。"
+    ],
+    "option_view": "IV 56.5% 明显高于 TSM 平时水平，原因是事件驱动加上持续偏高的混合：英伟达 CEO 辞任和财报临近推高整个 AI 链条的 IV，同时 HV20 达 64%，说明实际波动也很大。TSM 自身财报不在到期前。11 天的 1 个标准差预期波动约 ±37.55（约 9.8%），行权价 360 在现价下方 22.95，缓冲只有 0.61 个标准差，约相当于 0.6 倍的预期波动，不算厚。权利金 5.275，年化 48.6%，补偿了这种风险，但缓冲不够时年化高主要反映了风险高。若英伟达财报引发二次下跌，360 有可能被触及。",
+    "assignment_view": "若被行权，成本约 354.73（行权价 360 减权利金）。估值：当前 forward PE 约 17.05，按 354.73 折算约 15.8 倍，对营收增长约 60%、净利率 51% 的龙头来说不算贵。技术位置：354.73 比 sma200（401.94）低约 12%，比 sma50（429.05）低约 17%，比 52 周高点 485.8 低约 27%，高于 52 周低点 272.18 约 30%。也就是说接货价在长期均线下方的趋势弱势区，估值有安全边际，但短期下跌动能还没有被确认止住，被行权后可能继续被套。",
+    "sentiment": "Reddit 热度很低：排名第 73，24 小时提及 5 次（前一天 13 次），点赞 9，只是散户的零星讨论，不代表有拥挤交易。市场情绪整体是对英伟达领导层危机的担忧蔓延到整个 AI 半导体链；也有一些媒体和分析人士认为是'逢低关注 TSMC 和设备股'的机会（属于观点，不是事实）。TSM 不在 Yahoo 成交最活跃或跌幅榜上。",
+    "sources": [
+     {
+      "title": "TSMC Stock (TSM) Falls 1.9% After Nvidia CEO Resignation (Nov 12) - heygotrade",
+      "url": "https://www.heygotrade.com/en/news/tsmc-tsm-stock-news-november-13-2026/"
+     },
+     {
+      "title": "What's Going on with Taiwan Semiconductor Stock on Thursday? - Benzinga",
+      "url": "https://www.benzinga.com/markets/tech/26/11/63206696/whats-going-on-with-taiwan-semiconductor-stock-on-thursday-4"
+     }
+    ],
+    "deep": true
+   }
+  }
+ ]
+}
