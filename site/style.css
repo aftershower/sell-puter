@@ -92,6 +92,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 20px; line-height: 1.
 .st-已验证 { background: var(--good-soft); color: var(--good); }
 .st-假设 { background: var(--warn-soft); color: var(--warn); }
 .st-已推翻 { background: var(--bad-soft); color: var(--bad); }
+.v-对, .c-好 { background: var(--good-soft); color: var(--good); }
+.v-部分对, .c-一般 { background: var(--warn-soft); color: var(--warn); }
+.v-错, .c-差 { background: var(--bad-soft); color: var(--bad); }
+.v-待定, .c-待定 { background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); }
+#grades .lesson > div { margin: 2px 0; }
+#grades .mini { margin-bottom: 8px; }
+details.card > summary { cursor: pointer; }
+details.card > summary h3 { display: inline; }
 .pos { color: var(--good); font-weight: 600; }
 .neg { color: var(--bad); font-weight: 600; }
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }

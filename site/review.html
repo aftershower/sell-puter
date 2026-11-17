@@ -13,17 +13,19 @@
   <div class="sub" id="sub">加载中…</div>
   <div class="stats" id="stats"></div>
   <div class="card" id="summary"></div>
+  <div class="card" id="grades"></div>
   <div class="grid2">
     <div class="card" id="lessons"></div>
     <div class="card" id="suggestions"></div>
   </div>
-  <div class="card"><h3>按维度看结果</h3><div class="small">胜率 = 已到期合约中盈利的比例；收益 = 每笔盈亏 ÷ 担保金；触及行权价 = 持有期间收盘价曾低于行权价。</div><div id="buckets"></div></div>
+  <details class="card"><summary><h3>按维度看结果（数据统计）</h3></summary><div class="small">胜率 = 已到期合约中盈利的比例；收益 = 每笔盈亏 ÷ 担保金；触及行权价 = 持有期间收盘价曾低于行权价。</div><div id="buckets"></div></details>
   <h3>历史推荐</h3>
   <table class="cards">
     <thead><tr><th>推荐日</th><th>股票</th><th>合约</th><th>权利金</th><th>AI</th><th>状态</th><th>最新 / 最低收盘</th><th>盈亏（每手）</th></tr></thead>
     <tbody id="recs"></tbody>
   </table>
   <footer>
+    判卷：每晚由 AI 拿当天的笔记对照后来的走势，分别判"分析对不对"（风险评级、风险点、催化剂、IV 解读是否成立）和"建议好不好"（权利金是否补偿了实际风险，和同一天其他合约相比）。到期的做终判，持有期间收盘跌破行权价时做一次跌破检查，推荐满几个交易日做一次中期检查。判卷尽量避免后见之明：只有当时就能知道却漏掉的才算分析错。
     "推荐"指当天页面默认条件下每只股票年化最高的那张合约；同一合约多天出现只算第一天。权利金是当天早上的估算成交价（中间价减 ¼ 价差，盘前有变动时按盘前价重估），实际成交会不同。
     未到期合约的盈亏是估算：用最新收盘价和卖出时的 IV 按 Black-Scholes 算出合约现值，再和收到的权利金相减。经验库由每晚的 AI 复盘自动维护，只影响第二天的 AI 分析；建议不会自动生效。本页不构成投资建议。
   </footer>
@@ -44,7 +46,39 @@ async function getJson(url) {
   return r.json();
 }
 
-function render(rv, dr) {
+const STAGE = { final: "到期终判", stress: "跌破检查", mid: "中期检查" };
+const ORDER = { "错": 0, "部分对": 1, "对": 2, "待定": 3 };
+let showAllGrades = false;
+
+function renderGrades(grades, sb, night) {
+  // one line per contract: its most recent grade
+  const latest = Object.values(Object.fromEntries(grades.map((g) => [g.contract, g])))
+    .sort((a, b) => b.graded_on.localeCompare(a.graded_on) || ORDER[a.verdict] - ORDER[b.verdict] || a.ticker.localeCompare(b.ticker));
+  const row = (label, t) => t?.n ? `<tr><td>${label}</td><td>${t.n}</td>${["对", "部分对", "错", "待定"].map((v) => `<td>${t.verdict[v]}</td>`).join("")}${["好", "一般", "差", "待定"].map((c) => `<td>${t.call[c]}</td>`).join("")}</tr>` : "";
+  const table = sb?.all?.n ? `<div class="scroll"><table class="mini"><thead><tr><th></th><th>条数</th><th>分析对</th><th>部分对</th><th>错</th><th>待定</th><th>建议好</th><th>一般</th><th>差</th><th>待定</th></tr></thead><tbody>
+    ${row("全部", sb.all)}${row("已到期", sb.final)}${["低", "中", "高"].map((k) => row(`当天评${k}风险`, sb.by_risk[k])).join("")}
+    </tbody></table></div>` : "";
+  const shown = showAllGrades ? latest : latest.slice(0, 20);
+  const item = (g) => {
+    const pnl = g.pnl == null ? "" : ` · <span class="${g.pnl > 0 ? "pos" : g.pnl < 0 ? "neg" : ""}">${usd(g.pnl)}</span>${g.pnl_final ? "" : '<span class="small"> 估</span>'}`;
+    const isNew = g.graded_on === night ? ' <span class="tag rd">今晚</span>' : "";
+    return `<div class="lesson">
+      <div><span class="tag v-${esc(g.verdict)}">分析 ${esc(g.verdict)}</span> <span class="tag c-${esc(g.call)}">建议 ${esc(g.call)}</span>
+        <span class="tk">${esc(g.ticker)}</span> <span class="small">${g.date.slice(5)} 推荐 · ${g.expiry.slice(5)} 到期 $${g.strike}P · 当天评${esc(g.ai_risk ?? "–")}风险 · ${STAGE[g.stage] ?? esc(g.stage)}</span>${pnl}${isNew}</div>
+      <div><b>当时说：</b>${esc(g.claim)}</div>
+      <div><b>后来：</b>${esc(g.outcome)}</div>
+      ${g.right && g.right !== "无" ? `<div class="small"><b class="pos">✓</b> ${esc(g.right)}</div>` : ""}
+      ${g.wrong && g.wrong !== "无" ? `<div class="small"><b class="neg">✗</b> ${esc(g.wrong)}${g.knowable ? ' <span class="tag earn">当时可知</span>' : ""}</div>` : ""}
+    </div>`;
+  };
+  $("grades").innerHTML = `<h3>判卷：逐条对照当时的笔记和后来的走势</h3>` + (latest.length
+    ? table + shown.map(item).join("") + (latest.length > 20 ? `<button id="moreGrades">${showAllGrades ? "收起" : `显示全部 ${latest.length} 条`}</button>` : "")
+    : `<p class="small">还没有判过卷。推荐到期、收盘跌破行权价，或者持有满几个交易日后，每晚会逐条判一次。</p>`);
+  const more = $("moreGrades");
+  if (more) more.onclick = () => { showAllGrades = !showAllGrades; renderGrades(grades, sb, night); };
+}
+
+function render(rv, dr, grades) {
   const o = rv?.overall;
   $("sub").textContent = `结果截至 ${rv?.as_of ?? "–"} 收盘` + (dr?.generated_at ? ` · AI 复盘于 ${dr.generated_at.replace("T", " ")}（美东）` : "");
   $("stats").innerHTML = o ? [
@@ -53,8 +87,12 @@ function render(rv, dr) {
   ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("") : "";
 
   const spend = dr?.spend ? `<span class="small">（AI 花费约 $${dr.spend.usd.toFixed(2)}，搜索 ${dr.spend.searches} 次）</span>` : "";
-  $("summary").innerHTML = `<h3>今晚的复盘 ${spend}</h3>` +
-    (dr?.review_summary ? `<p>${esc(dr.review_summary)}</p>` : `<p class="small">${esc(dr?.error || "还没有复盘。第一批推荐到期或经过几个交易日后，这里才会有内容。")}</p>`);
+  $("summary").innerHTML = `<h3>${esc(dr?.date ?? "")} 复盘：之前的判断对不对 ${spend}</h3>` +
+    (dr?.review_summary ? `<p>${esc(dr.review_summary)}</p>` : "") +
+    (dr?.error ? `<p class="small">${esc(dr.error)}</p>` : "") +
+    (!dr?.review_summary && !dr?.error ? `<p class="small">还没有复盘。推荐到期、跌破行权价或持有几个交易日后，这里才会有内容。</p>` : "");
+
+  renderGrades(grades || [], dr?.scoreboard, dr?.date);
 
   const lessons = dr?.lessons || [];
   $("lessons").innerHTML = `<h3>经验库（明早的 AI 会读到）</h3>` + (lessons.length
@@ -90,8 +128,8 @@ function render(rv, dr) {
 }
 
 (async () => {
-  const [rv, dr] = await Promise.all([getJson("data/review.json").catch(() => null), getJson("data/dream.json").catch(() => null)]);
-  render(rv, dr);
+  const [rv, dr, grades] = await Promise.all(["review", "dream", "grades"].map((f) => getJson(`data/${f}.json`).catch(() => null)));
+  render(rv, dr, grades);
 })();
 </script>
 </body>

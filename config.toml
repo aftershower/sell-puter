@@ -76,11 +76,13 @@ effort = "low"                      # 其余股票的批量简要笔记
 news_per_ticker = 8                 # Yahoo 和 Google News 各取几条标题
 
 [dream]
-# 每个交易日晚上 8 点（美东）复盘：给过往推荐打分，AI 更新自己的经验库（memory/），明早的分析会读到
+# 每个交易日晚上 8 点（美东）复盘：先给之前的笔记判卷（分析对不对、建议好不好），再据此更新经验库（memory/），明早的分析会读到
 enabled = true
 budget_usd = 0.7                    # 复盘的 AI 花费上限；加上早上的 1.8，每个交易日约 $2.5
 effort = "high"
-searches = 3                        # 复盘时最多联网搜索几次（查跌破行权价的股票发生了什么）
+searches = 3                        # 判卷时每批（8 条）最多联网搜索几次（查跌破行权价的股票发生了什么）
+grade_max = 24                      # 每晚最多判几条（到期的优先，其次是跌破行权价的，再次是中期检查）
+grade_after_sessions = 3            # 推荐后满几个交易日做第一次中期检查
 
 [run]
 workers = 4                         # 并发请求数，太大会被 Yahoo 限流

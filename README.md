@@ -35,13 +35,13 @@
 
 GitHub 自带的定时任务对这个仓库很不可靠：实测延迟 6–10 小时，或者干脆不触发。workflow 里的 cron 只当后备，主触发用外部定时服务调用 GitHub API：
 
-1. GitHub → Settings → Developer settings → Fine-grained personal access tokens → Generate new token：Repository access 只选 `aftershower/sell-puter`，Permissions 里只给 **Actions: Read and write**。有效期最长一年，到期要换。
-2. 在 [cron-job.org](https://cron-job.org)（免费）建两个任务，时区选 `America/New_York`，周一到周五：
+1. 打开 [这个链接](https://github.com/settings/personal-access-tokens/new?name=sell-puter-cron&description=cron-job.org+triggers+daily+scan+and+nightly+review&target_name=aftershower&expires_in=366&actions=write)（已预填名称、一年有效期和 **Actions: Read and write** 权限），Repository access 手动选 **Only select repositories → `aftershower/sell-puter`**，然后 Generate token，复制下来。到期要换（cron-job.org 会开始报 401）。
+2. 在 [cron-job.org](https://cron-job.org)（免费）建两个任务（Create cronjob；请求方法、Headers、Body、时区在 Advanced 里），时区选 `America/New_York`，周一到周五：
    - 早上扫描 09:05：`POST https://api.github.com/repos/aftershower/sell-puter/actions/workflows/daily.yml/dispatches`
    - 晚上复盘 20:05：`POST https://api.github.com/repos/aftershower/sell-puter/actions/workflows/dream.yml/dispatches`
    - Headers：`Authorization: Bearer <你的 token>`、`Accept: application/vnd.github+json`、`X-GitHub-Api-Version: 2022-11-28`
    - Body：`{"ref":"main","inputs":{"auto":"true"}}`（`auto` 表示按定时规则判断要不要跑）
-3. 成功时 GitHub 返回 204，Actions 页面会出现一次 `workflow_dispatch` 运行。
+3. 建好后点 Test run：成功时 GitHub 返回 204，Actions 页面会出现一次 `workflow_dispatch` 运行。当天已经跑过的话它会直接跳过，不花钱，所以随时可以测。
 
 ## 改规则
 

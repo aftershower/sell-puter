@@ -70,7 +70,7 @@ def load_recs() -> list[dict]:
     return recs
 
 
-def _closes(tickers: list[str], start: str) -> pd.DataFrame:
+def closes(tickers: list[str], start: str) -> pd.DataFrame:
     # raw (unadjusted) closes: strikes are in unadjusted prices
     df = yf.download(tickers, start=start, auto_adjust=False, progress=False, threads=True)["Close"]
     if isinstance(df, pd.Series):
@@ -79,31 +79,38 @@ def _closes(tickers: list[str], start: str) -> pd.DataFrame:
     return df
 
 
+def outcome(k: dict, path: pd.Series, today: date, price: float | None = None) -> dict:
+    """What happened to a sold put, given the stock's closes from the day it was sold (path)."""
+    expiry = date.fromisoformat(k["expiry"])
+    path = path.dropna()
+    path = path[path.index <= min(expiry, today)]
+    if path.empty:
+        return {"status": "no_data"}
+    last, K, prem = float(path.iloc[-1]), k["strike"], k["premium"]
+    o = {"sessions": len(path), "last_close": round(last, 2), "min_close": round(float(path.min()), 2),
+         "touched_strike": bool(path.min() < K)}
+    if price:
+        o["move"] = round(last / price - 1, 4)
+        o["worst_move"] = round(float(path.min()) / price - 1, 4)
+    if path.index[-1] >= expiry:
+        o["status"] = "expired_worthless" if last >= K else "assigned"
+        o["pnl"] = round((prem - max(0.0, K - last)) * 100, 2)
+        o["return"] = round(o["pnl"] / k["collateral"], 4)
+    else:
+        o["status"] = "below_breakeven" if last <= k["breakeven"] else "below_strike" if last < K else "otm"
+        # mark the put at the latest close with the IV it was sold at (no stored quotes for later days)
+        value = bs_put(last, K, max((expiry - today).days, 1) / 365, RATE, k["iv"])[0]
+        o["pnl_est"] = round((prem - value) * 100, 2)
+    return o
+
+
 def score(recs: list[dict], today: date) -> list[dict]:
     if not recs:
         return []
-    closes = _closes(sorted({r["ticker"] for r in recs}), min(r["date"] for r in recs))
+    cl = closes(sorted({r["ticker"] for r in recs}), min(r["date"] for r in recs))
     for r in recs:
-        start, expiry = date.fromisoformat(r["date"]), date.fromisoformat(r["expiry"])
-        path = closes[r["ticker"]].dropna() if r["ticker"] in closes else pd.Series(dtype=float)
-        path = path[(path.index >= start) & (path.index <= min(expiry, today))]
-        if path.empty:
-            r["status"] = "no_data"
-            continue
-        last, K, prem = float(path.iloc[-1]), r["strike"], r["premium"]
-        r["last_close"] = round(last, 2)
-        r["min_close"] = round(float(path.min()), 2)
-        r["touched_strike"] = bool(path.min() < K)
-        r["worst_move"] = round(float(path.min()) / r["price_at_rec"] - 1, 4)
-        if path.index[-1] >= expiry:
-            r["status"] = "expired_worthless" if last >= K else "assigned"
-            r["pnl"] = round((prem - max(0.0, K - last)) * 100, 2)
-            r["return"] = round(r["pnl"] / r["collateral"], 4)
-        else:
-            r["status"] = "below_breakeven" if last <= r["breakeven"] else "below_strike" if last < K else "otm"
-            # mark the put at the latest close with the IV it was sold at (no stored quotes for later days)
-            value = bs_put(last, K, max((expiry - today).days, 1) / 365, RATE, r["iv"])[0]
-            r["pnl_est"] = round((prem - value) * 100, 2)
+        path = cl[r["ticker"]] if r["ticker"] in cl else pd.Series(dtype=float)
+        r.update(outcome(r, path[path.index >= date.fromisoformat(r["date"])], today, r["price_at_rec"]))
     return recs
 
 
