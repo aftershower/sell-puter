@@ -23,13 +23,17 @@ def main() -> None:
     cfg = tomllib.loads(Path("config.toml").read_text())
     q, o, pg, a, workers = cfg["quality"], cfg["options"], cfg["page"], cfg["ai"], cfg["run"]["workers"]
     now = datetime.now(ZoneInfo("America/New_York"))
-    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and not tradingdays.is_trading_day(now.date()):
-        log.info("%s is not a trading day; skipping", now.date())
-        return
-    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and (DATA / "history" / f"{now.date()}.json").exists():
-        # a late 13:00 UTC run and the 14:00 UTC run can both land at 9:xx in winter
-        log.info("already scanned today; skipping")
-        return
+    # automatic triggers (GitHub cron, external cron) can land any time and several times a day
+    if os.environ.get("SELLPUTER_AUTO") == "true":
+        if not tradingdays.is_trading_day(now.date()):
+            log.info("%s is not a trading day; skipping", now.date())
+            return
+        if not (9, 0) <= (now.hour, now.minute) < (15, 30):
+            log.info("%s is outside the 9:00-15:30 scan window; skipping", now.strftime("%H:%M"))
+            return
+        if (DATA / "history" / f"{now.date()}.json").exists():
+            log.info("already scanned today; skipping")
+            return
 
     u = cfg["universe"]
     trending = universe.reddit_trending(u["reddit_top_n"], u["reddit_ignore"]) if u["reddit_top_n"] else []

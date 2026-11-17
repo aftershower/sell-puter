@@ -114,19 +114,17 @@ def main() -> None:
     logging.getLogger("yfinance").setLevel(logging.CRITICAL)
     cfg = tomllib.loads(Path("config.toml").read_text())
     now = datetime.now(ZoneInfo("America/New_York"))
-    if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
-        if not tradingdays.is_trading_day(now.date()):
-            log.info("%s is not a trading day; skipping", now.date())
-            return
-        if SITE_DREAM.exists() and json.loads(SITE_DREAM.read_text()).get("date") == now.date().isoformat():
-            log.info("already dreamed today; skipping")
-            return
+    # review the latest trading day that has closed, whenever the trigger happens to land
+    session = tradingdays.last_closed_session(now)
+    if os.environ.get("SELLPUTER_AUTO") == "true" and SITE_DREAM.exists() and json.loads(SITE_DREAM.read_text()).get("date") == session.isoformat():
+        log.info("%s already reviewed; skipping", session)
+        return
 
-    rv = review.build(now.date())
+    rv = review.build(session)
     lessons = json.loads(LESSONS.read_text()) if LESSONS.exists() else []
     d = cfg["dream"]
     result = {"review_summary": None, "lessons": lessons, "suggestions": []}
-    status = {"date": now.date().isoformat(), "generated_at": now.isoformat(timespec="minutes"), "error": None, "spend": None}
+    status = {"date": session.isoformat(), "generated_at": now.isoformat(timespec="minutes"), "error": None, "spend": None}
 
     if not (d["enabled"] and os.environ.get("ANTHROPIC_API_KEY")):
         status["error"] = "AI 未启用"

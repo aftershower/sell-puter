@@ -13,8 +13,9 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from .options import matches_page
+from .options import bs_put, matches_page
 
+RATE = 0.04  # for marking open puts; a rough rate is fine here
 HIST = Path("site/data/history")
 OUT = Path("site/data/review.json")
 
@@ -100,8 +101,9 @@ def score(recs: list[dict], today: date) -> list[dict]:
             r["return"] = round(r["pnl"] / r["collateral"], 4)
         else:
             r["status"] = "below_breakeven" if last <= r["breakeven"] else "below_strike" if last < K else "otm"
-            # intrinsic-only mark: ignores remaining time value, so it flatters open losers a bit
-            r["pnl_est"] = round((prem - max(0.0, K - last)) * 100, 2)
+            # mark the put at the latest close with the IV it was sold at (no stored quotes for later days)
+            value = bs_put(last, K, max((expiry - today).days, 1) / 365, RATE, r["iv"])[0]
+            r["pnl_est"] = round((prem - value) * 100, 2)
     return recs
 
 

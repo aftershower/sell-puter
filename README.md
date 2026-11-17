@@ -31,6 +31,18 @@
 2. 仓库 Settings → Pages → Source 选 **GitHub Actions**
 3. Actions → daily-scan → Run workflow，手动跑一次
 
+## 定时触发（重要）
+
+GitHub 自带的定时任务对这个仓库很不可靠：实测延迟 6–10 小时，或者干脆不触发。workflow 里的 cron 只当后备，主触发用外部定时服务调用 GitHub API：
+
+1. GitHub → Settings → Developer settings → Fine-grained personal access tokens → Generate new token：Repository access 只选 `aftershower/sell-puter`，Permissions 里只给 **Actions: Read and write**。有效期最长一年，到期要换。
+2. 在 [cron-job.org](https://cron-job.org)（免费）建两个任务，时区选 `America/New_York`，周一到周五：
+   - 早上扫描 09:05：`POST https://api.github.com/repos/aftershower/sell-puter/actions/workflows/daily.yml/dispatches`
+   - 晚上复盘 20:05：`POST https://api.github.com/repos/aftershower/sell-puter/actions/workflows/dream.yml/dispatches`
+   - Headers：`Authorization: Bearer <你的 token>`、`Accept: application/vnd.github+json`、`X-GitHub-Api-Version: 2022-11-28`
+   - Body：`{"ref":"main","inputs":{"auto":"true"}}`（`auto` 表示按定时规则判断要不要跑）
+3. 成功时 GitHub 返回 204，Actions 页面会出现一次 `workflow_dispatch` 运行。
+
 ## 改规则
 
 所有参数都在 [config.toml](config.toml)，改完 push 即可。
@@ -49,6 +61,6 @@ python3 -m http.server 8765 --directory site         # 本地看页面
 ## 注意
 
 - 数据来自 Yahoo Finance（非官方接口），偶尔会限流。超过 30% 的期权链拉取失败时，这次运行会报错退出，不覆盖前一天的结果。
-- GitHub 的定时任务是 UTC 时间，没有夏令时，而且经常延迟、偶尔整个丢掉（整点最严重）。所以早上的任务在 13:07、14:07、15:07 UTC 各触发一次，落在纽约时间 9:00–11:59 的才运行，当天已有结果就自动跳过；晚上的复盘同理（纽约时间 20:00–22:59）。只要有一次触发成功，当天就有结果，最坏情况是晚一两个小时。
+- 自动触发不管什么时候到都是安全的：早上的扫描只在交易日纽约时间 9:00–15:30 运行，当天已有结果就跳过；复盘总是复盘"最近一个已收盘的交易日"，复盘过就跳过。所以多触发几次也不会重复花钱。
 - Yahoo 的期权报价有约 15 分钟延迟，刚开盘那十几分钟给的还是盘前快照，大部分合约没有 bid。扫描前会先探测几只大盘股的报价，不可用就每分钟重试，最多等 45 分钟；等不到就不发布，页面保留上一次的结果。
 - 仓库是 public，所以页面和数据都是公开的。

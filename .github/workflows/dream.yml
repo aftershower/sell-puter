@@ -2,34 +2,22 @@ name: nightly-review
 
 on:
   schedule:
-    # 8pm New York = 00:00 or 01:00 UTC the next day depending on DST. Fire three times since
-    # scheduled runs can come late or get dropped; the gate takes 20:00-22:59 New York time and
-    # the job skips itself once tonight's review exists.
-    - cron: "7 0,1,2 * * 2-6"
+    # Fallback only, like daily.yml: GitHub's scheduled runs come hours late or not at all. Any
+    # trigger works: sellputer.dream reviews the latest trading day that has closed, once.
+    - cron: "7 22,0,2,4,6,8,10,12 * * *"
   workflow_dispatch:
+    inputs:
+      auto:
+        description: "Automatic run: skip if the latest closed trading day was already reviewed"
+        type: boolean
+        default: false
 
 concurrency:
   group: sellputer  # shared with daily.yml so the two never push at once
   cancel-in-progress: false
 
 jobs:
-  gate:
-    runs-on: ubuntu-latest
-    outputs:
-      run: ${{ steps.check.outputs.run }}
-    steps:
-      - id: check
-        run: |
-          hour=$((10#$(TZ=America/New_York date +%H)))
-          if [ "${{ github.event_name }}" = "schedule" ] && { [ "$hour" -lt 20 ] || [ "$hour" -ge 23 ]; }; then
-            echo "run=false" >> "$GITHUB_OUTPUT"; echo "NY hour is $hour, skipping"
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
-
   dream:
-    needs: gate
-    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -49,14 +37,18 @@ jobs:
       - name: Review and update memory
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SELLPUTER_AUTO: ${{ github.event_name == 'schedule' || inputs.auto == true }}
         run: uv run python -m sellputer.dream
 
       - name: Commit results
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data memory
-          git diff --cached --quiet || git commit -m "review $(TZ=America/New_York date +%F)"
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          git commit -m "review $(python3 -c 'import json; print(json.load(open("site/data/dream.json"))["date"])')"
           for i in 1 2 3; do
             if git pull --rebase && git push; then exit 0; fi
             sleep $((i * 10))
@@ -64,8 +56,11 @@ jobs:
           exit 1
 
       - uses: actions/configure-pages@v5
+        if: steps.commit.outputs.changed == 'true'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true'
         with:
           path: site
       - id: deploy
+        if: steps.commit.outputs.changed == 'true'
         uses: actions/deploy-pages@v4

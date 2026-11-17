@@ -2,34 +2,23 @@ name: daily-scan
 
 on:
   schedule:
-    # GitHub cron is UTC with no DST, and scheduled runs come late or get dropped (worst at :00).
-    # Fire three times; the gate lets anything landing 9:00-11:59 New York time through, and the
-    # scan skips itself once today's results exist.
-    - cron: "7 13,14,15 * * 1-5"
+    # GitHub's scheduled runs come hours late or not at all, so these are only a fallback; the main
+    # trigger is an external cron calling workflow_dispatch with auto=true (see README). Every
+    # automatic trigger is checked in sellputer.main: trading day, 9:00-15:30 New York, not yet scanned.
+    - cron: "7,37 13-19 * * 1-5"
   workflow_dispatch:
+    inputs:
+      auto:
+        description: "Automatic run: skip holidays, times outside 9:00-15:30 New York, and days already scanned"
+        type: boolean
+        default: false
 
 concurrency:
   group: sellputer  # shared with dream.yml so the two never push at once
   cancel-in-progress: false
 
 jobs:
-  gate:
-    runs-on: ubuntu-latest
-    outputs:
-      run: ${{ steps.check.outputs.run }}
-    steps:
-      - id: check
-        run: |
-          hour=$((10#$(TZ=America/New_York date +%H)))
-          if [ "${{ github.event_name }}" = "schedule" ] && { [ "$hour" -lt 9 ] || [ "$hour" -ge 12 ]; }; then
-            echo "run=false" >> "$GITHUB_OUTPUT"; echo "NY hour is $hour, skipping"
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
-
   scan:
-    needs: gate
-    if: needs.gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 100  # may wait up to 45 min for live option quotes
     permissions:
@@ -55,14 +44,18 @@ jobs:
       - name: Scan
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SELLPUTER_AUTO: ${{ github.event_name == 'schedule' || inputs.auto == true }}
         run: uv run python -m sellputer.main
 
       - name: Commit results
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/data
-          git diff --cached --quiet || git commit -m "scan $(TZ=America/New_York date +%F)"
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          git commit -m "scan $(TZ=America/New_York date +%F)"
           for i in 1 2 3; do
             if git pull --rebase && git push; then exit 0; fi
             sleep $((i * 10))
@@ -70,8 +63,11 @@ jobs:
           exit 1
 
       - uses: actions/configure-pages@v5
+        if: steps.commit.outputs.changed == 'true'
       - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true'
         with:
           path: site
       - id: deploy
+        if: steps.commit.outputs.changed == 'true'
         uses: actions/deploy-pages@v4
