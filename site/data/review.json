@@ -1,13 +1,13 @@
 {
- "as_of": "2026-11-17",
+ "as_of": "2026-11-18",
  "overall": {
   "n": 56,
   "closed": 0,
   "win_rate": null,
   "assigned_rate": null,
   "avg_return": null,
-  "touched_rate": 0.125,
-  "open_below_strike": 7
+  "touched_rate": 0.196,
+  "open_below_strike": 11
  },
  "buckets": {
   "AI 风险": [
@@ -18,8 +18,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.0,
-    "open_below_strike": 0
+    "touched_rate": 0.083,
+    "open_below_strike": 1
    },
    {
     "key": "高",
@@ -28,8 +28,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.159,
-    "open_below_strike": 7
+    "touched_rate": 0.227,
+    "open_below_strike": 10
    }
   ],
   "AI 质地": [
@@ -50,8 +50,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.091,
-    "open_below_strike": 3
+    "touched_rate": 0.182,
+    "open_below_strike": 6
    },
    {
     "key": "C",
@@ -60,8 +60,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.286,
-    "open_below_strike": 4
+    "touched_rate": 0.357,
+    "open_below_strike": 5
    }
   ],
   "来源": [
@@ -82,8 +82,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.067,
-    "open_below_strike": 2
+    "touched_rate": 0.167,
+    "open_below_strike": 5
    },
    {
     "key": "Yahoo 榜单",
@@ -92,8 +92,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.154,
-    "open_below_strike": 2
+    "touched_rate": 0.231,
+    "open_below_strike": 3
    }
   ],
   "IV": [
@@ -104,8 +104,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.161,
-    "open_below_strike": 5
+    "touched_rate": 0.258,
+    "open_below_strike": 8
    },
    {
     "key": "80–100%",
@@ -114,8 +114,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.111,
-    "open_below_strike": 2
+    "touched_rate": 0.167,
+    "open_below_strike": 3
    },
    {
     "key": "≥100%",
@@ -136,8 +136,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.333,
-    "open_below_strike": 2
+    "touched_rate": 0.5,
+    "open_below_strike": 3
    },
    {
     "key": "29–42 天",
@@ -146,8 +146,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.0,
-    "open_below_strike": 0
+    "touched_rate": 0.067,
+    "open_below_strike": 1
    },
    {
     "key": "≤14 天",
@@ -156,8 +156,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.143,
-    "open_below_strike": 5
+    "touched_rate": 0.2,
+    "open_below_strike": 7
    }
   ],
   "|Delta|": [
@@ -168,8 +168,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.154,
-    "open_below_strike": 6
+    "touched_rate": 0.205,
+    "open_below_strike": 8
    },
    {
     "key": "≤0.25",
@@ -178,8 +178,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.059,
-    "open_below_strike": 1
+    "touched_rate": 0.176,
+    "open_below_strike": 3
    }
   ],
   "跨财报": [
@@ -190,8 +190,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.125,
-    "open_below_strike": 7
+    "touched_rate": 0.196,
+    "open_below_strike": 11
    }
   ],
   "盘前跳空": [
@@ -202,8 +202,8 @@
     "win_rate": null,
     "assigned_rate": null,
     "avg_return": null,
-    "touched_rate": 0.125,
-    "open_below_strike": 7
+    "touched_rate": 0.196,
+    "open_below_strike": 11
    }
   ]
  },
@@ -228,14 +228,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 1,
-   "last_close": 24.14,
+   "sessions": 2,
+   "last_close": 24.37,
    "min_close": 24.14,
    "touched_strike": false,
-   "move": -0.0159,
+   "move": -0.0065,
    "worst_move": -0.0159,
    "status": "otm",
-   "pnl_est": -14.82
+   "pnl_est": -0.9
   },
   {
    "date": "2026-11-17",
@@ -257,14 +257,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 166.67,
-   "min_close": 166.67,
+   "sessions": 2,
+   "last_close": 159.81,
+   "min_close": 159.81,
    "touched_strike": false,
-   "move": 0.0033,
-   "worst_move": 0.0033,
+   "move": -0.038,
+   "worst_move": -0.038,
    "status": "otm",
-   "pnl_est": 19.08
+   "pnl_est": -146.04
   },
   {
    "date": "2026-11-17",
@@ -286,14 +286,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 156.56,
+   "sessions": 2,
+   "last_close": 156.67,
    "min_close": 156.56,
    "touched_strike": false,
-   "move": -0.0182,
+   "move": -0.0176,
    "worst_move": -0.0182,
    "status": "otm",
-   "pnl_est": -75.22
+   "pnl_est": -43.42
   },
   {
    "date": "2026-11-17",
@@ -315,14 +315,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 115.0,
-   "min_close": 115.0,
+   "sessions": 2,
+   "last_close": 113.89,
+   "min_close": 113.89,
    "touched_strike": false,
-   "move": -0.011,
-   "worst_move": -0.011,
+   "move": -0.0206,
+   "worst_move": -0.0206,
    "status": "otm",
-   "pnl_est": -37.69
+   "pnl_est": -52.33
   },
   {
    "date": "2026-11-17",
@@ -344,14 +344,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 206.8,
-   "min_close": 206.8,
+   "sessions": 2,
+   "last_close": 196.79,
+   "min_close": 196.79,
    "touched_strike": false,
-   "move": -0.011,
-   "worst_move": -0.011,
+   "move": -0.0588,
+   "worst_move": -0.0588,
    "status": "otm",
-   "pnl_est": -53.62
+   "pnl_est": -338.54
   },
   {
    "date": "2026-11-17",
@@ -373,14 +373,14 @@
    "ai_risk": "高",
    "ai_grade": "A",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 210.69,
+   "sessions": 2,
+   "last_close": 211.67,
    "min_close": 210.69,
    "touched_strike": false,
-   "move": -0.0009,
+   "move": 0.0037,
    "worst_move": -0.0009,
    "status": "otm",
-   "pnl_est": -4.23
+   "pnl_est": 60.12
   },
   {
    "date": "2026-11-17",
@@ -402,14 +402,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 1,
-   "last_close": 24.84,
-   "min_close": 24.84,
+   "sessions": 2,
+   "last_close": 23.48,
+   "min_close": 23.48,
    "touched_strike": false,
-   "move": -0.019,
-   "worst_move": -0.019,
+   "move": -0.0727,
+   "worst_move": -0.0727,
    "status": "otm",
-   "pnl_est": -15.19
+   "pnl_est": -57.33
   },
   {
    "date": "2026-11-17",
@@ -431,14 +431,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 1,
-   "last_close": 55.17,
-   "min_close": 55.17,
+   "sessions": 2,
+   "last_close": 54.67,
+   "min_close": 54.67,
    "touched_strike": false,
-   "move": 0.0109,
-   "worst_move": 0.0109,
+   "move": 0.0017,
+   "worst_move": 0.0017,
    "status": "otm",
-   "pnl_est": 21.6
+   "pnl_est": 21.04
   },
   {
    "date": "2026-11-17",
@@ -460,14 +460,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 69.19,
-   "min_close": 69.19,
+   "sessions": 2,
+   "last_close": 69.17,
+   "min_close": 69.17,
    "touched_strike": false,
-   "move": -0.019,
-   "worst_move": -0.019,
+   "move": -0.0193,
+   "worst_move": -0.0193,
    "status": "otm",
-   "pnl_est": -34.65
+   "pnl_est": -20.41
   },
   {
    "date": "2026-11-17",
@@ -489,14 +489,14 @@
    "ai_risk": "中",
    "ai_grade": "A",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 219.58,
+   "sessions": 2,
+   "last_close": 237.03,
    "min_close": 219.58,
    "touched_strike": false,
-   "move": 0.0033,
+   "move": 0.0831,
    "worst_move": 0.0033,
    "status": "otm",
-   "pnl_est": 25.24
+   "pnl_est": 352.2
   },
   {
    "date": "2026-11-17",
@@ -518,14 +518,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 210.86,
+   "sessions": 2,
+   "last_close": 212.84,
    "min_close": 210.86,
    "touched_strike": false,
-   "move": 0.0111,
+   "move": 0.0206,
    "worst_move": 0.0111,
    "status": "otm",
-   "pnl_est": 47.86
+   "pnl_est": 128.1
   },
   {
    "date": "2026-11-17",
@@ -547,14 +547,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 1,
-   "last_close": 173.46,
-   "min_close": 173.46,
+   "sessions": 2,
+   "last_close": 170.98,
+   "min_close": 170.98,
    "touched_strike": false,
-   "move": 0.01,
-   "worst_move": 0.01,
+   "move": -0.0044,
+   "worst_move": -0.0044,
    "status": "otm",
-   "pnl_est": 44.1
+   "pnl_est": 31.95
   },
   {
    "date": "2026-11-17",
@@ -576,14 +576,14 @@
    "ai_risk": "中",
    "ai_grade": "A",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 341.6,
+   "sessions": 2,
+   "last_close": 354.05,
    "min_close": 341.6,
    "touched_strike": false,
-   "move": 0.0084,
+   "move": 0.0452,
    "worst_move": 0.0084,
    "status": "otm",
-   "pnl_est": 66.04
+   "pnl_est": 354.8
   },
   {
    "date": "2026-11-17",
@@ -605,14 +605,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 398.94,
-   "min_close": 398.94,
+   "sessions": 2,
+   "last_close": 390.91,
+   "min_close": 390.91,
    "touched_strike": false,
-   "move": -0.0128,
-   "worst_move": -0.0128,
+   "move": -0.0326,
+   "worst_move": -0.0326,
    "status": "otm",
-   "pnl_est": -133.04
+   "pnl_est": -293.18
   },
   {
    "date": "2026-11-17",
@@ -634,14 +634,14 @@
    "ai_risk": "中",
    "ai_grade": "A",
    "ai_deep": false,
-   "sessions": 1,
-   "last_close": 186.42,
+   "sessions": 2,
+   "last_close": 193.94,
    "min_close": 186.42,
    "touched_strike": false,
-   "move": -0.0108,
+   "move": 0.0291,
    "worst_move": -0.0108,
    "status": "otm",
-   "pnl_est": -93.68
+   "pnl_est": 134.82
   },
   {
    "date": "2026-11-17",
@@ -663,14 +663,14 @@
    "ai_risk": "高",
    "ai_grade": "A",
    "ai_deep": true,
-   "sessions": 1,
-   "last_close": 349.23,
+   "sessions": 2,
+   "last_close": 352.3,
    "min_close": 349.23,
    "touched_strike": false,
-   "move": -0.0065,
+   "move": 0.0022,
    "worst_move": -0.0065,
    "status": "otm",
-   "pnl_est": -88.51
+   "pnl_est": 73.38
   },
   {
    "date": "2026-11-16",
@@ -692,14 +692,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 283.33,
+   "sessions": 3,
+   "last_close": 288.19,
    "min_close": 280.93,
    "touched_strike": false,
-   "move": 0.008,
+   "move": 0.0253,
    "worst_move": -0.0005,
    "status": "otm",
-   "pnl_est": 38.43
+   "pnl_est": 196.5
   },
   {
    "date": "2026-11-16",
@@ -721,14 +721,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 190.37,
+   "sessions": 3,
+   "last_close": 194.48,
    "min_close": 188.67,
    "touched_strike": false,
-   "move": -0.0089,
+   "move": 0.0125,
    "worst_move": -0.0177,
    "status": "otm",
-   "pnl_est": -70.69
+   "pnl_est": 92.87
   },
   {
    "date": "2026-11-16",
@@ -750,14 +750,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 24.14,
+   "sessions": 3,
+   "last_close": 24.37,
    "min_close": 24.14,
    "touched_strike": false,
-   "move": -0.0561,
+   "move": -0.0471,
    "worst_move": -0.0561,
    "status": "otm",
-   "pnl_est": -41.65
+   "pnl_est": -25.53
   },
   {
    "date": "2026-11-16",
@@ -779,14 +779,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 122.61,
+   "sessions": 3,
+   "last_close": 122.47,
    "min_close": 122.18,
    "touched_strike": false,
-   "move": -0.0093,
+   "move": -0.0104,
    "worst_move": -0.0127,
    "status": "otm",
-   "pnl_est": -43.99
+   "pnl_est": -32.71
   },
   {
    "date": "2026-11-16",
@@ -808,14 +808,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 94.48,
+   "sessions": 3,
+   "last_close": 94.09,
    "min_close": 92.87,
    "touched_strike": false,
-   "move": -0.0069,
+   "move": -0.011,
    "worst_move": -0.0239,
    "status": "otm",
-   "pnl_est": -19.01
+   "pnl_est": -11.85
   },
   {
    "date": "2026-11-16",
@@ -837,14 +837,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 166.67,
-   "min_close": 166.67,
-   "touched_strike": false,
-   "move": -0.0242,
-   "worst_move": -0.0242,
-   "status": "otm",
-   "pnl_est": -126.56
+   "sessions": 3,
+   "last_close": 159.81,
+   "min_close": 159.81,
+   "touched_strike": true,
+   "move": -0.0644,
+   "worst_move": -0.0644,
+   "status": "below_strike",
+   "pnl_est": -368.13
   },
   {
    "date": "2026-11-16",
@@ -866,14 +866,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 114.49,
+   "sessions": 3,
+   "last_close": 115.82,
    "min_close": 114.49,
    "touched_strike": false,
-   "move": 0.0065,
+   "move": 0.0182,
    "worst_move": 0.0065,
    "status": "otm",
-   "pnl_est": 15.39
+   "pnl_est": 50.39
   },
   {
    "date": "2026-11-16",
@@ -895,14 +895,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 115.0,
-   "min_close": 115.0,
-   "touched_strike": false,
-   "move": -0.0579,
-   "worst_move": -0.0579,
-   "status": "otm",
-   "pnl_est": -257.4
+   "sessions": 3,
+   "last_close": 113.89,
+   "min_close": 113.89,
+   "touched_strike": true,
+   "move": -0.067,
+   "worst_move": -0.067,
+   "status": "below_strike",
+   "pnl_est": -286.51
   },
   {
    "date": "2026-11-16",
@@ -924,14 +924,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 67.93,
-   "min_close": 67.69,
+   "sessions": 3,
+   "last_close": 67.23,
+   "min_close": 67.23,
    "touched_strike": false,
-   "move": -0.0085,
-   "worst_move": -0.012,
+   "move": -0.0187,
+   "worst_move": -0.0187,
    "status": "otm",
-   "pnl_est": -15.52
+   "pnl_est": -25.5
   },
   {
    "date": "2026-11-16",
@@ -953,14 +953,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 106.04,
+   "sessions": 3,
+   "last_close": 106.96,
    "min_close": 106.04,
    "touched_strike": false,
-   "move": -0.0432,
+   "move": -0.0348,
    "worst_move": -0.0432,
    "status": "otm",
-   "pnl_est": -118.24
+   "pnl_est": -39.07
   },
   {
    "date": "2026-11-16",
@@ -982,14 +982,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 148.74,
+   "sessions": 3,
+   "last_close": 145.54,
    "min_close": 145.36,
    "touched_strike": false,
-   "move": 0.0101,
+   "move": -0.0116,
    "worst_move": -0.0129,
    "status": "otm",
-   "pnl_est": 49.32
+   "pnl_est": 4.44
   },
   {
    "date": "2026-11-16",
@@ -1011,14 +1011,14 @@
    "ai_risk": "高",
    "ai_grade": "A",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 210.69,
+   "sessions": 3,
+   "last_close": 211.67,
    "min_close": 210.69,
    "touched_strike": false,
-   "move": -0.0177,
+   "move": -0.0131,
    "worst_move": -0.0177,
    "status": "otm",
-   "pnl_est": -102.88
+   "pnl_est": -21.13
   },
   {
    "date": "2026-11-16",
@@ -1040,14 +1040,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 55.17,
-   "min_close": 55.17,
+   "sessions": 3,
+   "last_close": 54.67,
+   "min_close": 54.67,
    "touched_strike": false,
-   "move": -0.0253,
-   "worst_move": -0.0253,
+   "move": -0.0341,
+   "worst_move": -0.0341,
    "status": "otm",
-   "pnl_est": -38.12
+   "pnl_est": -41.91
   },
   {
    "date": "2026-11-16",
@@ -1069,14 +1069,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 69.19,
-   "min_close": 69.19,
+   "sessions": 3,
+   "last_close": 69.17,
+   "min_close": 69.17,
    "touched_strike": true,
-   "move": -0.075,
-   "worst_move": -0.075,
+   "move": -0.0753,
+   "worst_move": -0.0753,
    "status": "below_strike",
-   "pnl_est": -209.62
+   "pnl_est": -193.94
   },
   {
    "date": "2026-11-16",
@@ -1098,14 +1098,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 108.49,
+   "sessions": 3,
+   "last_close": 108.15,
    "min_close": 106.17,
    "touched_strike": false,
-   "move": -0.0024,
+   "move": -0.0055,
    "worst_move": -0.0237,
    "status": "otm",
-   "pnl_est": -0.38
+   "pnl_est": 15.79
   },
   {
    "date": "2026-11-16",
@@ -1127,14 +1127,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 115.02,
-   "min_close": 115.02,
+   "sessions": 3,
+   "last_close": 110.51,
+   "min_close": 110.51,
    "touched_strike": false,
-   "move": -0.0459,
-   "worst_move": -0.0459,
+   "move": -0.0833,
+   "worst_move": -0.0833,
    "status": "otm",
-   "pnl_est": -144.35
+   "pnl_est": -294.71
   },
   {
    "date": "2026-11-16",
@@ -1156,14 +1156,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 210.86,
+   "sessions": 3,
+   "last_close": 212.84,
    "min_close": 203.43,
    "touched_strike": false,
-   "move": 0.0288,
+   "move": 0.0384,
    "worst_move": -0.0075,
    "status": "otm",
-   "pnl_est": 136.03
+   "pnl_est": 212.94
   },
   {
    "date": "2026-11-16",
@@ -1185,14 +1185,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 173.46,
-   "min_close": 173.46,
+   "sessions": 3,
+   "last_close": 170.98,
+   "min_close": 170.98,
    "touched_strike": false,
-   "move": -0.0443,
-   "worst_move": -0.0443,
+   "move": -0.058,
+   "worst_move": -0.058,
    "status": "otm",
-   "pnl_est": -225.95
+   "pnl_est": -256.04
   },
   {
    "date": "2026-11-16",
@@ -1214,14 +1214,14 @@
    "ai_risk": "高",
    "ai_grade": "A",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 341.6,
+   "sessions": 3,
+   "last_close": 354.05,
    "min_close": 333.4,
    "touched_strike": false,
-   "move": 0.0322,
+   "move": 0.0698,
    "worst_move": 0.0074,
    "status": "otm",
-   "pnl_est": 257.93
+   "pnl_est": 431.87
   },
   {
    "date": "2026-11-16",
@@ -1243,14 +1243,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 183.39,
+   "sessions": 3,
+   "last_close": 182.76,
    "min_close": 175.05,
    "touched_strike": false,
-   "move": 0.017,
+   "move": 0.0135,
    "worst_move": -0.0292,
    "status": "otm",
-   "pnl_est": 84.66
+   "pnl_est": 114.74
   },
   {
    "date": "2026-11-16",
@@ -1272,14 +1272,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 398.94,
-   "min_close": 398.94,
+   "sessions": 3,
+   "last_close": 390.91,
+   "min_close": 390.91,
    "touched_strike": false,
-   "move": -0.0298,
-   "worst_move": -0.0298,
+   "move": -0.0493,
+   "worst_move": -0.0493,
    "status": "otm",
-   "pnl_est": -380.81
+   "pnl_est": -609.29
   },
   {
    "date": "2026-11-15",
@@ -1301,14 +1301,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 283.33,
+   "sessions": 3,
+   "last_close": 288.19,
    "min_close": 280.93,
    "touched_strike": false,
-   "move": -0.0417,
+   "move": -0.0252,
    "worst_move": -0.0498,
    "status": "otm",
-   "pnl_est": -301.66
+   "pnl_est": -94.8
   },
   {
    "date": "2026-11-15",
@@ -1330,14 +1330,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 190.37,
+   "sessions": 3,
+   "last_close": 194.48,
    "min_close": 188.67,
    "touched_strike": false,
-   "move": -0.0579,
+   "move": -0.0376,
    "worst_move": -0.0663,
    "status": "otm",
-   "pnl_est": -336.34
+   "pnl_est": -159.6
   },
   {
    "date": "2026-11-15",
@@ -1359,14 +1359,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 24.14,
+   "sessions": 3,
+   "last_close": 24.37,
    "min_close": 24.14,
    "touched_strike": true,
-   "move": -0.1016,
+   "move": -0.093,
    "worst_move": -0.1016,
    "status": "below_strike",
-   "pnl_est": -93.12
+   "pnl_est": -73.36
   },
   {
    "date": "2026-11-15",
@@ -1388,14 +1388,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 94.48,
+   "sessions": 3,
+   "last_close": 94.09,
    "min_close": 92.87,
    "touched_strike": false,
-   "move": -0.0403,
+   "move": -0.0443,
    "worst_move": -0.0567,
    "status": "otm",
-   "pnl_est": -96.89
+   "pnl_est": -100.88
   },
   {
    "date": "2026-11-15",
@@ -1417,14 +1417,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 115.0,
-   "min_close": 115.0,
-   "touched_strike": false,
-   "move": -0.0826,
-   "worst_move": -0.0826,
-   "status": "otm",
-   "pnl_est": -302.25
+   "sessions": 3,
+   "last_close": 113.89,
+   "min_close": 113.89,
+   "touched_strike": true,
+   "move": -0.0914,
+   "worst_move": -0.0914,
+   "status": "below_strike",
+   "pnl_est": -338.99
   },
   {
    "date": "2026-11-15",
@@ -1446,14 +1446,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 106.04,
+   "sessions": 3,
+   "last_close": 106.96,
    "min_close": 106.04,
    "touched_strike": false,
-   "move": -0.085,
+   "move": -0.077,
    "worst_move": -0.085,
    "status": "otm",
-   "pnl_est": -203.73
+   "pnl_est": -145.64
   },
   {
    "date": "2026-11-15",
@@ -1475,14 +1475,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 148.74,
+   "sessions": 3,
+   "last_close": 145.54,
    "min_close": 145.36,
    "touched_strike": false,
-   "move": -0.0512,
+   "move": -0.0716,
    "worst_move": -0.0727,
    "status": "otm",
-   "pnl_est": -144.62
+   "pnl_est": -242.55
   },
   {
    "date": "2026-11-15",
@@ -1504,14 +1504,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 206.8,
-   "min_close": 206.8,
-   "touched_strike": false,
-   "move": -0.0742,
-   "worst_move": -0.0742,
-   "status": "otm",
-   "pnl_est": -478.18
+   "sessions": 3,
+   "last_close": 196.79,
+   "min_close": 196.79,
+   "touched_strike": true,
+   "move": -0.119,
+   "worst_move": -0.119,
+   "status": "below_strike",
+   "pnl_est": -882.69
   },
   {
    "date": "2026-11-15",
@@ -1533,14 +1533,14 @@
    "ai_risk": "中",
    "ai_grade": "A",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 210.69,
+   "sessions": 3,
+   "last_close": 211.67,
    "min_close": 210.69,
    "touched_strike": false,
-   "move": -0.0674,
+   "move": -0.0631,
    "worst_move": -0.0674,
    "status": "otm",
-   "pnl_est": -396.03
+   "pnl_est": -306.99
   },
   {
    "date": "2026-11-15",
@@ -1562,14 +1562,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 24.84,
-   "min_close": 24.84,
+   "sessions": 3,
+   "last_close": 23.48,
+   "min_close": 23.48,
    "touched_strike": true,
-   "move": -0.1399,
-   "worst_move": -0.1399,
+   "move": -0.187,
+   "worst_move": -0.187,
    "status": "below_breakeven",
-   "pnl_est": -146.0
+   "pnl_est": -228.27
   },
   {
    "date": "2026-11-15",
@@ -1591,14 +1591,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 55.17,
-   "min_close": 55.17,
+   "sessions": 3,
+   "last_close": 54.67,
+   "min_close": 54.67,
    "touched_strike": true,
-   "move": -0.0753,
-   "worst_move": -0.0753,
+   "move": -0.0836,
+   "worst_move": -0.0836,
    "status": "below_strike",
-   "pnl_est": -136.86
+   "pnl_est": -151.72
   },
   {
    "date": "2026-11-15",
@@ -1620,14 +1620,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 69.19,
-   "min_close": 69.19,
+   "sessions": 3,
+   "last_close": 69.17,
+   "min_close": 69.17,
    "touched_strike": true,
-   "move": -0.1114,
-   "worst_move": -0.1114,
+   "move": -0.1116,
+   "worst_move": -0.1116,
    "status": "below_breakeven",
-   "pnl_est": -326.99
+   "pnl_est": -317.06
   },
   {
    "date": "2026-11-15",
@@ -1649,14 +1649,14 @@
    "ai_risk": "中",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 108.49,
+   "sessions": 3,
+   "last_close": 108.15,
    "min_close": 106.17,
    "touched_strike": false,
-   "move": -0.049,
+   "move": -0.052,
    "worst_move": -0.0693,
    "status": "otm",
-   "pnl_est": -98.31
+   "pnl_est": -87.48
   },
   {
    "date": "2026-11-15",
@@ -1678,14 +1678,14 @@
    "ai_risk": "中",
    "ai_grade": "A",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 219.58,
+   "sessions": 3,
+   "last_close": 237.03,
    "min_close": 219.58,
    "touched_strike": false,
-   "move": -0.031,
+   "move": 0.046,
    "worst_move": -0.031,
    "status": "otm",
-   "pnl_est": -73.64
+   "pnl_est": 311.18
   },
   {
    "date": "2026-11-15",
@@ -1707,14 +1707,14 @@
    "ai_risk": "高",
    "ai_grade": "C",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 115.02,
-   "min_close": 115.02,
+   "sessions": 3,
+   "last_close": 110.51,
+   "min_close": 110.51,
    "touched_strike": true,
-   "move": -0.0989,
-   "worst_move": -0.0989,
+   "move": -0.1343,
+   "worst_move": -0.1343,
    "status": "below_breakeven",
-   "pnl_est": -477.09
+   "pnl_est": -771.3
   },
   {
    "date": "2026-11-15",
@@ -1736,14 +1736,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 210.86,
+   "sessions": 3,
+   "last_close": 212.84,
    "min_close": 203.43,
    "touched_strike": false,
-   "move": -0.0334,
+   "move": -0.0243,
    "worst_move": -0.0675,
    "status": "otm",
-   "pnl_est": -114.61
+   "pnl_est": -30.29
   },
   {
    "date": "2026-11-15",
@@ -1765,14 +1765,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": false,
-   "sessions": 2,
-   "last_close": 236.47,
+   "sessions": 3,
+   "last_close": 243.32,
    "min_close": 236.47,
    "touched_strike": false,
-   "move": -0.0161,
+   "move": 0.0124,
    "worst_move": -0.0161,
    "status": "otm",
-   "pnl_est": -25.73
+   "pnl_est": 173.83
   },
   {
    "date": "2026-11-15",
@@ -1794,14 +1794,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 173.46,
-   "min_close": 173.46,
+   "sessions": 3,
+   "last_close": 170.98,
+   "min_close": 170.98,
    "touched_strike": true,
-   "move": -0.0965,
-   "worst_move": -0.0965,
+   "move": -0.1094,
+   "worst_move": -0.1094,
    "status": "below_strike",
-   "pnl_est": -583.11
+   "pnl_est": -662.62
   },
   {
    "date": "2026-11-15",
@@ -1823,14 +1823,14 @@
    "ai_risk": "高",
    "ai_grade": "B",
    "ai_deep": true,
-   "sessions": 2,
-   "last_close": 183.39,
+   "sessions": 3,
+   "last_close": 182.76,
    "min_close": 175.05,
    "touched_strike": false,
-   "move": -0.0375,
+   "move": -0.0408,
    "worst_move": -0.0812,
    "status": "otm",
-   "pnl_est": -102.64
+   "pnl_est": -90.09
   }
  ]
 }
