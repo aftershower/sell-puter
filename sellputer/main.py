@@ -90,19 +90,30 @@ def main() -> None:
         t, prices[t]["price"], date.fromisoformat(prices[t]["price_date"]), prices[t]["price_now"],
         r, now.date(), fundamentals[t]["next_earnings"], o,
     )
-    with ThreadPoolExecutor(workers) as pool:
-        chains = dict(zip(passed, pool.map(scan, passed)))
-    failed = [t for t, c in chains.items() if c is None]
-    if failed and len(failed) <= 0.3 * len(passed):
-        # a capped slow pass; each retry can take ~20s and the job has a 60-minute limit
-        log.info("retrying %d failed chains one at a time", min(len(failed), 40))
-        time.sleep(30)
-        for t in failed[:40]:
-            chains[t] = scan(t)
-    failed = [t for t, c in chains.items() if c is None]
-    if len(failed) > 0.3 * len(passed):
-        # Yahoo is throttling us; keep yesterday's page rather than publish a gutted list
-        raise SystemExit(f"{len(failed)}/{len(passed)} option chains failed; not writing a report")
+    usual = _usual_count(now.date())
+    while True:
+        with ThreadPoolExecutor(workers) as pool:
+            chains = dict(zip(passed, pool.map(scan, passed)))
+        failed = [t for t, c in chains.items() if c is None]
+        if failed and len(failed) <= 0.3 * len(passed):
+            # a capped slow pass; each retry can take ~20s and the job has a time limit
+            log.info("retrying %d failed chains one at a time", min(len(failed), 40))
+            time.sleep(30)
+            for t in failed[:40]:
+                chains[t] = scan(t)
+        failed = [t for t, c in chains.items() if c is None]
+        if len(failed) > 0.3 * len(passed):
+            # Yahoo is throttling us; keep yesterday's page rather than publish a gutted list
+            raise SystemExit(f"{len(failed)}/{len(passed)} option chains failed; not writing a report")
+        found = sum(1 for c in chains.values() if c)
+        log.info("candidates with matching puts: %d (recent reports: ~%s)", found, usual)
+        # Mega-caps get live quotes minutes before the rest after the open, so the probe can pass while
+        # most chains still have no bids. A count far below recent days means exactly that: wait, rescan.
+        t_now = datetime.now(ZoneInfo("America/New_York"))
+        if not (market_open and usual and found < 0.4 * usual and (t_now.hour, t_now.minute) < (10, 45)):
+            break
+        log.warning("far fewer candidates than usual; quotes look stale, rescanning in 5 minutes")
+        time.sleep(300)
     candidates = [
         {
             "ticker": t, **fundamentals[t], **prices[t],
@@ -114,7 +125,6 @@ def main() -> None:
     for t, c in chains.items():
         status[t] = "candidate" if c else "no_contract" if c is not None else "chain_failed"
     candidates.sort(key=lambda c: c["contracts"][0]["annualized"], reverse=True)
-    log.info("candidates with matching puts: %d", len(candidates))
 
     ai_status = {"enabled": False, "model": a["model"], "top_n": a["top_n"], "error": None, "spend": None}
     if a["enabled"] and os.environ.get("ANTHROPIC_API_KEY") and candidates:
@@ -132,7 +142,7 @@ def main() -> None:
     for c in candidates:
         c.pop("fetched", None)
     report = {
-        "generated_at": now.isoformat(timespec="minutes"),
+        "generated_at": datetime.now(ZoneInfo("America/New_York")).isoformat(timespec="minutes"),  # after any waiting
         "date": now.date().isoformat(),
         "risk_free_rate": round(r, 4),
         "market_open": market_open,
@@ -152,6 +162,16 @@ def main() -> None:
         "candidates": candidates,
     }
     write_report(report)
+
+
+def _usual_count(today: date) -> int | None:
+    """Median candidate count of the last five reports before today."""
+    counts = [
+        json.loads(f.read_text())["stats"]["candidates"]
+        for f in sorted((DATA / "history").glob("????-??-??.json"))
+        if f.stem < today.isoformat()
+    ][-5:]
+    return sorted(counts)[len(counts) // 2] if len(counts) >= 2 else None
 
 
 def write_report(report: dict) -> None:
