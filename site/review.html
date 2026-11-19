@@ -14,6 +14,7 @@
   <div class="stats" id="stats"></div>
   <div class="card" id="summary"></div>
   <div class="card" id="grades"></div>
+  <div class="card" id="vsalt"></div>
   <div class="grid2">
     <div class="card" id="lessons"></div>
     <div class="card" id="suggestions"></div>
@@ -33,7 +34,7 @@
 <script>
 const $ = (id) => document.getElementById(id);
 const pct = (x, d = 1) => x == null ? "–" : (x * 100).toFixed(d) + "%";
-const usd = (x) => x == null ? "–" : (x < 0 ? "-$" : "$") + Math.abs(x).toFixed(0);
+const usd = (x) => x == null ? "–" : (Math.round(x) < 0 ? "-$" : "$") + Math.abs(Math.round(x));
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const STATUS = {
   expired_worthless: ["到期作废（赚满）", "pos"], assigned: ["被行权", "neg"],
@@ -94,6 +95,12 @@ function render(rv, dr, grades) {
 
   renderGrades(grades || [], dr?.scoreboard, dr?.date);
 
+  const va = rv?.vs_alt || {};
+  const vrow = (label, t) => t?.n ? `<tr><td>${label}</td><td>${t.n}<span class="small">（已到期 ${t.closed}）</span></td><td>${t.touched}</td><td>${t.alt_touched}</td><td class="${t.pnl >= 0 ? "pos" : "neg"}">${usd(t.pnl)}</td><td class="${t.alt_pnl >= 0 ? "pos" : "neg"}">${usd(t.alt_pnl)}</td><td>${t.alt_better} / ${t.n}</td></tr>` : "";
+  const vrows = Object.entries(va).map(([k, t]) => vrow(k, t)).join("");
+  $("vsalt").innerHTML = `<h3>推荐 vs 同到期低一档</h3><div class="small">同一天、同一到期日、行权价低一档的合约作对照，看"多收的权利金"值不值得"更薄的缓冲"。盈亏是每手合计，未到期的按估算；等到期样本多了再决定要不要过滤"缓冲薄"的合约。</div>` +
+    (vrows ? `<div class="scroll"><table class="mini" style="margin-top:8px"><thead><tr><th></th><th>笔数</th><th>推荐 曾跌破</th><th>低一档 曾跌破</th><th>推荐 盈亏</th><th>低一档 盈亏</th><th>低一档更好</th></tr></thead><tbody>${vrows}</tbody></table></div>` : `<p class="small">暂无数据。</p>`);
+
   const lessons = dr?.lessons || [];
   $("lessons").innerHTML = `<h3>经验库（明早的 AI 会读到）</h3>` + (lessons.length
     ? lessons.map((l) => `<div class="lesson"><span class="tag st-${esc(l.status)}">${esc(l.status)}</span> <span class="small">置信度 ${esc(l.confidence)}</span><div>${esc(l.lesson)}</div><div class="small">依据：${esc(l.evidence)}</div></div>`).join("")
@@ -117,11 +124,12 @@ function render(rv, dr, grades) {
     const pnl = r.pnl ?? r.pnl_est;
     const cells = [
       r.date.slice(5), `<span class="tk">${esc(r.ticker)}</span> <span class="small">${esc(r.source)}</span>`,
-      `${r.expiry.slice(5)} 到期 · $${r.strike}`, `$${r.premium.toFixed(2)} <span class="small">年化 ${pct(r.annualized, 0)}</span>`,
+      `${r.expiry.slice(5)} 到期 · $${r.strike}${r.thin ? ' <span class="tag r-高">缓冲薄</span>' : ""}`, `$${r.premium.toFixed(2)} <span class="small">年化 ${pct(r.annualized, 0)}</span>`,
       r.ai_risk ? `<span class="tag g-${esc(r.ai_grade)}">${esc(r.ai_grade)}</span> <span class="tag r-${esc(r.ai_risk)}">${esc(r.ai_risk)}</span>` : "–",
       `<span class="${cls}">${label}</span>${r.touched_strike && r.status !== "assigned" ? ' <span class="tag earn">曾触及</span>' : ""}`,
       `$${r.last_close} <span class="small">/ $${r.min_close}</span>`,
-      `<span class="${pnl > 0 ? "pos" : pnl < 0 ? "neg" : ""}">${usd(pnl)}</span>${r.pnl == null ? ' <span class="small">估</span>' : ""}`,
+      `<span class="${pnl > 0 ? "pos" : pnl < 0 ? "neg" : ""}">${usd(pnl)}</span>${r.pnl == null ? ' <span class="small">估</span>' : ""}` +
+        (r.alt?.pnl != null ? `<div class="small">低一档 $${r.alt.strike}：${usd(r.alt.pnl)}</div>` : ""),
     ];
     return `<tr class="row">${cells.map((v, i) => `<td data-label="${cols[i]}"><span>${v}</span></td>`).join("")}</tr>`;
   }).join("") : `<tr><td colspan="8" class="empty">还没有可以打分的推荐</td></tr>`;

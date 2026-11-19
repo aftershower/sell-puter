@@ -55,6 +55,10 @@ let report = null, sortKey = "annualized", open = new Set();
 const $ = (id) => document.getElementById(id);
 const pct = (x, d = 1) => x == null ? "–" : (x * 100).toFixed(d) + "%";
 const usd = (x, d = 2) => x == null ? "–" : "$" + Number(x).toFixed(d);
+const thinSd = () => report.params.page?.thin_buffer_sd ?? 0.6;
+// same-expiry next lower strike: the safer contract to weigh the pick against
+const lowerAlt = (c, k) => c.contracts.filter((o) => o.expiry === k.expiry && o.strike < k.strike).sort((a, b) => b.strike - a.strike)[0];
+const isThin = (c, k) => c.ai?.risk_level === "高" && k.buffer_sd != null && k.buffer_sd < thinSd();
 const big = (x) => x == null ? "–" : Math.abs(x) >= 1e12 ? "$" + (x / 1e12).toFixed(2) + "T" : "$" + (x / 1e9).toFixed(1) + "B";
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -153,7 +157,7 @@ function render() {
     后端抓取范围（页面筛选只能在此范围内收紧）：|Delta| ${o.delta_min}–${o.delta_max} · IV ≥ ${pct(o.min_iv ?? 0, 0)} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
     质地：S&amp;P 500 成分股和自选名单直接通过；其他来源（Reddit 热门、Yahoo 榜单）要求市值 ≥ ${big(q.min_market_cap)}${q.require_profitable ? " 且在盈利" : ""}；所有股票股价 ≥ $${q.min_price}<br>
     ${sp ? `AI：深度分析 ${sp.deep} 只、简要笔记 ${sp.light} 只、联网搜索 ${sp.searches} 次，今日花费约 $${sp.usd.toFixed(2)}（上限 $${sp.budget_usd}）<br>` : ""}
-    估成交价 = 中间价 − ¼ 价差（卖方实际成交通常低于中间价）；年化 = 估成交价 ÷ 行权价 × 365 ÷ DTE（按现金担保计）。缓冲 σ = 行权价离现价有几个"到期前一倍标准差"的波动，越大越不容易被行权。IV 由昨收中间价按 Black-Scholes 反推（未计股息）；盘前股价有变动时，Delta 和权利金（标"盘前估"）按盘前价和同一 IV 重新估算，开盘后实际报价会不同。行权价是固定的，盘前大跌意味着合约离被行权更近。数据来自 Yahoo Finance，可能延迟或有误，下单前请以券商实时报价为准。<br>
+    估成交价 = 中间价 − ¼ 价差（卖方实际成交通常低于中间价）；年化 = 估成交价 ÷ 行权价 × 365 ÷ DTE（按现金担保计）。缓冲 σ = 行权价离现价有几个"到期前一倍标准差"的波动，越大越不容易被行权。"缓冲薄" = AI 评高风险且缓冲不到 0.6σ：复盘发现这类合约在大盘下跌时一两天就会被跌破，展开后可以和同到期日低一档的行权价对比（复盘页会同时跟踪两者的结果）。IV 由昨收中间价按 Black-Scholes 反推（未计股息）；盘前股价有变动时，Delta 和权利金（标"盘前估"）按盘前价和同一 IV 重新估算，开盘后实际报价会不同。行权价是固定的，盘前大跌意味着合约离被行权更近。数据来自 Yahoo Finance，可能延迟或有误，下单前请以券商实时报价为准。<br>
     本页面是按上述规则自动筛选的数据和 AI 生成的风险摘要，不构成投资建议。卖出看跌期权在股价大跌时可能被行权并产生较大亏损。`;
 }
 
@@ -193,7 +197,7 @@ function rowHtml({ c, k, others }) {
     `${k.expiry.slice(5)} <span class="small">${k.dte}天</span>`,
     `${usd(k.strike, k.strike % 1 ? 1 : 0)} <span class="small">${pct(k.otm_pct)}</span>`,
     k.delta.toFixed(2),
-    k.buffer_sd == null ? "–" : k.buffer_sd.toFixed(2),
+    k.buffer_sd == null ? "–" : k.buffer_sd.toFixed(2) + (isThin(c, k) ? ` <span class="tag r-高" title="${esc(thinNote(c, k))}">缓冲薄</span>` : ""),
     `${(k.repriced ?? k.premium !== k.mid) ? '<span class="small">盘前估</span> ' : ""}${usd(k.premium)} <span class="small">${k.bid.toFixed(2)}–${k.ask.toFixed(2)}</span>`,
     "$" + k.collateral.toLocaleString(),
     `<span class="ann">${pct(k.annualized)}</span>`,
@@ -206,8 +210,27 @@ function rowHtml({ c, k, others }) {
   return open.has(c.ticker) ? tr + detailHtml(c, [k, ...others]) : tr;
 }
 
+function thinNote(c, k) {
+  const alt = lowerAlt(c, k);
+  return `AI 评高风险，行权价离现价只有 ${k.buffer_sd.toFixed(2)}σ（不到 ${thinSd()}σ）。` +
+    (alt ? `同到期低一档 ${usd(alt.strike, alt.strike % 1 ? 1 : 0)}：缓冲 ${alt.buffer_sd?.toFixed(2) ?? "–"}σ，年化 ${pct(alt.annualized, 0)}。` : "同到期日没有更低的行权价。");
+}
+
+function altHtml(c, k) {
+  const alt = lowerAlt(c, k), thin = isThin(c, k);
+  if (!alt) return thin ? `<p class="small"><span class="tag r-高">缓冲薄</span> 同到期日没有更低的行权价可比。</p>` : "";
+  const line = (label, o) => `<tr><td>${label}</td><td>${usd(o.strike, o.strike % 1 ? 1 : 0)}</td><td>${o.buffer_sd?.toFixed(2) ?? "–"}</td><td>${usd(o.premium)}</td><td>${pct(o.annualized)}</td><td>${usd(o.breakeven)}</td><td>${o.delta.toFixed(2)}</td></tr>`;
+  const less = (k.premium - alt.premium) * 100, more = (alt.buffer_sd ?? 0) - (k.buffer_sd ?? 0);
+  return `<h4>和同到期低一档比 ${thin ? '<span class="tag r-高">缓冲薄</span>' : ""}</h4>
+    <div class="scroll"><table class="mini"><thead><tr><th></th><th>行权价</th><th>缓冲 σ</th><th>估成交价</th><th>年化</th><th>盈亏平衡</th><th>Delta</th></tr></thead><tbody>
+    ${line("当前", k)}${line("低一档", alt)}</tbody></table></div>
+    <p class="small">低一档每手少收约 $${less.toFixed(0)} 权利金，行权价离现价多 ${more.toFixed(2)}σ${alt.crosses_earnings && !k.crosses_earnings ? "，但跨财报" : ""}。</p>`;
+}
+
 function detailHtml(c, contracts) {
   const ai = c.ai;
+  const pick = contracts[0], alt = lowerAlt(c, pick);
+  const mark = (k) => k === pick ? ' <span class="tag rd">当前</span>' : alt && k.contract === alt.contract ? ' <span class="tag rd">低一档</span>' : "";
   const chips = [
     ["市值", big(c.market_cap)], ["ROE", pct(c.roe)], ["净利率", pct(c.profit_margin)], ["自由现金流", big(c.fcf)],
     ["负债/权益", c.debt_to_equity == null ? "–" : c.debt_to_equity.toFixed(0) + "%"], ["前瞻PE", c.forward_pe == null ? "–" : c.forward_pe.toFixed(1)],
@@ -229,11 +252,11 @@ function detailHtml(c, contracts) {
       ${ai.sources?.length ? `<h4>来源</h4><ul class="src">${ai.sources.map((x) => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)}</a></li>`).join("")}</ul>` : ""}`
     : `<p class="small">${report.ai.enabled ? `AI 每天最多分析 ${report.ai.top_n} 只（优先符合默认条件的），这只不在其中。` : "AI 风险笔记未启用。"}</p>`;
   const mini = `<div class="scroll"><table class="mini"><thead><tr><th>到期</th><th>行权价</th><th>Delta</th><th>缓冲 σ</th><th>估成交价</th><th>年化</th><th>OI</th></tr></thead><tbody>
-    ${contracts.map((k) => `<tr><td>${k.expiry.slice(5)} · ${k.dte}天${k.crosses_earnings ? ' <span class="tag earn">跨财报</span>' : ""}</td><td>${usd(k.strike, k.strike % 1 ? 1 : 0)}</td><td>${k.delta.toFixed(2)}</td><td>${k.buffer_sd?.toFixed(2) ?? "–"}</td><td>${usd(k.premium)}</td><td>${pct(k.annualized)}</td><td>${k.open_interest}</td></tr>`).join("")}
+    ${contracts.map((k) => `<tr><td>${k.expiry.slice(5)} · ${k.dte}天${k.crosses_earnings ? ' <span class="tag earn">跨财报</span>' : ""}${mark(k)}</td><td>${usd(k.strike, k.strike % 1 ? 1 : 0)}</td><td>${k.delta.toFixed(2)}</td><td>${k.buffer_sd?.toFixed(2) ?? "–"}</td><td>${usd(k.premium)}</td><td>${pct(k.annualized)}</td><td>${k.open_interest}</td></tr>`).join("")}
     </tbody></table></div>`;
   return `<tr class="detail"><td colspan="${COLS.length}"><div class="detail-grid">
     <div>${aiHtml}</div>
-    <div><h4>基本面</h4><div class="chips">${chips}</div><h4>可选合约</h4>${mini}</div>
+    <div>${altHtml(c, pick)}<h4>基本面</h4><div class="chips">${chips}</div><h4>可选合约（当前筛选条件下）</h4>${mini}</div>
   </div></td></tr>`;
 }
 

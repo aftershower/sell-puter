@@ -61,6 +61,7 @@ delta_max = 0.30
 max_dte = 42
 max_collateral = 40_000
 hide_earnings = true
+thin_buffer_sd = 0.6                # AI 评高风险、且行权价距现价不到这么多个标准差时，页面标"缓冲薄"，并给出同到期低一档作对照
 
 [ai]
 enabled = true                      # 没有 ANTHROPIC_API_KEY 时自动跳过

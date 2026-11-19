@@ -188,6 +188,17 @@ def _scan(
     return picked[: o["contracts_per_ticker"]]
 
 
+def lower_alt(contracts: list[dict], k: dict) -> dict | None:
+    """The next lower strike kept for the same expiry: the safer contract to weigh the pick against."""
+    lower = [o for o in contracts if o["expiry"] == k["expiry"] and o["strike"] < k["strike"]]
+    return max(lower, key=lambda o: o["strike"], default=None)
+
+
+def is_thin(k: dict, risk: str | None, pg: dict) -> bool:
+    """Flag from the nightly review: rated high risk and the strike is under ~0.6 sd away."""
+    return risk == "高" and k.get("buffer_sd") is not None and k["buffer_sd"] < pg.get("thin_buffer_sd", 0.6)
+
+
 def matches_page(k: dict, pg: dict) -> bool:
     return (
         k["iv"] >= pg["min_iv"]

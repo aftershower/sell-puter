@@ -319,7 +319,7 @@ def main() -> None:
                 "new_grades": new,
                 "scoreboard": scoreboard(grades),
                 "past_grades": past,
-                "review": {k: rv[k] for k in ("as_of", "overall", "buckets")},
+                "review": {k: rv[k] for k in ("as_of", "overall", "buckets", "vs_alt")},
                 "lessons": lessons,
             }
             try:

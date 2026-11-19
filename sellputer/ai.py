@@ -19,7 +19,7 @@ import anthropic
 import requests
 import yfinance as yf
 
-from .options import matches_page
+from .options import lower_alt, matches_page
 
 log = logging.getLogger(__name__)
 
@@ -39,6 +39,7 @@ BASE = """你是一个期权卖方的研究助手。用户用规则筛出了准�
 - 如果盘前/盘后价格相对昨收有明显涨跌（premarket_change），先解释原因；查不到时要明确说明。
 - 到期前可能让股价跌破盈亏平衡点的具体风险：财报、监管/诉讼、产品或客户事件、宏观敏感度、行业逆风等。没有证据的不要编造。
 - 风险等级（低/中/高）只衡量"到期前大幅下跌、被行权后继续亏损"的可能性。
+- best_contract 是页面默认显示的合约，lower_strike_alternative 是同一到期日低一档的行权价（没有就是 null）。best_contract 的缓冲不足 0.6 个标准差时，在期权视角或小结里用一句话对比两者的缓冲和年化，说清取舍。
 - previous_calls 是之前给这只股票写的笔记事后的判卷结果（分析对不对、建议好不好、错在哪）。如果有，上次判断错或漏掉的地方这次要专门检查，并在相应字段里简单提一句。
 - reddit_24h 不为空表示今天是 Reddit 热门；screens 表示出现在 Yahoo 的成交最活跃/跌幅榜上。散户讨论要写明是散户观点，不能当作事实。
 
@@ -191,6 +192,7 @@ def _brief(cand: dict, news_n: int, pg: dict) -> dict:
     best = max(shown, key=lambda k: k["annualized"])
     S = cand["price_now"]
     move = S * best["iv"] * math.sqrt(best["dte"] / 365)
+    alt = lower_alt(cand["contracts"], best)
     return {
         "ticker": cand["ticker"],
         "name": cand.get("name"),
@@ -213,6 +215,10 @@ def _brief(cand: dict, news_n: int, pg: dict) -> dict:
             "expected_move_1sd": round(move, 2),
             "strike_buffer_sd": round((S - best["strike"]) / move, 2) if move else None,
         },
+        "lower_strike_alternative": {
+            **{k: alt[k] for k in ("strike", "premium", "delta", "breakeven", "annualized")},
+            "strike_buffer_sd": alt.get("buffer_sd"),
+        } if alt else None,
         "yahoo_news": _yahoo_news(cand["ticker"], news_n),
         "google_news": _google_news(cand["ticker"], news_n),
     }

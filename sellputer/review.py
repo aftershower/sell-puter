@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from .options import bs_put, matches_page
+from .options import bs_put, is_thin, lower_alt, matches_page
 
 RATE = 0.04  # for marking open puts; a rough rate is fine here
 HIST = Path("site/data/history")
@@ -46,6 +46,7 @@ def load_recs() -> list[dict]:
                 continue
             seen.add(k["contract"])
             ai = c.get("ai") or {}
+            alt = lower_alt(c["contracts"], k)
             recs.append({
                 "date": rep["date"],
                 "ticker": c["ticker"],
@@ -66,6 +67,11 @@ def load_recs() -> list[dict]:
                 "ai_risk": ai.get("risk_level"),
                 "ai_grade": ai.get("quality_grade"),
                 "ai_deep": bool(ai.get("deep")),
+                "buffer_sd": k.get("buffer_sd"),
+                "thin": is_thin(k, ai.get("risk_level"), pg),
+                # the same-expiry next lower strike, scored alongside as the safer counterfactual
+                "alt": {x: alt[x] for x in ("contract", "expiry", "strike", "premium", "breakeven", "collateral", "iv",
+                                            "delta", "annualized", "buffer_sd")} if alt else None,
             })
     return recs
 
@@ -110,7 +116,11 @@ def score(recs: list[dict], today: date) -> list[dict]:
     cl = closes(sorted({r["ticker"] for r in recs}), min(r["date"] for r in recs))
     for r in recs:
         path = cl[r["ticker"]] if r["ticker"] in cl else pd.Series(dtype=float)
-        r.update(outcome(r, path[path.index >= date.fromisoformat(r["date"])], today, r["price_at_rec"]))
+        path = path[path.index >= date.fromisoformat(r["date"])]
+        r.update(outcome(r, path, today, r["price_at_rec"]))
+        if r["alt"]:
+            o = outcome(r["alt"], path, today)
+            r["alt"].update({x: o.get(x) for x in ("status", "touched_strike")}, pnl=o.get("pnl", o.get("pnl_est")))
     return recs
 
 
@@ -134,9 +144,25 @@ BUCKETS = {
     "IV": lambda r: "<60%" if r["iv"] < 0.6 else "60–80%" if r["iv"] < 0.8 else "80–100%" if r["iv"] < 1 else "≥100%",
     "DTE": lambda r: "≤14 天" if r["dte"] <= 14 else "15–28 天" if r["dte"] <= 28 else "29–42 天",
     "|Delta|": lambda r: "≤0.25" if -r["delta"] <= 0.25 else ">0.25",
+    "缓冲 σ": lambda r: "无数据" if r.get("buffer_sd") is None else "<0.6σ" if r["buffer_sd"] < 0.6 else "≥0.6σ",
     "跨财报": lambda r: "是" if r["crosses_earnings"] else "否",
     "盘前跳空": lambda r: "跌 ≥3%" if r["gap"] <= -0.03 else "涨 ≥3%" if r["gap"] >= 0.03 else "±3% 内",
 }
+
+
+def _vs_alt(rows: list[dict]) -> dict:
+    """The pick against its same-expiry lower strike, over picks that had one."""
+    rows = [r for r in rows if r.get("alt") and r["alt"].get("pnl") is not None and r.get("status") != "no_data"]
+    pnl = lambda r: r.get("pnl", r.get("pnl_est"))
+    return {
+        "n": len(rows),
+        "closed": sum("pnl" in r for r in rows),
+        "touched": sum(bool(r.get("touched_strike")) for r in rows),
+        "alt_touched": sum(bool(r["alt"].get("touched_strike")) for r in rows),
+        "pnl": round(sum(pnl(r) for r in rows), 2),
+        "alt_pnl": round(sum(r["alt"]["pnl"] for r in rows), 2),
+        "alt_better": sum(r["alt"]["pnl"] > pnl(r) for r in rows),
+    }
 
 
 def build(today: date) -> dict:
@@ -148,6 +174,7 @@ def build(today: date) -> dict:
             name: [{"key": k, **_bucket_stats([r for r in recs if fn(r) == k])} for k in sorted({fn(r) for r in recs})]
             for name, fn in BUCKETS.items()
         },
+        "vs_alt": {"全部": _vs_alt(recs), "高风险且缓冲薄": _vs_alt([r for r in recs if r.get("thin")])},
         "recs": sorted(recs, key=lambda r: (r["date"], r["ticker"]), reverse=True)[:200],
     }
     OUT.write_text(json.dumps(review, ensure_ascii=False, indent=1))
