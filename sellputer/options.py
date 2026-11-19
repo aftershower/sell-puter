@@ -57,25 +57,26 @@ def market_open_now() -> bool:
     return now.weekday() < 5 and (9, 30) <= (now.hour, now.minute) < (16, 0)
 
 
-PROBE = ["AAPL", "MSFT", "NVDA", "AMZN", "AMD", "META"]
-
-
-def quotes_ready(min_quoted: float = 0.95) -> bool:
-    """Whether Yahoo's put quotes are usable. They run ~15 minutes late, so for a while after the
-    9:30 open Yahoo still serves the pre-open snapshot, where most contracts have no bid."""
+def quotes_ready(tickers: list[str], min_dte: int, min_quoted: float = 0.75) -> bool:
+    """Whether Yahoo's put quotes are usable. They run ~15 minutes late, so after the 9:30 open Yahoo
+    serves a snapshot where most contracts have no bid. Measured 2026-11-19: across a spread of
+    candidates ~5% of near-the-money puts had a bid until 9:43, 82% at 9:48, 98% at 9:52, while
+    mega-caps looked ~80% quoted from 9:37 on. So probe a spread of the tickers about to be scanned."""
+    sample = tickers[:: max(1, len(tickers) // 20)][:20]
     total = quoted = 0
-    for t in PROBE:
+    for t in sample:
         try:
             tk = yf.Ticker(t)
             s = float(tk.fast_info["last_price"])
-            puts = tk.option_chain(tk.options[min(3, len(tk.options) - 1)]).puts
+            exps = [e for e in tk.options if (date.fromisoformat(e) - datetime.now(NY).date()).days >= min_dte]
+            puts = tk.option_chain(exps[0]).puts
         except Exception as e:
             log.debug("quote probe %s failed: %s", t, e)
             continue
-        near = puts[(puts.strike > s * 0.92) & (puts.strike < s)]
+        near = puts[(puts.strike > s * 0.95) & (puts.strike < s)]
         total += len(near)
         quoted += int((near.bid > 0).sum())
-    log.info("quote probe: %d/%d near-the-money puts have a bid", quoted, total)
+    log.info("quote probe: %d/%d near-the-money puts across %d tickers have a bid", quoted, total, len(sample))
     return total > 0 and quoted / total >= min_quoted
 
 

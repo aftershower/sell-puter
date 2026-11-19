@@ -65,9 +65,9 @@ def main() -> None:
     log.info("quality: %d passed, rejected %s", len(passed), dict(rejected))
 
     # Yahoo's option quotes run ~15 minutes late: just after the open it still serves the pre-open
-    # snapshot, with no bids on most contracts. Wait for live quotes rather than publish a bare page.
-    for _ in range(45):
-        if options.quotes_ready():
+    # snapshot, with no bids on most contracts (until ~9:50). Wait for live quotes rather than publish a bare page.
+    for _ in range(60):
+        if options.quotes_ready(passed, o["min_dte"]):
             break
         log.info("option quotes not usable yet; waiting a minute")
         time.sleep(60)
