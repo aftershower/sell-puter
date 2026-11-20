@@ -1,0 +1,73 @@
+name: deep-dive-test
+
+# Manual only: re-run one ticker's deep dive on the latest scan (about $0.1-0.2), to check prompt
+# changes without paying for a whole scan. With "save", the new note replaces that ticker's note on
+# the latest page.
+on:
+  workflow_dispatch:
+    inputs:
+      ticker:
+        description: "Ticker from the latest scan"
+        default: "TQQQ"
+        required: true
+      save:
+        description: "Replace that ticker's note on the latest page"
+        type: boolean
+        default: false
+
+concurrency:
+  group: sellputer  # shared with the scan and the review so pushes never collide
+  cancel-in-progress: false
+
+jobs:
+  deep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Deep dive
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TICKER: ${{ inputs.ticker }}
+          SAVE: ${{ inputs.save && '--save' || '' }}
+        run: uv run python -m sellputer.deeptest "$TICKER" $SAVE
+
+      - name: Commit results
+        id: commit
+        if: inputs.save
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data
+          if git diff --cached --quiet; then echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          git commit -m "deep dive $TICKER $(TZ=America/New_York date +%F)"
+          for i in 1 2 3; do
+            if git pull --rebase && git push; then exit 0; fi
+            sleep $((i * 10))
+          done
+          exit 1
+        env:
+          TICKER: ${{ inputs.ticker }}
+
+      - uses: actions/configure-pages@v5
+        if: steps.commit.outputs.changed == 'true'
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true'
+        with:
+          path: site
+      - id: deploy
+        if: steps.commit.outputs.changed == 'true'
+        uses: actions/deploy-pages@v4

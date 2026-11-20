@@ -53,6 +53,7 @@ DEEP_SYSTEM = BASE + """
 - 期权视角：对比 expected_move_1sd（到期前一个标准差的预期波动）和行权价离现价的距离（strike_buffer_sd），说明这张合约的缓冲够不够，IV 是事件驱动还是持续偏高。
 - 接盘视角：如果被行权，成本价是 breakeven；结合 forward_pe、sma50/sma200、52 周高低点，说明那个价位接货的估值和技术位置。
 - 催化剂：列出到期前及之后不久的已知事件和日期。
+- is_etf 为真时（如 TQQQ）：搜跟踪指数的近期走势、到期前的宏观日程（FOMC、CPI、非农的具体日期）和主要权重股的财报日期，catalysts 里写核实过的日期。
 - sources 只能填你实际搜索或读取到的具体文章链接（不要填网站首页），没有就留空。"""
 
 LIGHT_SYSTEM = BASE + "\n\n这次是一批股票的简要笔记，只用输入里的新闻标题和数据，每只写简洁。"
@@ -297,13 +298,22 @@ def _deep_call(client, ticker: str, brief: dict, cfg: dict, budget: Budget) -> d
         {"type": "web_search_20260209", "name": "web_search", "max_uses": cfg["deep_searches"]},
         {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": cfg["deep_fetches"], "max_content_tokens": 4000},
     ]
-    try:
-        note, urls = ask(client, cfg["model"], budget, _with_memory(DEEP_SYSTEM), DEEP_SCHEMA,
-                    "请深入分析这只股票（JSON）：\n\n" + json.dumps(brief, ensure_ascii=False, default=str),
-                    cfg["deep_effort"], tools)
-    except Exception as e:
-        log.warning("deep %s failed: %s", ticker, e)
-        return None
+    prompt = "请深入分析这只股票（JSON）：\n\n" + json.dumps(brief, ensure_ascii=False, default=str)
+    for attempt in range(2):
+        try:
+            note, urls = ask(client, cfg["model"], budget, _with_memory(DEEP_SYSTEM), DEEP_SCHEMA, prompt, cfg["deep_effort"], tools)
+        except Exception as e:
+            log.warning("deep %s failed: %s", ticker, e)
+            return None
+        if urls or attempt:
+            break
+        # the model sometimes writes straight from the headlines; a deep dive without a search is a light note
+        log.info("deep %s: no web search was made; asking again", ticker)
+        prompt = ("上一次你没有调用 web_search 就直接写了笔记。这一次动笔之前必须先用 web_search 搜索"
+                  + ("它跟踪的指数和到期前的宏观日程" if brief.get("is_etf") else "这只股票最近几天的消息")
+                  + "，再根据搜到的内容写。\n\n" + prompt)
+    if not urls:
+        log.warning("deep %s: still no web search after a retry", ticker)
     note["deep"] = True
     # keep only links the searches really returned; the model sometimes cites site homepages
     cited = note.get("sources", [])

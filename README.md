@@ -43,6 +43,8 @@ GitHub 自带的定时任务对这个仓库很不可靠：实测延迟 6–10 �
    - Body：`{"ref":"main","inputs":{"auto":"true"}}`（`auto` 表示按定时规则判断要不要跑）
 3. 建好后点 Test run：成功时 GitHub 返回 204，Actions 页面会出现一次 `workflow_dispatch` 运行。当天已经跑过的话它会直接跳过，不花钱，所以随时可以测。
 
+改了 AI 提示词想先看效果，可以在 Actions 里手动跑 `deep-dive-test`：用最近一次扫描的数据给一只股票重做深度分析（约 $0.1–0.2），勾上 save 会替换页面上那只股票的笔记。
+
 ## 改规则
 
 所有参数都在 [config.toml](config.toml)，改完 push 即可。
