@@ -5,6 +5,8 @@
 extra_tickers = ["ASML", "TSM", "ARM", "MELI", "SHOP", "NVO", "SAP", "SONY", "TM", "SPOT"]
 # 永远不看的股票
 exclude_tickers = []
+# 自选：不受质地门槛和页面 IV / 年化下限限制，每天都扫描、都写 AI 笔记（优先深度分析），固定显示在页面最上面。可以放 ETF。
+watchlist = ["TQQQ"]
 # 每天把 Reddit 股票版块过去 24 小时提及最多的前 N 只加进股票池（同样要过质地门槛）；0 = 不加
 reddit_top_n = 50
 # 每天再加上 Yahoo 的榜单：most_actives = 成交最活跃，day_losers = 当日跌幅榜（同样要过质地门槛）

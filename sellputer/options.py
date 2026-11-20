@@ -200,6 +200,11 @@ def is_thin(k: dict, risk: str | None, pg: dict) -> bool:
     return risk == "高" and k.get("buffer_sd") is not None and k["buffer_sd"] < pg.get("thin_buffer_sd", 0.6)
 
 
+def page_for(cand: dict, pg: dict) -> dict:
+    """Watchlist tickers are always shown: only the IV and yield floors are dropped for them."""
+    return {**pg, "min_iv": 0, "min_annualized": 0} if cand.get("watch") else pg
+
+
 def matches_page(k: dict, pg: dict) -> bool:
     return (
         k["iv"] >= pg["min_iv"]

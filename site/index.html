@@ -22,7 +22,7 @@
     <label>一手担保 ≤ $<input type="number" id="maxCol" class="num wide" step="1000" min="0"></label>
     <button id="reset" type="button">恢复默认</button>
     <label>行业 <select id="sector"><option value="">全部</option></select></label>
-    <label>来源 <select id="source"><option value="">全部</option><option value="reddit">Reddit 热门</option><option value="screens">Yahoo 榜单</option><option value="core">S&amp;P 500 / 自选</option></select></label>
+    <label>来源 <select id="source"><option value="">全部</option><option value="reddit">Reddit 热门</option><option value="screens">Yahoo 榜单</option><option value="core">S&amp;P 500 / 额外名单</option></select></label>
     <label>AI 风险 <select id="risk"><option value="">全部</option><option>低</option><option>中</option><option>高</option></select></label>
   </div>
   <div id="notice"></div>
@@ -106,13 +106,16 @@ function savedFilters() {
 
 function visibleRows() {
   const f = readFilters(), sector = $("sector").value, risk = $("risk").value, source = $("source").value;
-  const rows = [];
+  const rows = [], pins = [], watch = new Set(report.params.watchlist || []);
   for (const c of report.candidates) {
+    const pinned = watch.has(c.ticker);
+    // the watchlist ignores the IV and yield floors: it is always shown, pinned on top
     const contracts = c.contracts
-      .filter((k) => k.annualized >= f.minAnn / 100 && k.iv >= f.minIv / 100 && -k.delta >= f.dMin && -k.delta <= f.dMax &&
+      .filter((k) => (pinned || (k.annualized >= f.minAnn / 100 && k.iv >= f.minIv / 100)) && -k.delta >= f.dMin && -k.delta <= f.dMax &&
         k.dte <= f.maxDte && k.collateral <= f.maxCol && !(f.hideEarn && k.crosses_earnings))
       .sort((a, b) => b.annualized - a.annualized);
     if (!contracts.length) continue;
+    if (pinned) { pins.push({ c, k: contracts[0], others: contracts.slice(1), pinned: true }); continue; }
     if (sector && c.sector !== sector) continue;
     if (risk && c.ai?.risk_level !== risk) continue;
     if (source === "reddit" && !c.reddit) continue;
@@ -127,7 +130,7 @@ function visibleRows() {
   }[sortKey]);
   const asc = ["ticker", "expiry", "earnings", "risk", "delta"].includes(sortKey) ? 1 : -1;
   rows.sort((a, b) => (val(a) > val(b) ? asc : val(a) < val(b) ? -asc : 0));
-  return rows;
+  return [...pins, ...rows];
 }
 
 function render() {
@@ -142,6 +145,9 @@ function render() {
   if (!r.ai.enabled) notes.push("AI 风险笔记未启用（未配置 ANTHROPIC_API_KEY）。");
   if (r.ai.error) notes.push("AI 风险笔记今天生成失败：" + esc(r.ai.error));
   const sp = r.ai.spend;
+  const shownPins = new Set(visibleRows().filter((x) => x.pinned).map((x) => x.c.ticker));
+  const missing = (r.params.watchlist || []).filter((t) => !shownPins.has(t));
+  if (missing.length) notes.push(`自选 ${missing.map(esc).join("、")} 在当前 Delta / 到期 / 担保金条件下没有合约${r.candidates.some((c) => missing.includes(c.ticker)) ? "，放宽这几项就能看到" : "（今天没扫到它的期权数据）"}。`);
   $("notice").innerHTML = notes.map((n) => `<div class="notice">${n}</div>`).join("");
 
   $("head").innerHTML = COLS.map((c) => `<th data-k="${c.key}" class="${c.key === sortKey ? "sorted" : ""}">${c.label}</th>`).join("");
@@ -155,7 +161,7 @@ function render() {
   const o = r.params.options, q = r.params.quality;
   $("foot").innerHTML = `
     后端抓取范围（页面筛选只能在此范围内收紧）：|Delta| ${o.delta_min}–${o.delta_max} · IV ≥ ${pct(o.min_iv ?? 0, 0)} · 年化 ≥ ${pct(o.min_annualized, 0)} · DTE ${o.min_dte}–${o.max_dte} 天 · 一手担保 ≤ $${(o.max_collateral ?? 0).toLocaleString()} · OI ≥ ${o.min_open_interest} · 价差 ≤ ${pct(o.max_spread_pct, 0)}<br>
-    质地：S&amp;P 500 成分股和自选名单直接通过；其他来源（Reddit 热门、Yahoo 榜单）要求市值 ≥ ${big(q.min_market_cap)}${q.require_profitable ? " 且在盈利" : ""}；所有股票股价 ≥ $${q.min_price}<br>
+    质地：S&amp;P 500 成分股和额外名单（extra_tickers）直接通过；自选（${(r.params.watchlist || []).map(esc).join("、") || "无"}）不设质地门槛，也不受 IV / 年化下限限制，固定显示在最上面；其他来源（Reddit 热门、Yahoo 榜单）要求市值 ≥ ${big(q.min_market_cap)}${q.require_profitable ? " 且在盈利" : ""}；所有股票股价 ≥ $${q.min_price}<br>
     ${sp ? `AI：深度分析 ${sp.deep} 只、简要笔记 ${sp.light} 只、联网搜索 ${sp.searches} 次，今日花费约 $${sp.usd.toFixed(2)}（上限 $${sp.budget_usd}）<br>` : ""}
     估成交价 = 中间价 − ¼ 价差（卖方实际成交通常低于中间价）；年化 = 估成交价 ÷ 行权价 × 365 ÷ DTE（按现金担保计）。缓冲 σ = 行权价离现价有几个"到期前一倍标准差"的波动，越大越不容易被行权。"缓冲薄" = AI 评高风险且缓冲不到 0.6σ：复盘发现这类合约在大盘下跌时一两天就会被跌破，展开后可以和同到期日低一档的行权价对比（复盘页会同时跟踪两者的结果）。IV 由昨收中间价按 Black-Scholes 反推（未计股息）；盘前股价有变动时，Delta 和权利金（标"盘前估"）按盘前价和同一 IV 重新估算，开盘后实际报价会不同。行权价是固定的，盘前大跌意味着合约离被行权更近。数据来自 Yahoo Finance，可能延迟或有误，下单前请以券商实时报价为准。<br>
     本页面是按上述规则自动筛选的数据和 AI 生成的风险摘要，不构成投资建议。卖出看跌期权在股价大跌时可能被行权并产生较大亏损。`;
@@ -189,10 +195,10 @@ function redditHtml(list) {
     <div class="chips">${list.map((x) => `<span class="chip${x.status === "candidate" ? " in" : ""}">#${x.rank} ${esc(x.ticker)} · ${x.mentions} <span class="why">${WHY[x.status] || esc(x.status)}</span></span>`).join("")}</div>`;
 }
 
-function rowHtml({ c, k, others }) {
+function rowHtml({ c, k, others, pinned }) {
   const ai = c.ai;
   const cells = [
-    `<span class="tk">${esc(c.ticker)}</span>${c.reddit ? `<span class="tag rd">Reddit #${c.reddit.rank}</span>` : ""}${(c.screens || []).map((x) => `<span class="tag rd">${SCREEN_LABEL[x] || esc(x)}</span>`).join("")}<span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
+    `<span class="tk">${esc(c.ticker)}</span>${pinned ? '<span class="tag pin">自选</span>' : ""}${c.reddit ? `<span class="tag rd">Reddit #${c.reddit.rank}</span>` : ""}${(c.screens || []).map((x) => `<span class="tag rd">${SCREEN_LABEL[x] || esc(x)}</span>`).join("")}<span class="nm">${esc(c.name)} · ${esc(c.sector || "")}</span>`,
     priceCell(c),
     `${k.expiry.slice(5)} <span class="small">${k.dte}天</span>`,
     `${usd(k.strike, k.strike % 1 ? 1 : 0)} <span class="small">${pct(k.otm_pct)}</span>`,
@@ -203,7 +209,7 @@ function rowHtml({ c, k, others }) {
     `<span class="ann">${pct(k.annualized)}</span>`,
     usd(k.breakeven),
     `${pct(k.iv, 0)} <span class="small">/ ${pct(c.hv20, 0)}</span>`,
-    c.next_earnings ? earnCell(c, k) : k.earnings_unknown ? '<span class="tag earn" title="Yahoo 没有给出下次财报日期，可能在到期前，请自行核对">未知</span>' : "–",
+    c.next_earnings ? earnCell(c, k) : c.not_equity ? '<span class="small">ETF 无财报</span>' : k.earnings_unknown ? '<span class="tag earn" title="Yahoo 没有给出下次财报日期，可能在到期前，请自行核对">未知</span>' : "–",
     ai ? `<span class="tag g-${ai.quality_grade}">${ai.quality_grade}</span> <span class="tag r-${ai.risk_level}">${ai.risk_level}</span>` : '<span class="small">–</span>',
   ];
   const tr = `<tr class="row" data-t="${esc(c.ticker)}">${cells.map((v, i) => `<td data-label="${COLS[i].label}"><span>${v}</span></td>`).join("")}</tr>`;

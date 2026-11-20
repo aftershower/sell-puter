@@ -19,7 +19,7 @@ import anthropic
 import requests
 import yfinance as yf
 
-from .options import lower_alt, matches_page
+from .options import lower_alt, matches_page, page_for
 
 log = logging.getLogger(__name__)
 
@@ -40,6 +40,8 @@ BASE = """你是一个期权卖方的研究助手。用户用规则筛出了准�
 - 到期前可能让股价跌破盈亏平衡点的具体风险：财报、监管/诉讼、产品或客户事件、宏观敏感度、行业逆风等。没有证据的不要编造。
 - 风险等级（低/中/高）只衡量"到期前大幅下跌、被行权后继续亏损"的可能性。
 - best_contract 是页面默认显示的合约，lower_strike_alternative 是同一到期日低一档的行权价（没有就是 null）。best_contract 的缓冲不足 0.6 个标准差时，在期权视角或小结里用一句话对比两者的缓冲和年化，说清取舍。
+- user_watchlist 为真表示这是用户自己常做的标的，不论 IV 高低都会显示，笔记要写得更细。
+- is_etf 为真时（例如 TQQQ 这类杠杆 ETF）：没有财报和公司基本面，不要编造。质地评级改看跟踪的指数和产品结构：标的指数的质量、杠杆倍数、每日再平衡带来的波动损耗、被行权后长期持有的风险。到期前的风险看标的指数的宏观事件（FOMC、CPI、非农、权重股财报）和大盘趋势；3 倍杠杆 ETF 在指数单日大跌时会跌约 3 倍，缓冲要按这个看。
 - previous_calls 是之前给这只股票写的笔记事后的判卷结果（分析对不对、建议好不好、错在哪）。如果有，上次判断错或漏掉的地方这次要专门检查，并在相应字段里简单提一句。
 - reddit_24h 不为空表示今天是 Reddit 热门；screens 表示出现在 Yahoo 的成交最活跃/跌幅榜上。散户讨论要写明是散户观点，不能当作事实。
 
@@ -188,7 +190,7 @@ def _google_news(ticker: str, n: int) -> list[dict]:
 
 def _brief(cand: dict, news_n: int, pg: dict) -> dict:
     # the contract the page shows by default, so the notes talk about what the user sees
-    shown = [k for k in cand["contracts"] if matches_page(k, pg)] or cand["contracts"]
+    shown = [k for k in cand["contracts"] if matches_page(k, page_for(cand, pg))] or cand["contracts"]
     best = max(shown, key=lambda k: k["annualized"])
     S = cand["price_now"]
     move = S * best["iv"] * math.sqrt(best["dte"] / 365)
@@ -199,6 +201,8 @@ def _brief(cand: dict, news_n: int, pg: dict) -> dict:
         "sector": cand.get("sector"),
         "industry": cand.get("industry"),
         "in_sp500_or_user_list": cand.get("core"),
+        "user_watchlist": cand.get("watch", False),
+        "is_etf": cand.get("not_equity", False),
         "screens": cand.get("screens"),
         "reddit_24h": cand.get("reddit"),
         "last_close": round(cand["price"], 2),

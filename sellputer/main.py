@@ -40,7 +40,8 @@ def main() -> None:
     reddit = {r["ticker"]: r for r in trending}
     screens = universe.yahoo_screens(u["yahoo_screens"], u["yahoo_count"])
     core = universe.load_universe(u["extra_tickers"], u["exclude_tickers"])  # S&P 500 + the user's list
-    tickers = sorted((set(core) | set(reddit) | set(screens)) - set(u["exclude_tickers"]))
+    watch = [t.upper() for t in u.get("watchlist", [])]  # always scanned and noted, ETFs allowed
+    tickers = sorted((set(core) | set(reddit) | set(screens) | set(watch)) - set(u["exclude_tickers"]))
     core = set(core)
     if limit := os.environ.get("SELLPUTER_LIMIT"):  # quick local test runs
         tickers = tickers[: int(limit)]
@@ -56,7 +57,7 @@ def main() -> None:
     passed = []
     status = {}  # per-ticker outcome, reported for the Reddit list
     for t, f in fundamentals.items():
-        reason = quality.quality_check(f, prices[t], q, core=t in core)
+        reason = None if t in watch else quality.quality_check(f, prices[t], q, core=t in core)
         status[t] = reason or "passed"
         if reason:
             rejected[reason] += 1
@@ -86,9 +87,10 @@ def main() -> None:
     log.info("market open: %s; big pre/post-market moves: %s", market_open, [(t, f"{g:+.1%}") for g, t in gaps])
 
     r = options.risk_free_rate()
+    o_watch = {**o, "min_iv": 0, "min_annualized": 0}  # show the watchlist whatever its IV
     scan = lambda t: options.scan_ticker(
         t, prices[t]["price"], date.fromisoformat(prices[t]["price_date"]), prices[t]["price_now"],
-        r, now.date(), fundamentals[t]["next_earnings"], o,
+        r, now.date(), fundamentals[t].get("next_earnings"), o_watch if t in watch else o,
     )
     usual = _usual_count(now.date())
     while True:
@@ -117,11 +119,15 @@ def main() -> None:
     candidates = [
         {
             "ticker": t, **fundamentals[t], **prices[t],
-            "core": t in core, "reddit": reddit.get(t), "screens": screens.get(t, []), "contracts": c,
+            "core": t in core, "watch": t in watch, "reddit": reddit.get(t), "screens": screens.get(t, []), "contracts": c,
         }
         for t, c in chains.items()
         if c
     ]
+    for c in candidates:
+        if c.get("not_equity"):  # funds have no earnings, so "unknown" would be misleading
+            for k in c["contracts"]:
+                k["earnings_unknown"] = False
     for t, c in chains.items():
         status[t] = "candidate" if c else "no_contract" if c is not None else "chain_failed"
     candidates.sort(key=lambda c: c["contracts"][0]["annualized"], reverse=True)
@@ -131,7 +137,8 @@ def main() -> None:
         ai_status["enabled"] = True
         try:
             # page defaults first, so what the user sees on open has notes
-            ranked = sorted(candidates, key=lambda c: not any(options.matches_page(k, pg) for k in c["contracts"]))
+            ranked = sorted(candidates, key=lambda c: (
+                not c["watch"], not any(options.matches_page(k, options.page_for(c, pg)) for k in c["contracts"])))
             notes, ai_status["spend"] = ai.notes(ranked[: a["top_n"]], a, pg)
             for c in candidates:
                 c["ai"] = notes.get(c["ticker"])
@@ -157,7 +164,7 @@ def main() -> None:
             "added_outside_core": len(set(tickers) - core),
         },
         "reddit": [{**r, "status": status.get(r["ticker"], "data_failed")} for r in trending],
-        "params": {"quality": q, "options": o, "page": pg},
+        "params": {"quality": q, "options": o, "page": pg, "watchlist": watch},
         "ai": ai_status,
         "candidates": candidates,
     }

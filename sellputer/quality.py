@@ -54,7 +54,10 @@ def _fetch_one(ticker: str) -> dict | None:
             if kind is None:
                 # throttled responses come back partial; never cache those
                 raise RuntimeError("incomplete info")
-            rec = {"not_equity": True} if kind != "EQUITY" else {k: info.get(src) for k, src in INFO_FIELDS.items()}
+            if kind == "EQUITY":
+                rec = {k: info.get(src) for k, src in INFO_FIELDS.items()}
+            else:  # ETFs etc.: no company fundamentals; kept for the watchlist, rejected elsewhere
+                rec = {"not_equity": True, "name": info.get("longName") or info.get("shortName"), "sector": kind}
             rec["next_earnings"], rec["earnings_estimated"] = _next_earnings(info)
             rec["fetched"] = datetime.now(timezone.utc).isoformat()
             return rec
@@ -73,7 +76,8 @@ def _stale(rec: dict, max_age_days: int, today: str) -> bool:
     # older versions cached throttled, all-empty records
     empty = not rec.get("not_equity") and rec.get("name") is None and rec.get("market_cap") is None
     no_estimate = not rec.get("not_equity") and "earnings_estimated" not in rec
-    return age > timedelta(days=max_age_days) or passed or empty or no_estimate
+    unnamed_fund = rec.get("not_equity") and "name" not in rec
+    return age > timedelta(days=max_age_days) or passed or empty or no_estimate or unnamed_fund
 
 
 def fetch_fundamentals(tickers: list[str], max_age_days: int, workers: int) -> dict[str, dict]:

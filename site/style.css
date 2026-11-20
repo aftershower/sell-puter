@@ -57,6 +57,8 @@ tr.detail td { white-space: normal; text-align: left; background: var(--surface-
 .mini th, .mini td { padding: 4px 6px; font-size: 12px; background: transparent; cursor: default; white-space: nowrap; }
 .empty { text-align: center; color: var(--muted); padding: 40px; }
 .rd { background: var(--accent-soft); color: var(--accent); margin-left: 6px; font-weight: 600; }
+.pin { background: var(--text); color: var(--surface); margin-left: 6px; font-weight: 600; }
+tr.row:has(.pin) { box-shadow: inset 3px 0 0 var(--accent); }
 #reddit { margin-top: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
 #reddit h3 { margin: 0 0 4px; font-size: 14px; }
 #reddit .chips { margin: 8px 0 0; }

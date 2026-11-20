@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from .options import bs_put, is_thin, lower_alt, matches_page
+from .options import bs_put, is_thin, lower_alt, matches_page, page_for
 
 RATE = 0.04  # for marking open puts; a rough rate is fine here
 HIST = Path("site/data/history")
@@ -23,11 +23,13 @@ log = logging.getLogger(__name__)
 
 
 def _source(c: dict) -> str:
+    if c.get("watch"):
+        return "自选"
     if c.get("reddit"):
         return "Reddit"
     if c.get("screens"):
         return "Yahoo 榜单"
-    return "S&P 500 / 自选"
+    return "S&P 500 / 额外名单"
 
 
 def load_recs() -> list[dict]:
@@ -38,7 +40,7 @@ def load_recs() -> list[dict]:
         if not pg:
             continue
         for c in rep["candidates"]:
-            ks = [k for k in c["contracts"] if matches_page(k, pg)]
+            ks = [k for k in c["contracts"] if matches_page(k, page_for(c, pg))]
             if not ks:
                 continue
             k = max(ks, key=lambda k: k["annualized"])
