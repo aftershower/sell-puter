@@ -1,85 +1,85 @@
 {
- "as_of": "2026-11-25",
+ "as_of": "2026-11-27",
  "overall": {
   "n": 103,
-  "closed": 1,
-  "win_rate": 1.0,
-  "assigned_rate": 1.0,
-  "avg_return": 0.0114,
+  "closed": 72,
+  "win_rate": 0.792,
+  "assigned_rate": 0.347,
+  "avg_return": 0.0104,
   "touched_rate": 0.631,
-  "open_below_strike": 44
+  "open_below_strike": 8
  },
  "buckets": {
   "AI 风险": [
    {
     "key": "中",
     "n": 16,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 12,
+    "win_rate": 0.75,
+    "assigned_rate": 0.333,
+    "avg_return": 0.0023,
     "touched_rate": 0.688,
-    "open_below_strike": 8
+    "open_below_strike": 1
    },
    {
     "key": "无笔记",
     "n": 5,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 1,
+    "win_rate": 1.0,
+    "assigned_rate": 0.0,
+    "avg_return": 0.0163,
     "touched_rate": 0.0,
     "open_below_strike": 0
    },
    {
     "key": "高",
     "n": 82,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 59,
+    "win_rate": 0.797,
+    "assigned_rate": 0.356,
+    "avg_return": 0.012,
     "touched_rate": 0.659,
-    "open_below_strike": 36
+    "open_below_strike": 7
    }
   ],
   "AI 质地": [
    {
     "key": "A",
     "n": 19,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 17,
+    "win_rate": 0.706,
+    "assigned_rate": 0.529,
+    "avg_return": 0.0007,
     "touched_rate": 0.632,
-    "open_below_strike": 10
+    "open_below_strike": 1
    },
    {
     "key": "B",
     "n": 58,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 40,
+    "win_rate": 0.825,
+    "assigned_rate": 0.325,
+    "avg_return": 0.0133,
     "touched_rate": 0.69,
-    "open_below_strike": 26
+    "open_below_strike": 5
    },
    {
     "key": "C",
     "n": 21,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 14,
+    "win_rate": 0.786,
+    "assigned_rate": 0.214,
+    "avg_return": 0.0138,
     "touched_rate": 0.619,
-    "open_below_strike": 8
+    "open_below_strike": 2
    },
    {
     "key": "无笔记",
     "n": 5,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 1,
+    "win_rate": 1.0,
+    "assigned_rate": 0.0,
+    "avg_return": 0.0163,
     "touched_rate": 0.0,
     "open_below_strike": 0
    }
@@ -88,40 +88,40 @@
    {
     "key": "Reddit",
     "n": 24,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 19,
+    "win_rate": 0.789,
+    "assigned_rate": 0.316,
+    "avg_return": 0.0112,
     "touched_rate": 0.667,
-    "open_below_strike": 10
+    "open_below_strike": 2
    },
    {
     "key": "S&P 500 / 额外名单",
     "n": 56,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 39,
+    "win_rate": 0.769,
+    "assigned_rate": 0.41,
+    "avg_return": 0.0067,
     "touched_rate": 0.643,
-    "open_below_strike": 27
+    "open_below_strike": 3
    },
    {
     "key": "Yahoo 榜单",
     "n": 22,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 13,
+    "win_rate": 0.846,
+    "assigned_rate": 0.231,
+    "avg_return": 0.0185,
     "touched_rate": 0.545,
-    "open_below_strike": 7
+    "open_below_strike": 3
    },
    {
     "key": "自选",
     "n": 1,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 1,
+    "win_rate": 1.0,
+    "assigned_rate": 0.0,
+    "avg_return": 0.0377,
     "touched_rate": 1.0,
     "open_below_strike": 0
    }
@@ -130,32 +130,32 @@
    {
     "key": "60–80%",
     "n": 55,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 36,
+    "win_rate": 0.722,
+    "assigned_rate": 0.444,
+    "avg_return": 0.002,
     "touched_rate": 0.709,
-    "open_below_strike": 27
+    "open_below_strike": 6
    },
    {
     "key": "80–100%",
     "n": 32,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 21,
+    "win_rate": 0.857,
+    "assigned_rate": 0.286,
+    "avg_return": 0.015,
     "touched_rate": 0.531,
-    "open_below_strike": 11
+    "open_below_strike": 1
    },
    {
     "key": "≥100%",
     "n": 16,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 15,
+    "win_rate": 0.867,
+    "assigned_rate": 0.2,
+    "avg_return": 0.0243,
     "touched_rate": 0.562,
-    "open_below_strike": 6
+    "open_below_strike": 1
    }
   ],
   "DTE": [
@@ -167,7 +167,7 @@
     "assigned_rate": null,
     "avg_return": null,
     "touched_rate": 0.667,
-    "open_below_strike": 8
+    "open_below_strike": 5
    },
    {
     "key": "29–42 天",
@@ -182,101 +182,101 @@
    {
     "key": "≤14 天",
     "n": 76,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 72,
+    "win_rate": 0.792,
+    "assigned_rate": 0.347,
+    "avg_return": 0.0104,
     "touched_rate": 0.632,
-    "open_below_strike": 33
+    "open_below_strike": 0
    }
   ],
   "|Delta|": [
    {
     "key": ">0.25",
     "n": 72,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 52,
+    "win_rate": 0.788,
+    "assigned_rate": 0.385,
+    "avg_return": 0.0112,
     "touched_rate": 0.639,
-    "open_below_strike": 31
+    "open_below_strike": 5
    },
    {
     "key": "≤0.25",
     "n": 31,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 20,
+    "win_rate": 0.8,
+    "assigned_rate": 0.25,
+    "avg_return": 0.0085,
     "touched_rate": 0.613,
-    "open_below_strike": 13
+    "open_below_strike": 3
    }
   ],
   "缓冲 σ": [
    {
     "key": "<0.6σ",
     "n": 81,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 55,
+    "win_rate": 0.8,
+    "assigned_rate": 0.382,
+    "avg_return": 0.0117,
     "touched_rate": 0.642,
-    "open_below_strike": 34
+    "open_below_strike": 7
    },
    {
     "key": "≥0.6σ",
     "n": 22,
-    "closed": 0,
-    "win_rate": null,
-    "assigned_rate": null,
-    "avg_return": null,
+    "closed": 17,
+    "win_rate": 0.765,
+    "assigned_rate": 0.235,
+    "avg_return": 0.0064,
     "touched_rate": 0.591,
-    "open_below_strike": 10
+    "open_below_strike": 1
    }
   ],
   "跨财报": [
    {
     "key": "否",
     "n": 103,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 72,
+    "win_rate": 0.792,
+    "assigned_rate": 0.347,
+    "avg_return": 0.0104,
     "touched_rate": 0.631,
-    "open_below_strike": 44
+    "open_below_strike": 8
    }
   ],
   "盘前跳空": [
    {
     "key": "±3% 内",
     "n": 103,
-    "closed": 1,
-    "win_rate": 1.0,
-    "assigned_rate": 1.0,
-    "avg_return": 0.0114,
+    "closed": 72,
+    "win_rate": 0.792,
+    "assigned_rate": 0.347,
+    "avg_return": 0.0104,
     "touched_rate": 0.631,
-    "open_below_strike": 44
+    "open_below_strike": 8
    }
   ]
  },
  "vs_alt": {
   "全部": {
    "n": 69,
-   "closed": 1,
+   "closed": 53,
    "touched": 46,
    "alt_touched": 37,
-   "pnl": -20132.4,
-   "alt_pnl": -14098.25,
-   "alt_better": 44
+   "pnl": 7479.86,
+   "alt_pnl": 9164.27,
+   "alt_better": 29
   },
   "高风险且缓冲薄": {
    "n": 53,
-   "closed": 1,
+   "closed": 38,
    "touched": 35,
    "alt_touched": 27,
-   "pnl": -12476.93,
-   "alt_pnl": -8319.28,
-   "alt_better": 34
+   "pnl": 7072.23,
+   "alt_pnl": 8254.16,
+   "alt_better": 23
   }
  },
  "recs": [
@@ -313,18 +313,19 @@
     "delta": -0.2172,
     "annualized": 1.1705,
     "buffer_sd": 0.66,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 480.75
+    "pnl": 538.8
    },
-   "sessions": 4,
-   "last_close": 272.45,
+   "sessions": 5,
+   "last_close": 292.11,
    "min_close": 261.11,
    "touched_strike": false,
-   "move": 0.0203,
+   "move": 0.0939,
    "worst_move": -0.0222,
-   "status": "otm",
-   "pnl_est": 643.56
+   "status": "expired_worthless",
+   "pnl": 793.8,
+   "return": 0.0318
   },
   {
    "date": "2026-11-20",
@@ -349,14 +350,14 @@
    "buffer_sd": 0.47,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 121.32,
+   "sessions": 5,
+   "last_close": 122.65,
    "min_close": 115.25,
    "touched_strike": false,
-   "move": 0.0206,
+   "move": 0.0318,
    "worst_move": -0.0305,
    "status": "otm",
-   "pnl_est": 135.98
+   "pnl_est": 192.04
   },
   {
    "date": "2026-11-20",
@@ -391,18 +392,19 @@
     "delta": -0.1721,
     "annualized": 0.7413,
     "buffer_sd": 0.82,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 204.02
+    "pnl": 213.3
    },
-   "sessions": 4,
-   "last_close": 173.37,
+   "sessions": 5,
+   "last_close": 178.71,
    "min_close": 166.24,
    "touched_strike": false,
-   "move": 0.0288,
+   "move": 0.0605,
    "worst_move": -0.0135,
-   "status": "otm",
-   "pnl_est": 299.52
+   "status": "expired_worthless",
+   "pnl": 328.7,
+   "return": 0.0212
   },
   {
    "date": "2026-11-20",
@@ -437,18 +439,19 @@
     "delta": -0.2108,
     "annualized": 0.7138,
     "buffer_sd": 0.72,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 405.42
+    "pnl": 417.5
    },
-   "sessions": 4,
-   "last_close": 342.34,
+   "sessions": 5,
+   "last_close": 353.34,
    "min_close": 318.71,
    "touched_strike": false,
-   "move": 0.0416,
+   "move": 0.0751,
    "worst_move": -0.0303,
-   "status": "otm",
-   "pnl_est": 490.97
+   "status": "expired_worthless",
+   "pnl": 512.5,
+   "return": 0.0165
   },
   {
    "date": "2026-11-20",
@@ -483,18 +486,19 @@
     "delta": -0.1916,
     "annualized": 0.5042,
     "buffer_sd": 0.79,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 325.77
+    "pnl": 328.8
    },
-   "sessions": 4,
-   "last_close": 380.14,
+   "sessions": 5,
+   "last_close": 400.0,
    "min_close": 345.82,
    "touched_strike": false,
-   "move": 0.0447,
+   "move": 0.0992,
    "worst_move": -0.0497,
-   "status": "otm",
-   "pnl_est": 440.44
+   "status": "expired_worthless",
+   "pnl": 448.8,
+   "return": 0.013
   },
   {
    "date": "2026-11-20",
@@ -529,18 +533,19 @@
     "delta": -0.2067,
     "annualized": 1.271,
     "buffer_sd": 0.68,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 80.93
+    "pnl": 97.5
    },
-   "sessions": 4,
-   "last_close": 45.28,
+   "sessions": 5,
+   "last_close": 48.85,
    "min_close": 41.2,
    "touched_strike": true,
-   "move": -0.0008,
+   "move": 0.078,
    "worst_move": -0.0908,
-   "status": "otm",
-   "pnl_est": 111.19
+   "status": "expired_worthless",
+   "pnl": 158.3,
+   "return": 0.0377
   },
   {
    "date": "2026-11-20",
@@ -575,18 +580,19 @@
     "delta": -0.1828,
     "annualized": 0.8669,
     "buffer_sd": 0.78,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 31.78
+    "pnl": 33.2
    },
-   "sessions": 4,
-   "last_close": 23.31,
+   "sessions": 5,
+   "last_close": 23.76,
    "min_close": 21.65,
    "touched_strike": false,
-   "move": 0.036,
+   "move": 0.056,
    "worst_move": -0.0378,
-   "status": "otm",
-   "pnl_est": 48.01
+   "status": "expired_worthless",
+   "pnl": 53.2,
+   "return": 0.0253
   },
   {
    "date": "2026-11-20",
@@ -611,14 +617,14 @@
    "buffer_sd": 0.43,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 91.51,
+   "sessions": 5,
+   "last_close": 93.83,
    "min_close": 85.33,
    "touched_strike": false,
-   "move": 0.0308,
+   "move": 0.0569,
    "worst_move": -0.0389,
    "status": "otm",
-   "pnl_est": 140.68
+   "pnl_est": 203.2
   },
   {
    "date": "2026-11-20",
@@ -653,18 +659,19 @@
     "delta": -0.2393,
     "annualized": 0.743,
     "buffer_sd": 0.63,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 211.32
+    "pnl": 213.7
    },
-   "sessions": 4,
-   "last_close": 168.66,
+   "sessions": 5,
+   "last_close": 179.27,
    "min_close": 149.94,
    "touched_strike": true,
-   "move": 0.0604,
+   "move": 0.1271,
    "worst_move": -0.0573,
-   "status": "otm",
-   "pnl_est": 286.86
+   "status": "expired_worthless",
+   "pnl": 293.5,
+   "return": 0.0192
   },
   {
    "date": "2026-11-20",
@@ -699,18 +706,19 @@
     "delta": -0.1805,
     "annualized": 0.6035,
     "buffer_sd": 0.82,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 156.14
+    "pnl": 156.2
    },
-   "sessions": 4,
-   "last_close": 163.59,
+   "sessions": 5,
+   "last_close": 172.17,
    "min_close": 143.49,
    "touched_strike": false,
-   "move": 0.1084,
+   "move": 0.1665,
    "worst_move": -0.0278,
-   "status": "otm",
-   "pnl_est": 251.21
+   "status": "expired_worthless",
+   "pnl": 251.5,
+   "return": 0.018
   },
   {
    "date": "2026-11-20",
@@ -745,18 +753,19 @@
     "delta": -0.2489,
     "annualized": 0.8177,
     "buffer_sd": 0.6,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 462.23
+    "pnl": 517.5
    },
-   "sessions": 4,
-   "last_close": 356.14,
+   "sessions": 5,
+   "last_close": 366.76,
    "min_close": 343.32,
    "touched_strike": false,
-   "move": 0.0158,
+   "move": 0.0461,
    "worst_move": -0.0208,
-   "status": "otm",
-   "pnl_est": 547.29
+   "status": "expired_worthless",
+   "pnl": 646.3,
+   "return": 0.0193
   },
   {
    "date": "2026-11-20",
@@ -793,16 +802,16 @@
     "buffer_sd": 0.84,
     "status": "otm",
     "touched_strike": false,
-    "pnl": 64.58
+    "pnl": 121.46
    },
-   "sessions": 4,
-   "last_close": 103.88,
+   "sessions": 5,
+   "last_close": 107.13,
    "min_close": 101.19,
    "touched_strike": false,
-   "move": -0.0074,
+   "move": 0.0236,
    "worst_move": -0.0331,
    "status": "otm",
-   "pnl_est": 75.34
+   "pnl_est": 169.72
   },
   {
    "date": "2026-11-20",
@@ -827,14 +836,14 @@
    "buffer_sd": 0.61,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 242.96,
+   "sessions": 5,
+   "last_close": 253.19,
    "min_close": 235.15,
    "touched_strike": false,
-   "move": -0.0151,
+   "move": 0.0264,
    "worst_move": -0.0467,
    "status": "otm",
-   "pnl_est": 12.04
+   "pnl_est": 257.71
   },
   {
    "date": "2026-11-20",
@@ -869,18 +878,19 @@
     "delta": -0.1801,
     "annualized": 0.6153,
     "buffer_sd": 0.82,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 147.33
+    "pnl": 147.5
    },
-   "sessions": 4,
-   "last_close": 149.3,
+   "sessions": 5,
+   "last_close": 150.49,
    "min_close": 125.53,
    "touched_strike": true,
-   "move": 0.0914,
+   "move": 0.1001,
    "worst_move": -0.0824,
-   "status": "otm",
-   "pnl_est": 248.34
+   "status": "expired_worthless",
+   "pnl": 249.3,
+   "return": 0.0192
   },
   {
    "date": "2026-11-20",
@@ -905,14 +915,14 @@
    "buffer_sd": 0.59,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 92.16,
+   "sessions": 5,
+   "last_close": 92.8,
    "min_close": 87.61,
    "touched_strike": false,
-   "move": 0.0085,
+   "move": 0.0155,
    "worst_move": -0.0413,
    "status": "otm",
-   "pnl_est": 77.69
+   "pnl_est": 112.14
   },
   {
    "date": "2026-11-20",
@@ -947,18 +957,19 @@
     "delta": -0.1879,
     "annualized": 1.2862,
     "buffer_sd": 0.73,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 142.0
+    "pnl": 185.0
    },
-   "sessions": 4,
-   "last_close": 84.99,
+   "sessions": 5,
+   "last_close": 89.46,
    "min_close": 81.31,
    "touched_strike": false,
-   "move": -0.0249,
+   "move": 0.0264,
    "worst_move": -0.0671,
-   "status": "otm",
-   "pnl_est": 189.01
+   "status": "expired_worthless",
+   "pnl": 328.8,
+   "return": 0.0411
   },
   {
    "date": "2026-11-20",
@@ -993,18 +1004,19 @@
     "delta": -0.1796,
     "annualized": 0.9955,
     "buffer_sd": 0.78,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 201.82
+    "pnl": 210.0
    },
-   "sessions": 4,
-   "last_close": 130.93,
+   "sessions": 5,
+   "last_close": 140.54,
    "min_close": 122.28,
    "touched_strike": false,
-   "move": 0.0414,
+   "move": 0.1179,
    "worst_move": -0.0274,
-   "status": "otm",
-   "pnl_est": 284.3
+   "status": "expired_worthless",
+   "pnl": 308.7,
+   "return": 0.0268
   },
   {
    "date": "2026-11-20",
@@ -1039,18 +1051,19 @@
     "delta": -0.1968,
     "annualized": 0.8434,
     "buffer_sd": 0.74,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 296.84
+    "pnl": 299.2
    },
-   "sessions": 4,
-   "last_close": 220.84,
+   "sessions": 5,
+   "last_close": 228.64,
    "min_close": 195.0,
    "touched_strike": false,
-   "move": 0.0802,
+   "move": 0.1184,
    "worst_move": -0.0462,
-   "status": "otm",
-   "pnl_est": 388.05
+   "status": "expired_worthless",
+   "pnl": 393.8,
+   "return": 0.0207
   },
   {
    "date": "2026-11-20",
@@ -1085,18 +1098,19 @@
     "delta": -0.2085,
     "annualized": 0.97,
     "buffer_sd": 0.7,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 234.84
+    "pnl": 316.2
    },
-   "sessions": 4,
-   "last_close": 185.01,
+   "sessions": 5,
+   "last_close": 192.69,
    "min_close": 183.27,
    "touched_strike": false,
-   "move": -0.0157,
+   "move": 0.0251,
    "worst_move": -0.025,
-   "status": "otm",
-   "pnl_est": 261.53
+   "status": "expired_worthless",
+   "pnl": 418.8,
+   "return": 0.0239
   },
   {
    "date": "2026-11-20",
@@ -1121,14 +1135,15 @@
    "buffer_sd": 0.72,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 65.78,
+   "sessions": 5,
+   "last_close": 67.92,
    "min_close": 62.17,
    "touched_strike": false,
-   "move": -0.0014,
+   "move": 0.031,
    "worst_move": -0.0562,
-   "status": "otm",
-   "pnl_est": 81.63
+   "status": "expired_worthless",
+   "pnl": 97.7,
+   "return": 0.0163
   },
   {
    "date": "2026-11-20",
@@ -1153,14 +1168,15 @@
    "buffer_sd": 0.66,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 100.24,
+   "sessions": 5,
+   "last_close": 105.08,
    "min_close": 94.38,
    "touched_strike": false,
-   "move": 0.0245,
+   "move": 0.0739,
    "worst_move": -0.0354,
-   "status": "otm",
-   "pnl_est": 145.49
+   "status": "expired_worthless",
+   "pnl": 157.0,
+   "return": 0.0174
   },
   {
    "date": "2026-11-20",
@@ -1185,14 +1201,14 @@
    "buffer_sd": 0.56,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 67.23,
+   "sessions": 5,
+   "last_close": 69.77,
    "min_close": 66.24,
    "touched_strike": false,
-   "move": -0.029,
+   "move": 0.0077,
    "worst_move": -0.0433,
    "status": "otm",
-   "pnl_est": -14.94
+   "pnl_est": 63.22
   },
   {
    "date": "2026-11-20",
@@ -1217,14 +1233,14 @@
    "buffer_sd": 0.45,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 158.25,
+   "sessions": 5,
+   "last_close": 165.75,
    "min_close": 157.37,
    "touched_strike": false,
-   "move": -0.0332,
+   "move": 0.0126,
    "worst_move": -0.0386,
    "status": "otm",
-   "pnl_est": -57.89
+   "pnl_est": 211.5
   },
   {
    "date": "2026-11-20",
@@ -1249,14 +1265,15 @@
    "buffer_sd": 0.59,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 67.84,
+   "sessions": 5,
+   "last_close": 70.08,
    "min_close": 63.85,
    "touched_strike": true,
-   "move": -0.0098,
+   "move": 0.0229,
    "worst_move": -0.068,
-   "status": "otm",
-   "pnl_est": 62.77
+   "status": "expired_worthless",
+   "pnl": 93.0,
+   "return": 0.0143
   },
   {
    "date": "2026-11-20",
@@ -1291,18 +1308,19 @@
     "delta": -0.2201,
     "annualized": 0.7912,
     "buffer_sd": 0.68,
-    "status": "below_breakeven",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -505.98
+    "pnl": 326.2
    },
-   "sessions": 4,
-   "last_close": 209.3,
+   "sessions": 5,
+   "last_close": 217.2,
    "min_close": 208.97,
    "touched_strike": true,
-   "move": -0.0991,
+   "move": -0.0651,
    "worst_move": -0.1005,
-   "status": "below_breakeven",
-   "pnl_est": -744.7
+   "status": "assigned",
+   "pnl": 176.2,
+   "return": 0.008
   },
   {
    "date": "2026-11-20",
@@ -1327,14 +1345,15 @@
    "buffer_sd": 0.59,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 103.72,
+   "sessions": 5,
+   "last_close": 107.04,
    "min_close": 101.97,
    "touched_strike": false,
-   "move": -0.027,
+   "move": 0.0041,
    "worst_move": -0.0435,
-   "status": "otm",
-   "pnl_est": 82.92
+   "status": "expired_worthless",
+   "pnl": 178.5,
+   "return": 0.0179
   },
   {
    "date": "2026-11-20",
@@ -1369,18 +1388,19 @@
     "delta": -0.2137,
     "annualized": 1.3888,
     "buffer_sd": 0.66,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 322.44
+    "pnl": 346.3
    },
-   "sessions": 4,
-   "last_close": 152.89,
+   "sessions": 5,
+   "last_close": 163.02,
    "min_close": 142.39,
    "touched_strike": false,
-   "move": 0.0376,
+   "move": 0.1063,
    "worst_move": -0.0337,
-   "status": "otm",
-   "pnl_est": 414.78
+   "status": "expired_worthless",
+   "pnl": 467.5,
+   "return": 0.0346
   },
   {
    "date": "2026-11-20",
@@ -1415,18 +1435,19 @@
     "delta": -0.2426,
     "annualized": 0.9589,
     "buffer_sd": 0.61,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 75.69
+    "pnl": 542.5
    },
-   "sessions": 4,
-   "last_close": 300.86,
+   "sessions": 5,
+   "last_close": 312.34,
    "min_close": 300.86,
    "touched_strike": false,
-   "move": -0.0522,
+   "move": -0.016,
    "worst_move": -0.0522,
-   "status": "otm",
-   "pnl_est": -1.68
+   "status": "expired_worthless",
+   "pnl": 666.2,
+   "return": 0.0222
   },
   {
    "date": "2026-11-20",
@@ -1451,14 +1472,14 @@
    "buffer_sd": 0.42,
    "thin": false,
    "alt": null,
-   "sessions": 4,
-   "last_close": 29.49,
+   "sessions": 5,
+   "last_close": 31.34,
    "min_close": 26.27,
    "touched_strike": false,
-   "move": 0.0656,
+   "move": 0.1324,
    "worst_move": -0.0508,
    "status": "otm",
-   "pnl_est": 58.04
+   "pnl_est": 90.79
   },
   {
    "date": "2026-11-20",
@@ -1493,18 +1514,19 @@
     "delta": -0.1668,
     "annualized": 0.865,
     "buffer_sd": 0.83,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 210.87
+    "pnl": 232.2
    },
-   "sessions": 4,
-   "last_close": 161.51,
+   "sessions": 5,
+   "last_close": 171.55,
    "min_close": 152.2,
    "touched_strike": false,
-   "move": 0.0062,
+   "move": 0.0687,
    "worst_move": -0.0518,
-   "status": "otm",
-   "pnl_est": 354.47
+   "status": "expired_worthless",
+   "pnl": 472.5,
+   "return": 0.0315
   },
   {
    "date": "2026-11-20",
@@ -1539,18 +1561,19 @@
     "delta": -0.2445,
     "annualized": 0.8172,
     "buffer_sd": 0.61,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 517.69
+    "pnl": 525.0
    },
-   "sessions": 4,
-   "last_close": 378.95,
+   "sessions": 5,
+   "last_close": 399.21,
    "min_close": 348.29,
    "touched_strike": false,
-   "move": 0.0594,
+   "move": 0.116,
    "worst_move": -0.0263,
-   "status": "otm",
-   "pnl_est": 603.67
+   "status": "expired_worthless",
+   "pnl": 615.0,
+   "return": 0.0181
   },
   {
    "date": "2026-11-20",
@@ -1585,18 +1608,19 @@
     "delta": -0.1817,
     "annualized": 0.9994,
     "buffer_sd": 0.77,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 39.05
+    "pnl": 747.5
    },
-   "sessions": 4,
-   "last_close": 406.03,
+   "sessions": 5,
+   "last_close": 424.54,
    "min_close": 406.03,
    "touched_strike": false,
-   "move": -0.0875,
+   "move": -0.0459,
    "worst_move": -0.0875,
-   "status": "otm",
-   "pnl_est": -99.07
+   "status": "expired_worthless",
+   "pnl": 982.5,
+   "return": 0.0246
   },
   {
    "date": "2026-11-20",
@@ -1621,14 +1645,15 @@
    "buffer_sd": 0.58,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 311.18,
+   "sessions": 5,
+   "last_close": 322.04,
    "min_close": 302.63,
    "touched_strike": false,
-   "move": -0.0018,
+   "move": 0.033,
    "worst_move": -0.0292,
-   "status": "otm",
-   "pnl_est": 465.74
+   "status": "expired_worthless",
+   "pnl": 603.7,
+   "return": 0.0208
   },
   {
    "date": "2026-11-20",
@@ -1653,14 +1678,15 @@
    "buffer_sd": 0.5,
    "thin": true,
    "alt": null,
-   "sessions": 4,
-   "last_close": 190.34,
+   "sessions": 5,
+   "last_close": 206.84,
    "min_close": 180.35,
    "touched_strike": false,
-   "move": -0.0079,
+   "move": 0.0781,
    "worst_move": -0.06,
-   "status": "otm",
-   "pnl_est": 428.54
+   "status": "expired_worthless",
+   "pnl": 601.3,
+   "return": 0.0344
   },
   {
    "date": "2026-11-19",
@@ -1685,14 +1711,15 @@
    "buffer_sd": 0.6,
    "thin": false,
    "alt": null,
-   "sessions": 5,
-   "last_close": 272.45,
+   "sessions": 6,
+   "last_close": 292.11,
    "min_close": 261.11,
    "touched_strike": true,
-   "move": -0.1127,
+   "move": -0.0487,
    "worst_move": -0.1496,
-   "status": "below_breakeven",
-   "pnl_est": -922.75
+   "status": "expired_worthless",
+   "pnl": 585.0,
+   "return": 0.0205
   },
   {
    "date": "2026-11-19",
@@ -1717,14 +1744,15 @@
    "buffer_sd": 0.67,
    "thin": false,
    "alt": null,
-   "sessions": 5,
-   "last_close": 173.37,
+   "sessions": 6,
+   "last_close": 178.71,
    "min_close": 166.24,
    "touched_strike": true,
-   "move": -0.1371,
+   "move": -0.1105,
    "worst_move": -0.1726,
-   "status": "below_breakeven",
-   "pnl_est": -934.87
+   "status": "assigned",
+   "pnl": -359.3,
+   "return": -0.0194
   },
   {
    "date": "2026-11-19",
@@ -1759,18 +1787,18 @@
     "delta": -0.231,
     "annualized": 0.498,
     "buffer_sd": 0.63,
-    "status": "below_breakeven",
+    "status": "otm",
     "touched_strike": true,
-    "pnl": -380.81
+    "pnl": -157.88
    },
-   "sessions": 5,
-   "last_close": 103.88,
+   "sessions": 6,
+   "last_close": 107.13,
    "min_close": 101.19,
    "touched_strike": true,
-   "move": -0.1121,
+   "move": -0.0843,
    "worst_move": -0.1351,
-   "status": "below_breakeven",
-   "pnl_est": -497.21
+   "status": "below_strike",
+   "pnl_est": -241.79
   },
   {
    "date": "2026-11-19",
@@ -1805,18 +1833,19 @@
     "delta": -0.1625,
     "annualized": 0.6109,
     "buffer_sd": 0.86,
-    "status": "below_breakeven",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -410.67
+    "pnl": 180.8
    },
-   "sessions": 5,
-   "last_close": 130.93,
+   "sessions": 6,
+   "last_close": 140.54,
    "min_close": 122.28,
    "touched_strike": true,
-   "move": -0.1406,
+   "move": -0.0775,
    "worst_move": -0.1974,
-   "status": "below_breakeven",
-   "pnl_est": -683.32
+   "status": "expired_worthless",
+   "pnl": 293.5,
+   "return": 0.021
   },
   {
    "date": "2026-11-19",
@@ -1841,14 +1870,15 @@
    "buffer_sd": 0.65,
    "thin": false,
    "alt": null,
-   "sessions": 5,
-   "last_close": 220.84,
+   "sessions": 6,
+   "last_close": 228.64,
    "min_close": 195.0,
    "touched_strike": false,
-   "move": 0.099,
+   "move": 0.1378,
    "worst_move": -0.0296,
-   "status": "otm",
-   "pnl_est": 261.0
+   "status": "expired_worthless",
+   "pnl": 261.0,
+   "return": 0.0145
   },
   {
    "date": "2026-11-19",
@@ -1883,18 +1913,19 @@
     "delta": -0.1782,
     "annualized": 0.5389,
     "buffer_sd": 0.82,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -1294.5
+    "pnl": -494.8
    },
-   "sessions": 5,
-   "last_close": 185.01,
+   "sessions": 6,
+   "last_close": 192.69,
    "min_close": 183.27,
    "touched_strike": true,
-   "move": -0.1617,
+   "move": -0.1269,
    "worst_move": -0.1696,
-   "status": "below_breakeven",
-   "pnl_est": -1663.94
+   "status": "assigned",
+   "pnl": -888.5,
+   "return": -0.0433
   },
   {
    "date": "2026-11-19",
@@ -1929,18 +1960,19 @@
     "delta": -0.2247,
     "annualized": 0.8238,
     "buffer_sd": 0.66,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -12.03
+    "pnl": 97.5
    },
-   "sessions": 5,
-   "last_close": 54.47,
+   "sessions": 6,
+   "last_close": 57.4,
    "min_close": 51.28,
    "touched_strike": true,
-   "move": -0.0653,
+   "move": -0.015,
    "worst_move": -0.12,
-   "status": "below_strike",
-   "pnl_est": -35.96
+   "status": "expired_worthless",
+   "pnl": 123.7,
+   "return": 0.0225
   },
   {
    "date": "2026-11-19",
@@ -1975,18 +2007,19 @@
     "delta": -0.2277,
     "annualized": 0.7381,
     "buffer_sd": 0.66,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -172.17
+    "pnl": 102.0
    },
-   "sessions": 5,
-   "last_close": 65.78,
+   "sessions": 6,
+   "last_close": 67.92,
    "min_close": 62.17,
    "touched_strike": true,
-   "move": -0.1082,
+   "move": -0.0792,
    "worst_move": -0.1572,
-   "status": "below_breakeven",
-   "pnl_est": -230.99
+   "status": "assigned",
+   "pnl": 15.2,
+   "return": 0.0022
   },
   {
    "date": "2026-11-19",
@@ -2021,18 +2054,19 @@
     "delta": -0.2402,
     "annualized": 0.7441,
     "buffer_sd": 0.62,
-    "status": "below_breakeven",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -358.9
+    "pnl": 171.3
    },
-   "sessions": 5,
-   "last_close": 100.24,
+   "sessions": 6,
+   "last_close": 105.08,
    "min_close": 94.38,
    "touched_strike": true,
-   "move": -0.1072,
+   "move": -0.0641,
    "worst_move": -0.1594,
-   "status": "below_breakeven",
-   "pnl_est": -420.99
+   "status": "assigned",
+   "pnl": 98.5,
+   "return": 0.0093
   },
   {
    "date": "2026-11-19",
@@ -2067,18 +2101,19 @@
     "delta": -0.2459,
     "annualized": 0.8251,
     "buffer_sd": 0.6,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -2149.8
+    "pnl": -1355.0
    },
-   "sessions": 5,
-   "last_close": 209.3,
+   "sessions": 6,
+   "last_close": 217.2,
    "min_close": 208.97,
    "touched_strike": true,
-   "move": -0.1661,
+   "move": -0.1347,
    "worst_move": -0.1674,
-   "status": "below_breakeven",
-   "pnl_est": -2331.43
+   "status": "assigned",
+   "pnl": -1541.2,
+   "return": -0.0649
   },
   {
    "date": "2026-11-19",
@@ -2115,16 +2150,16 @@
     "buffer_sd": 0.78,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -135.0
+    "pnl": 13.06
    },
-   "sessions": 5,
-   "last_close": 103.72,
+   "sessions": 6,
+   "last_close": 107.04,
    "min_close": 101.97,
    "touched_strike": true,
-   "move": -0.0964,
+   "move": -0.0675,
    "worst_move": -0.1117,
-   "status": "below_strike",
-   "pnl_est": -245.12
+   "status": "otm",
+   "pnl_est": -36.82
   },
   {
    "date": "2026-11-19",
@@ -2159,18 +2194,19 @@
     "delta": -0.2328,
     "annualized": 1.1268,
     "buffer_sd": 0.61,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -909.11
+    "pnl": 209.5
    },
-   "sessions": 5,
-   "last_close": 152.89,
+   "sessions": 6,
+   "last_close": 163.02,
    "min_close": 142.39,
    "touched_strike": true,
-   "move": -0.1508,
+   "move": -0.0945,
    "worst_move": -0.2091,
-   "status": "below_breakeven",
-   "pnl_est": -1196.14
+   "status": "assigned",
+   "pnl": -136.8,
+   "return": -0.008
   },
   {
    "date": "2026-11-19",
@@ -2205,18 +2241,19 @@
     "delta": -0.2395,
     "annualized": 0.9621,
     "buffer_sd": 0.61,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -830.08
+    "pnl": 268.8
    },
-   "sessions": 5,
-   "last_close": 161.51,
+   "sessions": 6,
+   "last_close": 171.55,
    "min_close": 152.2,
    "touched_strike": true,
-   "move": -0.1338,
+   "move": -0.08,
    "worst_move": -0.1838,
-   "status": "below_breakeven",
-   "pnl_est": -974.09
+   "status": "assigned",
+   "pnl": 88.7,
+   "return": 0.0051
   },
   {
    "date": "2026-11-17",
@@ -2251,18 +2288,19 @@
     "delta": -0.2318,
     "annualized": 0.9747,
     "buffer_sd": 0.61,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 36.7
+    "pnl": 58.8
    },
-   "sessions": 7,
-   "last_close": 23.31,
+   "sessions": 8,
+   "last_close": 23.76,
    "min_close": 21.65,
    "touched_strike": true,
-   "move": -0.0497,
+   "move": -0.0314,
    "worst_move": -0.1174,
-   "status": "otm",
-   "pnl_est": 37.18
+   "status": "expired_worthless",
+   "pnl": 73.2,
+   "return": 0.0325
   },
   {
    "date": "2026-11-17",
@@ -2297,18 +2335,19 @@
     "delta": -0.1937,
     "annualized": 0.4416,
     "buffer_sd": 0.77,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 180.94
+    "pnl": 184.5
    },
-   "sessions": 7,
-   "last_close": 168.66,
+   "sessions": 8,
+   "last_close": 179.27,
    "min_close": 149.94,
    "touched_strike": true,
-   "move": 0.0152,
+   "move": 0.0791,
    "worst_move": -0.0975,
-   "status": "otm",
-   "pnl_est": 231.32
+   "status": "expired_worthless",
+   "pnl": 240.0,
+   "return": 0.0155
   },
   {
    "date": "2026-11-17",
@@ -2343,18 +2382,19 @@
     "delta": -0.2374,
     "annualized": 0.564,
     "buffer_sd": 0.63,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 225.44
+    "pnl": 230.2
    },
-   "sessions": 7,
-   "last_close": 163.59,
+   "sessions": 8,
+   "last_close": 172.17,
    "min_close": 143.49,
    "touched_strike": true,
-   "move": 0.0258,
+   "move": 0.0796,
    "worst_move": -0.1002,
-   "status": "otm",
-   "pnl_est": 261.0
+   "status": "expired_worthless",
+   "pnl": 268.8,
+   "return": 0.0179
   },
   {
    "date": "2026-11-17",
@@ -2389,18 +2429,19 @@
     "delta": -0.2473,
     "annualized": 0.6019,
     "buffer_sd": 0.6,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -366.67
+    "pnl": -7.3
    },
-   "sessions": 7,
-   "last_close": 103.88,
+   "sessions": 8,
+   "last_close": 107.13,
    "min_close": 101.19,
    "touched_strike": true,
-   "move": -0.1066,
+   "move": -0.0787,
    "worst_move": -0.1298,
-   "status": "below_breakeven",
-   "pnl_est": -420.52
+   "status": "assigned",
+   "pnl": -71.8,
+   "return": -0.0065
   },
   {
    "date": "2026-11-17",
@@ -2437,16 +2478,16 @@
     "buffer_sd": 0.54,
     "status": "otm",
     "touched_strike": false,
-    "pnl": 425.34
+    "pnl": 564.13
    },
-   "sessions": 7,
-   "last_close": 220.84,
+   "sessions": 8,
+   "last_close": 228.64,
    "min_close": 195.0,
    "touched_strike": false,
-   "move": 0.0562,
+   "move": 0.0935,
    "worst_move": -0.0674,
    "status": "otm",
-   "pnl_est": 475.52
+   "pnl_est": 638.61
   },
   {
    "date": "2026-11-17",
@@ -2471,14 +2512,15 @@
    "buffer_sd": 0.58,
    "thin": true,
    "alt": null,
-   "sessions": 7,
-   "last_close": 185.01,
+   "sessions": 8,
+   "last_close": 192.69,
    "min_close": 183.27,
    "touched_strike": true,
-   "move": -0.1227,
+   "move": -0.0863,
    "worst_move": -0.1309,
-   "status": "below_breakeven",
-   "pnl_est": -688.16
+   "status": "assigned",
+   "pnl": 176.5,
+   "return": 0.0091
   },
   {
    "date": "2026-11-17",
@@ -2503,14 +2545,14 @@
    "buffer_sd": 0.45,
    "thin": true,
    "alt": null,
-   "sessions": 7,
-   "last_close": 23.54,
+   "sessions": 8,
+   "last_close": 24.97,
    "min_close": 20.72,
    "touched_strike": true,
-   "move": -0.0703,
+   "move": -0.0138,
    "worst_move": -0.1817,
    "status": "otm",
-   "pnl_est": -29.24
+   "pnl_est": 23.83
   },
   {
    "date": "2026-11-17",
@@ -2545,18 +2587,19 @@
     "delta": -0.2139,
     "annualized": 0.7561,
     "buffer_sd": 0.68,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 94.35
+    "pnl": 101.5
    },
-   "sessions": 7,
-   "last_close": 54.47,
+   "sessions": 8,
+   "last_close": 57.4,
    "min_close": 51.28,
    "touched_strike": false,
-   "move": -0.0019,
+   "move": 0.0518,
    "worst_move": -0.0604,
-   "status": "otm",
-   "pnl_est": 128.83
+   "status": "expired_worthless",
+   "pnl": 153.8,
+   "return": 0.0302
   },
   {
    "date": "2026-11-17",
@@ -2581,14 +2624,15 @@
    "buffer_sd": 0.61,
    "thin": false,
    "alt": null,
-   "sessions": 7,
-   "last_close": 65.78,
+   "sessions": 8,
+   "last_close": 67.92,
    "min_close": 62.17,
    "touched_strike": true,
-   "move": -0.0673,
+   "move": -0.037,
    "worst_move": -0.1185,
-   "status": "otm",
-   "pnl_est": 19.87
+   "status": "expired_worthless",
+   "pnl": 130.0,
+   "return": 0.02
   },
   {
    "date": "2026-11-17",
@@ -2623,18 +2667,19 @@
     "delta": -0.2194,
     "annualized": 0.6433,
     "buffer_sd": 0.67,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 223.3
+    "pnl": 352.5
    },
-   "sessions": 7,
-   "last_close": 209.3,
+   "sessions": 8,
+   "last_close": 217.2,
    "min_close": 208.97,
    "touched_strike": false,
-   "move": -0.0436,
+   "move": -0.0075,
    "worst_move": -0.0451,
-   "status": "otm",
-   "pnl_est": 210.87
+   "status": "expired_worthless",
+   "pnl": 473.7,
+   "return": 0.0231
   },
   {
    "date": "2026-11-17",
@@ -2671,16 +2716,16 @@
     "buffer_sd": 0.5,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -104.4
+    "pnl": 550.33
    },
-   "sessions": 7,
-   "last_close": 196.19,
+   "sessions": 8,
+   "last_close": 223.79,
    "min_close": 187.22,
    "touched_strike": false,
-   "move": -0.0592,
+   "move": 0.0731,
    "worst_move": -0.1023,
    "status": "otm",
-   "pnl_est": -139.1
+   "pnl_est": 621.31
   },
   {
    "date": "2026-11-17",
@@ -2715,18 +2760,19 @@
     "delta": -0.2018,
     "annualized": 0.876,
     "buffer_sd": 0.69,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 11.7
+    "pnl": 360.0
    },
-   "sessions": 7,
-   "last_close": 152.89,
+   "sessions": 8,
+   "last_close": 163.02,
    "min_close": 142.39,
    "touched_strike": true,
-   "move": -0.1098,
+   "move": -0.0508,
    "worst_move": -0.1709,
-   "status": "below_strike",
-   "pnl_est": -107.82
+   "status": "expired_worthless",
+   "pnl": 477.5,
+   "return": 0.0308
   },
   {
    "date": "2026-11-17",
@@ -2761,18 +2807,19 @@
     "delta": -0.2326,
     "annualized": 0.5837,
     "buffer_sd": 0.64,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -1036.4
+    "pnl": 237.8
    },
-   "sessions": 7,
-   "last_close": 300.86,
+   "sessions": 8,
+   "last_close": 312.34,
    "min_close": 300.86,
    "touched_strike": true,
-   "move": -0.1119,
+   "move": -0.078,
    "worst_move": -0.1119,
-   "status": "below_breakeven",
-   "pnl_est": -1350.95
+   "status": "assigned",
+   "pnl": -144.7,
+   "return": -0.0045
   },
   {
    "date": "2026-11-17",
@@ -2797,14 +2844,15 @@
    "buffer_sd": 0.63,
    "thin": false,
    "alt": null,
-   "sessions": 7,
-   "last_close": 378.95,
+   "sessions": 8,
+   "last_close": 399.21,
    "min_close": 348.29,
    "touched_strike": true,
-   "move": -0.0622,
+   "move": -0.0121,
    "worst_move": -0.1381,
-   "status": "otm",
-   "pnl_est": 63.83
+   "status": "expired_worthless",
+   "pnl": 622.5,
+   "return": 0.0166
   },
   {
    "date": "2026-11-17",
@@ -2839,18 +2887,18 @@
     "delta": -0.2046,
     "annualized": 0.3006,
     "buffer_sd": 0.67,
-    "status": "below_strike",
+    "status": "otm",
     "touched_strike": true,
-    "pnl": -659.38
+    "pnl": -187.39
    },
-   "sessions": 7,
-   "last_close": 163.99,
+   "sessions": 8,
+   "last_close": 174.73,
    "min_close": 163.99,
    "touched_strike": true,
-   "move": -0.1298,
+   "move": -0.0728,
    "worst_move": -0.1298,
-   "status": "below_breakeven",
-   "pnl_est": -976.63
+   "status": "below_strike",
+   "pnl_est": -341.87
   },
   {
    "date": "2026-11-17",
@@ -2875,14 +2923,15 @@
    "buffer_sd": 0.48,
    "thin": true,
    "alt": null,
-   "sessions": 7,
-   "last_close": 311.18,
+   "sessions": 8,
+   "last_close": 322.04,
    "min_close": 302.63,
    "touched_strike": true,
-   "move": -0.1148,
+   "move": -0.0839,
    "worst_move": -0.1391,
-   "status": "below_breakeven",
-   "pnl_est": -1213.77
+   "status": "assigned",
+   "pnl": 0.3,
+   "return": 0.0
   },
   {
    "date": "2026-11-16",
@@ -2919,16 +2968,16 @@
     "buffer_sd": 0.58,
     "status": "otm",
     "touched_strike": false,
-    "pnl": 68.58
+    "pnl": 515.69
    },
-   "sessions": 8,
-   "last_close": 272.45,
+   "sessions": 9,
+   "last_close": 292.11,
    "min_close": 261.11,
    "touched_strike": false,
-   "move": -0.0307,
+   "move": 0.0392,
    "worst_move": -0.0711,
    "status": "otm",
-   "pnl_est": 51.77
+   "pnl_est": 619.48
   },
   {
    "date": "2026-11-16",
@@ -2963,18 +3012,19 @@
     "delta": -0.2319,
     "annualized": 0.7916,
     "buffer_sd": 0.62,
-    "status": "below_strike",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -122.52
+    "pnl": 417.5
    },
-   "sessions": 8,
-   "last_close": 173.37,
+   "sessions": 9,
+   "last_close": 178.71,
    "min_close": 166.24,
    "touched_strike": true,
-   "move": -0.0974,
+   "move": -0.0696,
    "worst_move": -0.1345,
-   "status": "below_breakeven",
-   "pnl_est": -329.65
+   "status": "assigned",
+   "pnl": 387.3,
+   "return": 0.0215
   },
   {
    "date": "2026-11-16",
@@ -2999,14 +3049,15 @@
    "buffer_sd": 0.55,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 23.31,
+   "sessions": 9,
+   "last_close": 23.76,
    "min_close": 21.65,
    "touched_strike": true,
-   "move": -0.0886,
+   "move": -0.071,
    "worst_move": -0.1535,
-   "status": "otm",
-   "pnl_est": 15.79
+   "status": "expired_worthless",
+   "pnl": 75.5,
+   "return": 0.0328
   },
   {
    "date": "2026-11-16",
@@ -3043,16 +3094,16 @@
     "buffer_sd": 0.8,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -153.89
+    "pnl": 48.01
    },
-   "sessions": 8,
-   "last_close": 111.14,
+   "sessions": 9,
+   "last_close": 119.5,
    "min_close": 103.57,
    "touched_strike": true,
-   "move": -0.1019,
+   "move": -0.0344,
    "worst_move": -0.1631,
    "status": "otm",
-   "pnl_est": -308.36
+   "pnl_est": 33.12
   },
   {
    "date": "2026-11-16",
@@ -3077,14 +3128,15 @@
    "buffer_sd": 0.46,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 91.51,
+   "sessions": 9,
+   "last_close": 93.83,
    "min_close": 85.33,
    "touched_strike": true,
-   "move": -0.0382,
+   "move": -0.0138,
    "worst_move": -0.1031,
-   "status": "otm",
-   "pnl_est": 94.37
+   "status": "expired_worthless",
+   "pnl": 214.3,
+   "return": 0.0238
   },
   {
    "date": "2026-11-16",
@@ -3119,18 +3171,19 @@
     "delta": -0.1733,
     "annualized": 0.4078,
     "buffer_sd": 0.83,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 175.5
+    "pnl": 190.5
    },
-   "sessions": 8,
-   "last_close": 168.66,
+   "sessions": 9,
+   "last_close": 179.27,
    "min_close": 149.94,
    "touched_strike": true,
-   "move": -0.0126,
+   "move": 0.0495,
    "worst_move": -0.1222,
-   "status": "otm",
-   "pnl_est": 244.39
+   "status": "expired_worthless",
+   "pnl": 304.0,
+   "return": 0.019
   },
   {
    "date": "2026-11-16",
@@ -3155,14 +3208,14 @@
    "buffer_sd": 0.63,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 108.42,
+   "sessions": 9,
+   "last_close": 111.0,
    "min_close": 103.47,
    "touched_strike": false,
-   "move": -0.0468,
+   "move": -0.0241,
    "worst_move": -0.0903,
    "status": "otm",
-   "pnl_est": -41.23
+   "pnl_est": 47.2
   },
   {
    "date": "2026-11-16",
@@ -3197,18 +3250,19 @@
     "delta": -0.2057,
     "annualized": 0.5081,
     "buffer_sd": 0.72,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -654.58
+    "pnl": -315.5
    },
-   "sessions": 8,
-   "last_close": 103.88,
+   "sessions": 9,
+   "last_close": 107.13,
    "min_close": 101.19,
    "touched_strike": true,
-   "move": -0.149,
+   "move": -0.1224,
    "worst_move": -0.171,
-   "status": "below_breakeven",
-   "pnl_est": -864.59
+   "status": "assigned",
+   "pnl": -537.8,
+   "return": -0.0468
   },
   {
    "date": "2026-11-16",
@@ -3233,14 +3287,14 @@
    "buffer_sd": 0.63,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 62.48,
+   "sessions": 9,
+   "last_close": 66.24,
    "min_close": 60.84,
    "touched_strike": false,
-   "move": -0.088,
+   "move": -0.0331,
    "worst_move": -0.112,
    "status": "otm",
-   "pnl_est": -115.3
+   "pnl_est": 14.8
   },
   {
    "date": "2026-11-16",
@@ -3275,18 +3329,19 @@
     "delta": -0.2266,
     "annualized": 1.3797,
     "buffer_sd": 0.58,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -673.79
+    "pnl": -159.0
    },
-   "sessions": 8,
-   "last_close": 84.99,
+   "sessions": 9,
+   "last_close": 89.46,
    "min_close": 81.31,
    "touched_strike": true,
-   "move": -0.2331,
+   "move": -0.1927,
    "worst_move": -0.2663,
-   "status": "below_breakeven",
-   "pnl_est": -953.52
+   "status": "assigned",
+   "pnl": -482.8,
+   "return": -0.0483
   },
   {
    "date": "2026-11-16",
@@ -3321,18 +3376,19 @@
     "delta": -0.208,
     "annualized": 0.8391,
     "buffer_sd": 0.67,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -25.32
+    "pnl": 328.7
    },
-   "sessions": 8,
-   "last_close": 130.93,
+   "sessions": 9,
+   "last_close": 140.54,
    "min_close": 122.28,
    "touched_strike": true,
-   "move": -0.1109,
+   "move": -0.0456,
    "worst_move": -0.1696,
-   "status": "below_strike",
-   "pnl_est": -168.81
+   "status": "expired_worthless",
+   "pnl": 466.3,
+   "return": 0.0345
   },
   {
    "date": "2026-11-16",
@@ -3367,18 +3423,19 @@
     "delta": -0.219,
     "annualized": 0.6721,
     "buffer_sd": 0.66,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -721.77
+    "pnl": 164.0
    },
-   "sessions": 8,
-   "last_close": 185.01,
+   "sessions": 9,
+   "last_close": 192.69,
    "min_close": 183.27,
    "touched_strike": true,
-   "move": -0.1374,
+   "move": -0.1016,
    "worst_move": -0.1455,
-   "status": "below_breakeven",
-   "pnl_est": -1007.89
+   "status": "assigned",
+   "pnl": -189.8,
+   "return": -0.0095
   },
   {
    "date": "2026-11-16",
@@ -3413,18 +3470,19 @@
     "delta": -0.2145,
     "annualized": 0.7141,
     "buffer_sd": 0.67,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 83.68
+    "pnl": 109.8
    },
-   "sessions": 8,
-   "last_close": 54.47,
+   "sessions": 9,
+   "last_close": 57.4,
    "min_close": 51.28,
    "touched_strike": true,
-   "move": -0.0376,
+   "move": 0.0141,
    "worst_move": -0.094,
-   "status": "otm",
-   "pnl_est": 92.14
+   "status": "expired_worthless",
+   "pnl": 165.0,
+   "return": 0.0311
   },
   {
    "date": "2026-11-16",
@@ -3459,18 +3517,19 @@
     "delta": -0.2036,
     "annualized": 0.5648,
     "buffer_sd": 0.72,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -167.73
+    "pnl": 107.7
    },
-   "sessions": 8,
-   "last_close": 65.78,
+   "sessions": 9,
+   "last_close": 67.92,
    "min_close": 62.17,
    "touched_strike": true,
-   "move": -0.1206,
+   "move": -0.092,
    "worst_move": -0.1689,
-   "status": "below_breakeven",
-   "pnl_est": -279.52
+   "status": "assigned",
+   "pnl": -44.0,
+   "return": -0.0063
   },
   {
    "date": "2026-11-16",
@@ -3495,14 +3554,15 @@
    "buffer_sd": 0.56,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 100.24,
+   "sessions": 9,
+   "last_close": 105.08,
    "min_close": 94.38,
    "touched_strike": true,
-   "move": -0.0783,
+   "move": -0.0337,
    "worst_move": -0.1321,
-   "status": "otm",
-   "pnl_est": 13.77
+   "status": "expired_worthless",
+   "pnl": 252.7,
+   "return": 0.0253
   },
   {
    "date": "2026-11-16",
@@ -3527,14 +3587,15 @@
    "buffer_sd": 0.7,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 103.72,
+   "sessions": 9,
+   "last_close": 107.04,
    "min_close": 101.97,
    "touched_strike": true,
-   "move": -0.1396,
+   "move": -0.1121,
    "worst_move": -0.1542,
-   "status": "below_breakeven",
-   "pnl_est": -481.98
+   "status": "assigned",
+   "pnl": -109.5,
+   "return": -0.01
   },
   {
    "date": "2026-11-16",
@@ -3571,16 +3632,16 @@
     "buffer_sd": 0.5,
     "status": "otm",
     "touched_strike": false,
-    "pnl": 23.14
+    "pnl": 620.58
    },
-   "sessions": 8,
-   "last_close": 196.19,
+   "sessions": 9,
+   "last_close": 223.79,
    "min_close": 187.22,
    "touched_strike": false,
-   "move": -0.0428,
+   "move": 0.0919,
    "worst_move": -0.0866,
    "status": "otm",
-   "pnl_est": -0.69
+   "pnl_est": 692.73
   },
   {
    "date": "2026-11-16",
@@ -3615,18 +3676,19 @@
     "delta": -0.2267,
     "annualized": 1.0603,
     "buffer_sd": 0.6,
-    "status": "below_breakeven",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -446.81
+    "pnl": 511.3
    },
-   "sessions": 8,
-   "last_close": 152.89,
+   "sessions": 9,
+   "last_close": 163.02,
    "min_close": 142.39,
    "touched_strike": true,
-   "move": -0.1576,
+   "move": -0.1018,
    "worst_move": -0.2155,
-   "status": "below_breakeven",
-   "pnl_est": -688.1
+   "status": "assigned",
+   "pnl": 453.2,
+   "return": 0.0275
   },
   {
    "date": "2026-11-16",
@@ -3708,18 +3770,19 @@
     "delta": -0.1803,
     "annualized": 0.661,
     "buffer_sd": 0.77,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": 26.17
+    "pnl": 313.8
    },
-   "sessions": 8,
-   "last_close": 161.51,
+   "sessions": 9,
+   "last_close": 171.55,
    "min_close": 152.2,
    "touched_strike": true,
-   "move": -0.1043,
+   "move": -0.0486,
    "worst_move": -0.1559,
-   "status": "below_strike",
-   "pnl_est": -158.08
+   "status": "expired_worthless",
+   "pnl": 497.5,
+   "return": 0.0302
   },
   {
    "date": "2026-11-16",
@@ -3744,14 +3807,14 @@
    "buffer_sd": 0.54,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 378.95,
+   "sessions": 9,
+   "last_close": 399.21,
    "min_close": 348.29,
    "touched_strike": true,
-   "move": -0.0784,
+   "move": -0.0291,
    "worst_move": -0.153,
-   "status": "below_strike",
-   "pnl_est": -629.35
+   "status": "otm",
+   "pnl_est": 312.12
   },
   {
    "date": "2026-11-15",
@@ -3788,16 +3851,16 @@
     "buffer_sd": 0.52,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -287.29
+    "pnl": 374.27
    },
-   "sessions": 8,
-   "last_close": 272.45,
+   "sessions": 9,
+   "last_close": 292.11,
    "min_close": 261.11,
    "touched_strike": true,
-   "move": -0.0785,
+   "move": -0.012,
    "worst_move": -0.1168,
    "status": "otm",
-   "pnl_est": -420.81
+   "pnl_est": 383.88
   },
   {
    "date": "2026-11-15",
@@ -3834,16 +3897,16 @@
     "buffer_sd": 0.53,
     "status": "below_strike",
     "touched_strike": true,
-    "pnl": -841.8
+    "pnl": -516.43
    },
-   "sessions": 8,
-   "last_close": 173.37,
+   "sessions": 9,
+   "last_close": 178.71,
    "min_close": 166.24,
    "touched_strike": true,
-   "move": -0.142,
+   "move": -0.1156,
    "worst_move": -0.1773,
-   "status": "below_breakeven",
-   "pnl_est": -997.42
+   "status": "below_strike",
+   "pnl_est": -638.47
   },
   {
    "date": "2026-11-15",
@@ -3868,14 +3931,15 @@
    "buffer_sd": 0.43,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 23.31,
+   "sessions": 9,
+   "last_close": 23.76,
    "min_close": 21.65,
    "touched_strike": true,
-   "move": -0.1325,
+   "move": -0.1157,
    "worst_move": -0.1943,
-   "status": "below_breakeven",
-   "pnl_est": -84.29
+   "status": "assigned",
+   "pnl": -28.2,
+   "return": -0.0113
   },
   {
    "date": "2026-11-15",
@@ -3912,16 +3976,16 @@
     "buffer_sd": 0.71,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -64.59
+    "pnl": 16.2
    },
-   "sessions": 8,
-   "last_close": 91.51,
+   "sessions": 9,
+   "last_close": 93.83,
    "min_close": 85.33,
    "touched_strike": true,
-   "move": -0.0705,
+   "move": -0.0469,
    "worst_move": -0.1333,
    "status": "otm",
-   "pnl_est": -125.75
+   "pnl_est": -12.05
   },
   {
    "date": "2026-11-15",
@@ -3946,14 +4010,14 @@
    "buffer_sd": 0.6,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 103.88,
+   "sessions": 9,
+   "last_close": 107.13,
    "min_close": 101.19,
    "touched_strike": true,
-   "move": -0.1713,
+   "move": -0.1454,
    "worst_move": -0.1927,
    "status": "below_breakeven",
-   "pnl_est": -894.87
+   "pnl_est": -599.86
   },
   {
    "date": "2026-11-15",
@@ -3990,16 +4054,16 @@
     "buffer_sd": 0.73,
     "status": "below_breakeven",
     "touched_strike": true,
-    "pnl": -900.26
+    "pnl": -538.17
    },
-   "sessions": 8,
-   "last_close": 84.99,
+   "sessions": 9,
+   "last_close": 89.46,
    "min_close": 81.31,
    "touched_strike": true,
-   "move": -0.2666,
+   "move": -0.228,
    "worst_move": -0.2983,
    "status": "below_breakeven",
-   "pnl_est": -1172.3
+   "pnl_est": -773.4
   },
   {
    "date": "2026-11-15",
@@ -4034,18 +4098,19 @@
     "delta": -0.1991,
     "annualized": 0.6952,
     "buffer_sd": 0.72,
-    "status": "below_breakeven",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -640.05
+    "pnl": 320.0
    },
-   "sessions": 8,
-   "last_close": 130.93,
+   "sessions": 9,
+   "last_close": 140.54,
    "min_close": 122.28,
    "touched_strike": true,
-   "move": -0.1648,
+   "move": -0.1035,
    "worst_move": -0.22,
-   "status": "below_breakeven",
-   "pnl_est": -963.44
+   "status": "assigned",
+   "pnl": 9.0,
+   "return": 0.0006
   },
   {
    "date": "2026-11-15",
@@ -4070,14 +4135,14 @@
    "buffer_sd": 0.43,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 220.84,
+   "sessions": 9,
+   "last_close": 228.64,
    "min_close": 195.0,
    "touched_strike": true,
-   "move": -0.0113,
+   "move": 0.0236,
    "worst_move": -0.127,
    "status": "otm",
-   "pnl_est": 235.19
+   "pnl_est": 485.76
   },
   {
    "date": "2026-11-15",
@@ -4112,18 +4177,19 @@
     "delta": -0.1866,
     "annualized": 0.4915,
     "buffer_sd": 0.78,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -1669.14
+    "pnl": -899.8
    },
-   "sessions": 8,
-   "last_close": 185.01,
+   "sessions": 9,
+   "last_close": 192.69,
    "min_close": 183.27,
    "touched_strike": true,
-   "move": -0.1811,
+   "move": -0.1471,
    "worst_move": -0.1888,
-   "status": "below_breakeven",
-   "pnl_est": -2044.34
+   "status": "assigned",
+   "pnl": -1279.8,
+   "return": -0.0609
   },
   {
    "date": "2026-11-15",
@@ -4148,14 +4214,14 @@
    "buffer_sd": 0.56,
    "thin": true,
    "alt": null,
-   "sessions": 8,
-   "last_close": 23.54,
+   "sessions": 9,
+   "last_close": 24.97,
    "min_close": 20.72,
    "touched_strike": true,
-   "move": -0.1849,
+   "move": -0.1354,
    "worst_move": -0.2825,
    "status": "below_breakeven",
-   "pnl_est": -194.1
+   "pnl_est": -82.02
   },
   {
    "date": "2026-11-15",
@@ -4190,18 +4256,19 @@
     "delta": -0.2355,
     "annualized": 0.6982,
     "buffer_sd": 0.62,
-    "status": "below_strike",
+    "status": "expired_worthless",
     "touched_strike": true,
-    "pnl": -13.46
+    "pnl": 126.3
    },
-   "sessions": 8,
-   "last_close": 54.47,
+   "sessions": 9,
+   "last_close": 57.4,
    "min_close": 51.28,
    "touched_strike": true,
-   "move": -0.087,
+   "move": -0.0379,
    "worst_move": -0.1405,
-   "status": "below_strike",
-   "pnl_est": -48.46
+   "status": "expired_worthless",
+   "pnl": 155.5,
+   "return": 0.0278
   },
   {
    "date": "2026-11-15",
@@ -4238,16 +4305,16 @@
     "buffer_sd": 0.67,
     "status": "below_breakeven",
     "touched_strike": true,
-    "pnl": -370.36
+    "pnl": -200.39
    },
-   "sessions": 8,
-   "last_close": 65.78,
+   "sessions": 9,
+   "last_close": 67.92,
    "min_close": 62.17,
    "touched_strike": true,
-   "move": -0.1552,
+   "move": -0.1277,
    "worst_move": -0.2015,
    "status": "below_breakeven",
-   "pnl_est": -468.78
+   "pnl_est": -282.4
   },
   {
    "date": "2026-11-15",
@@ -4272,14 +4339,15 @@
    "buffer_sd": 0.64,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 100.24,
+   "sessions": 9,
+   "last_close": 105.08,
    "min_close": 94.38,
    "touched_strike": true,
-   "move": -0.1213,
+   "move": -0.0789,
    "worst_move": -0.1727,
-   "status": "below_breakeven",
-   "pnl_est": -299.78
+   "status": "expired_worthless",
+   "pnl": 225.2,
+   "return": 0.0214
   },
   {
    "date": "2026-11-15",
@@ -4314,18 +4382,19 @@
     "delta": -0.1839,
     "annualized": 0.5008,
     "buffer_sd": 0.79,
-    "status": "otm",
+    "status": "expired_worthless",
     "touched_strike": false,
-    "pnl": 110.65
+    "pnl": 337.5
    },
-   "sessions": 8,
-   "last_close": 209.3,
+   "sessions": 9,
+   "last_close": 217.2,
    "min_close": 208.97,
    "touched_strike": true,
-   "move": -0.0764,
+   "move": -0.0415,
    "worst_move": -0.0778,
-   "status": "below_strike",
-   "pnl_est": 4.08
+   "status": "expired_worthless",
+   "pnl": 441.2,
+   "return": 0.021
   },
   {
    "date": "2026-11-15",
@@ -4360,18 +4429,19 @@
     "delta": -0.1781,
     "annualized": 0.4972,
     "buffer_sd": 0.81,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -941.47
+    "pnl": -608.0
    },
-   "sessions": 8,
-   "last_close": 103.72,
+   "sessions": 9,
+   "last_close": 107.04,
    "min_close": 101.97,
    "touched_strike": true,
-   "move": -0.1875,
+   "move": -0.1615,
    "worst_move": -0.2012,
-   "status": "below_breakeven",
-   "pnl_est": -1313.09
+   "status": "assigned",
+   "pnl": -983.5,
+   "return": -0.082
   },
   {
    "date": "2026-11-15",
@@ -4408,16 +4478,16 @@
     "buffer_sd": 0.67,
     "status": "otm",
     "touched_strike": false,
-    "pnl": -236.11
+    "pnl": 387.42
    },
-   "sessions": 8,
-   "last_close": 196.19,
+   "sessions": 9,
+   "last_close": 223.79,
    "min_close": 187.22,
    "touched_strike": true,
-   "move": -0.1007,
+   "move": 0.0259,
    "worst_move": -0.1418,
    "status": "otm",
-   "pnl_est": -359.89
+   "pnl_est": 480.46
   },
   {
    "date": "2026-11-15",
@@ -4452,18 +4522,18 @@
     "delta": -0.1935,
     "annualized": 0.4258,
     "buffer_sd": 0.66,
-    "status": "below_breakeven",
+    "status": "otm",
     "touched_strike": true,
-    "pnl": -1287.23
+    "pnl": -676.92
    },
-   "sessions": 8,
-   "last_close": 191.95,
+   "sessions": 9,
+   "last_close": 203.24,
    "min_close": 191.95,
    "touched_strike": true,
-   "move": -0.2013,
+   "move": -0.1544,
    "worst_move": -0.2013,
-   "status": "below_breakeven",
-   "pnl_est": -1651.91
+   "status": "below_strike",
+   "pnl_est": -937.85
   },
   {
    "date": "2026-11-15",
@@ -4498,18 +4568,19 @@
     "delta": -0.2147,
     "annualized": 0.9192,
     "buffer_sd": 0.65,
-    "status": "below_breakeven",
+    "status": "assigned",
     "touched_strike": true,
-    "pnl": -1228.68
+    "pnl": -184.2
    },
-   "sessions": 8,
-   "last_close": 152.89,
+   "sessions": 9,
+   "last_close": 163.02,
    "min_close": 142.39,
    "touched_strike": true,
-   "move": -0.2037,
+   "move": -0.1509,
    "worst_move": -0.2583,
-   "status": "below_breakeven",
-   "pnl_est": -1721.68
+   "status": "assigned",
+   "pnl": -704.3,
+   "return": -0.0397
   },
   {
    "date": "2026-11-15",
@@ -4534,14 +4605,14 @@
    "buffer_sd": 0.6,
    "thin": false,
    "alt": null,
-   "sessions": 8,
-   "last_close": 161.51,
+   "sessions": 9,
+   "last_close": 171.55,
    "min_close": 152.2,
    "touched_strike": true,
-   "move": -0.1523,
+   "move": -0.0996,
    "worst_move": -0.2012,
-   "status": "below_breakeven",
-   "pnl_est": -772.01
+   "status": "otm",
+   "pnl_est": -134.14
   }
  ]
 }
